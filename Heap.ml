@@ -4,8 +4,9 @@ open Core.Std
 module type PRIOHEAP =
 sig
 
-  (* The type of an element in the heap. *)
-  type elt
+  (* The type of keys and values in the heap. *)
+  type key
+  type value
   
   (* An abstract type for the heap. *)
   type heap
@@ -14,11 +15,13 @@ sig
   val empty: unit -> heap
 
   (* Inserts an element into the heap. *)
-  val insert: elt -> heap -> unit
+  val insert: key -> value -> heap -> unit
 
-  (* Removes the minimum element from the heap and returns it.
+  (* Removes the minimum-key element from the heap and returns it.
    * If heap is empty, returns None. *)
-  val delete_min: heap -> elt option
+  val delete_min: heap -> (key * value) option
 
   (* Decreases the key of the specified element of the heap. *)
-  val decrease_key: elt -> elt -> heap -> unit
+  val decrease_key: key -> key -> heap -> unit
+
+end
