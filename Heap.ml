@@ -1,5 +1,6 @@
 open Core.Std
-open Order
+
+let unit () -> () ;;
 
 (* A module signature for an imperative priority heap. *)
 module type PRIOHEAP =
@@ -51,3 +52,6 @@ struct
   let delete_min = TODO
   let decrease_key = TODO
 end
+(*
+module ListArg
+*)
