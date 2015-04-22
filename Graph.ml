@@ -58,7 +58,9 @@ struct
   *)
 
   (* TODO: replace this with an analogous NeighborDict using Dict.Make
-   * with keys that are nodes and values that are ints (i.e., edge weights) *)
+   * with keys that are nodes and values that are floats (i.e., edge
+   * weights) - we could use ints in some cases but that wouldn't work very
+   * well for geographic distances *)
   module NeighborSet = Myset.Make(
      struct
         type t = node
