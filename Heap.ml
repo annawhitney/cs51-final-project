@@ -19,7 +19,7 @@ sig
   val empty: heap
 
   (* Inserts an element into the heap. *)
-  val insert: key -> value -> heap -> unit
+  val insert: key -> value -> heap -> heap
 
   (* Removes the minimum-key element from the heap and returns it.
    * If heap is empty, returns None. *)
@@ -75,31 +75,55 @@ struct
 	| Greater -> h2
 	| _ -> h1
 
-(*
+  let minkey (k1: key) (k2: key) : key =
+    match H.compare k2 k1 with
+    | Less -> k2
+    | _ -> k1
+
   (* Returns ref to smallest root node in heap *)
   let leastroot (h: heap) : heap = 
     let rec leastroot_helper (h': heap) (h0: heap) : heap =
-      match !h' with
-      | Leaf -> ref Leaf
-      | ((k,_),_,l,_,_,_,_) -> 
+      (match !h' with
+      | Leaf -> failwith "node must have siblings"
+      | Node(_,_,l,_,_,_,_) -> 
 	if phys_equal h' h0
 	then h'
-	else minroot h' (leastroot_helper l h0) in
-*)
+	else minroot h' (leastroot_helper l h0)) in
+    match !h with
+    | Leaf -> h
+    | Node(_,_,_,r,_,_,_) ->
+      match !r with
+      | Leaf -> h
+      | Node(_,_,l,_,_,_,_) -> leastroot_helper h l
 
 (* TODO fix insert to point to correct node at end; i.e. check for min *)
-  let insert (k: key) (v: value) (h: heap) : unit =
+  let insert (k: key) (v: value) (h: heap) : heap =
     match !h with
-    | Leaf -> h := Node((k,v), empty, empty, empty, empty, 0, false)
-    | Node(hkv,hp,hl,hr,hc,hrk,hm) ->
+    | Leaf -> h := Node((k,v), empty, empty, empty, empty, 0, false); h
+    | Node((hk,hv),hp,hl,hr,hc,hrk,hm) ->
       match !hl with
       | Leaf -> 
 	let newnode = Node((k,v), empty, h, h, empty, 0, false) in
-	h := Node(hkv, hp, ref newnode, ref newnode, hc, hrk, hm)
+	h := Node((hk,hv), hp, ref newnode, ref newnode, hc, hrk, hm);
+	if minkey hk k = hk then h else ref newnode
       | Node(lkv,lp,ll,lr,lc,lrk,lm) ->
 	let newnode = Node((k,v), empty, hl, h, empty, 0, false) in
 	hl := Node(lkv, lp, ll, ref newnode, lc, lrk, lm);
-	h := Node(hkv, hp, ref newnode, hr, hc, hrk, hm)
+	h := Node((hk,hv), hp, ref newnode, hr, hc, hrk, hm);
+	if minkey hk k = hk then h else ref newnode
+
+  let merge (h1: heap) (h2: heap) : heap =
+    if minroot h1 h2 = h1 
+    then
+      match !h1 with
+      | Leaf -> (* TODO *) empty
+      | Node(kv1,p1,l1,r1,c1,rk1,m1) -> (* TODO *) empty
+    else
+      match !h2 with
+      | Leaf -> (* TODO *) empty
+      | Node(kv2,p2,l1,r1,c2,rk2,m2) -> (* TODO *) empty
+    
+    
 
   let decrease_key = fun _ _ _ -> ()
   let delete_min = fun _ -> None
