@@ -4,6 +4,8 @@ open dict
 exception TODO
 
 (* Read in .csv file from user input and store in adjacency list *)
+(* NOTE: We probably want this function to return the graph the csv
+ * was read into! *)
 let read_csv : fun () -> () = TODO ;;
 
 (* Request start and finish nodes from user *)
