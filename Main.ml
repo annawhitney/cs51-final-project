@@ -1,5 +1,5 @@
 open Core.Std
-open Dict
+open Graph
 
 exception TODO
 
