@@ -32,7 +32,7 @@ end
 
 module type HEAP_ARG =
 sig
-  open Order
+  (* open Order (we don't have an Order file :/ ) *)
 
   type key
   type value
@@ -61,8 +61,8 @@ struct
   type key = H.key
   type value = H.value
   type pair = key * value
-  type rank = int
-  type marked = bool
+  type rank = int ref
+  type marked = bool ref
   (* A heap will consist of either a Leaf ref (empty heap), or of 
    * ((k,v), parent ref, left sib ref, right sib ref,
    * child ref, no. of children, child cut) *)
@@ -153,7 +153,7 @@ struct
 
   let insert (k: key) (v: value) (h: heap) : heap =
     let newheap = 
-      general_insert (Node((k,v),empty,empty,empty,empty,0,false)) h in
+      general_insert (Node((k,v),empty,empty,empty,empty,ref 0,ref false)) h in
     ref (minroot !h !newheap)
 
   (* merges orphaned tree w/out siblings w/ anothe tree, preserves invariants *)
@@ -166,22 +166,43 @@ struct
       | Node(kv,p,l,r,c,rk,m) ->
 	if minroot singlet t = singlet
 	then
-	  Node(skv, p, l, r, general_insert t sc, srk+1, sm)
+	  Node(skv, p, l, r, general_insert t sc, ref (!srk+1), sm)
 	else
-	  Node(kv, p, l, r, general_insert singlet c, rk+1, m)
+	  Node(kv, p, l, r, general_insert singlet c, ref (!rk+1), m)
     
 
   let decrease_key = fun _ _ _ -> ()
   let delete_min = fun _ -> None
 
+  (* cut removes and returns a tree from the surrounding heap. 
+   * cut doesn't change parent marked, but it does decrease parent rank *)
+  let cut (t: tree) : tree =
+    match t with
+    | Leaf -> Leaf
+    | Node(kv,p,l,r,c,rk,m) ->
+      match !p with
+      (* cut need never be performed on a root node *)
+      | Leaf -> failwith "node must be a tree"
+      | Node(_,_,_,_,pc,_,_) ->
+	pc := !l; rk := !rk+1;
+	match !l with
+	| Leaf -> Node(kv,empty,empty,empty,c,rk,m)
+	| Node(_,_,_,lr,_,_,_) ->
+	  lr := !r;
+	  match !r with
+	  | Leaf -> failwith "node must be a tree"
+	  | Node(_,_,rl,_,_,_,_) ->
+	    rl := !l;
+	    Node(kv,empty,empty,empty,c,rk,m)
+	  
+
 (*
-  let cut = TODO
   let merge = TODO
   let mark = TODO
 
 *)
 end
-
+(*
 (* for use in testing *)
 module ListArg(C : COMPARABLE) : (HEAP_ARG with type value = int list
 			   and type key = C.t) =
@@ -196,4 +217,4 @@ struct
       then Equal
       else Less
 end
-
+*)
