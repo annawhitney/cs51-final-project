@@ -30,6 +30,18 @@ sig
 
 end
 
+module type COMPARABLE =
+sig
+  type t
+  val compare : t -> t -> Ordering.t
+end
+
+module IntComparable : COMPARABLE =
+struct
+  type t = int
+  let compare x y = if x < y then Less else if x > y then Greater else Equal
+end
+
 module type HEAP_ARG =
 sig
 
@@ -39,8 +51,8 @@ sig
   val compare: key -> key -> Ordering.t
 end
 
-module FibonacciHeap(H: HEAP_ARG) : (PRIOHEAP with type key = H.key
-    with type value = H.value) =
+module FibonacciHeap(H: HEAP_ARG) : (PRIOHEAP with type value = H.value
+    and type key = H.key) =
 struct
   type key = H.key
   type value = H.value
@@ -165,6 +177,19 @@ struct
 
 *)
 end
-(*
-module ListArg
-*)
+
+(* for use in testing *)
+module ListArg(C : COMPARABLE) : (HEAP_ARG with type value = int list
+			   and type key = C.t) =
+struct
+  type key = C.t
+  type value = int list
+  let compare (k1: key) (k2:key) : Ordering.t =
+    if k1 > k2
+    then Greater
+    else 
+      if k1 = k2
+      then Equal
+      else Less
+end
+
