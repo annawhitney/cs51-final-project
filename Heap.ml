@@ -30,25 +30,29 @@ sig
 
 end
 
-module type COMPARABLE =
-sig
-  type t
-  val compare : t -> t -> Ordering.t
-end
-
-module IntComparable : COMPARABLE =
-struct
-  type t = int
-  let compare x y = if x < y then Less else if x > y then Greater else Equal
-end
-
 module type HEAP_ARG =
 sig
+  open Order
 
   type key
   type value
 
-  val compare: key -> key -> Ordering.t
+  val compare : key -> key -> Ordering.t
+
+  (* For testing purposes *)
+  val string_of_key : key -> string
+  val string_of_value : value -> string
+
+  (* Should return same key every time given same inputs*)
+  val gen_key : unit -> key
+  val gen_key_gt : key -> unit -> key
+  val gen_key_lt : key -> unit -> key
+  val gen_key_between : key -> key -> unit -> key option
+
+  (* Should return random key *)
+  val gen_key_random : unit -> key
+  val gen_value : unit -> value
+  val gen_pair : unit -> key * value
 end
 
 module FibonacciHeap(H: HEAP_ARG) : (PRIOHEAP with type value = H.value
