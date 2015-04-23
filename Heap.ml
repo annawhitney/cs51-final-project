@@ -252,3 +252,7 @@ struct
   let test_delete_min () = TODO
 end
 
+(* Create a fib heap with (int, string) pairs for testing *)
+module IntStringFibHeap = FibonacciHeap(IntStringHeapArg)
+(* Uncomment the following when ready to run tests on fib heap *)
+IntStringFibHeap.run_tests()
