@@ -11,7 +11,9 @@ let read_csv : fun () -> () = TODO ;;
 (* Request start and finish nodes from user *)
 let get_nodes : fun () -> string * string = 
   (* Should give the user a text prompt so they know what to input *)
+  Printf.printf "What is our start point?" 
   let st = read_string () in
+  Printf.printf "What is our end point?" 
   let fin = read_string () in
   st, fin ;;
 
