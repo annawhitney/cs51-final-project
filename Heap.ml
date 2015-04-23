@@ -51,6 +51,9 @@ struct
    * ((k,v), parent ref, left sib ref, right sib ref,
    * child ref, no. of children, child cut) *)
   type heap = tree ref
+  (* This tree data type is not a regular tree; the root of this tree 
+   * can have sibling roots and the root can also have a parent. A tree 
+   * is nothing more than a dereferenced heap in this code *)
   and tree = 
   | Leaf
   | Node of pair * heap * heap * heap * heap * rank * marked
@@ -62,40 +65,40 @@ struct
     | Leaf -> true
     | _ -> false
 
-  (* Returns heap with smaller priority root key; if keys equal, first arg 
-   * returned. Empty heap considered smaller than all non-empty heaps *)
-  let minroot (h1: heap) (h2: heap) : heap =
-    match !h2 with
-    | Leaf -> h1
-    | Node((k2,_),_,_,_,_,_,_) ->
-      match !h1 with
-      | Leaf -> h2
-      | Node((k1,_),_,_,_,_,_,_) ->
-	match H.compare k1 k2 with
-	| Greater -> h2
-	| _ -> h1
-
   let minkey (k1: key) (k2: key) : key =
     match H.compare k2 k1 with
     | Less -> k2
     | _ -> k1
 
-  (* Returns ref to smallest root node in heap *)
-  let leastroot (h: heap) : heap = 
-    let rec leastroot_helper (h': heap) (h0: heap) : heap =
-      (match !h' with
+  (* Returns heap with smaller priority root key; if keys equal, first arg 
+   * returned. Empty heap considered smaller than all non-empty heaps *)
+  let minroot (t1: tree) (t2: tree) : tree =
+    match t2 with
+    | Leaf -> t1
+    | Node((k2,_),_,_,_,_,_,_) ->
+      match t1 with
+      | Leaf -> t2
+      | Node((k1,_),_,_,_,_,_,_) ->
+	if minkey k1 k2 = k2 then t2 else t1
+
+  (* Returns smallest root node in heap *)
+  let leastroot (h: heap) : tree = 
+    let rec leastroot_helper (t: tree) (h0: heap) : tree =
+      (match t with
       | Leaf -> failwith "node must have siblings"
       | Node(_,_,l,_,_,_,_) -> 
-	if phys_equal h' h0
-	then h'
-	else minroot h' (leastroot_helper l h0)) in
+	if phys_equal l h0
+	then t
+	else minroot t (leastroot_helper !l h0)) in
     match !h with
-    | Leaf -> h
+    | Leaf -> !h
     | Node(_,_,_,r,_,_,_) ->
       match !r with
-      | Leaf -> h
-      | Node(_,_,l,_,_,_,_) -> leastroot_helper h l
+      | Leaf -> !h
+      | Node(_,_,l,_,_,_,_) -> leastroot_helper !h l
 
+(*
+(* Old implementation of insert; delete when finished *)
 (* TODO fix insert to point to correct node at end; i.e. check for min *)
   let insert (k: key) (v: value) (h: heap) : heap =
     match !h with
@@ -111,18 +114,45 @@ struct
 	hl := Node(lkv, lp, ll, ref newnode, lc, lrk, lm);
 	h := Node((hk,hv), hp, ref newnode, hr, hc, hrk, hm);
 	if minkey hk k = hk then h else ref newnode
+*)
 
-  let merge (h1: heap) (h2: heap) : heap =
-    if minroot h1 h2 = h1 
-    then
-      match !h1 with
-      | Leaf -> (* TODO *) empty
-      | Node(kv1,p1,l1,r1,c1,rk1,m1) -> (* TODO *) empty
-    else
-      match !h2 with
-      | Leaf -> (* TODO *) empty
-      | Node(kv2,p2,l1,r1,c2,rk2,m2) -> (* TODO *) empty
-    
+  (* treats a node as orphaned and w/out siblings and inserts into a heap *)
+  let general_insert (t: tree) (h: heap) : heap =
+    match !h with
+    | Leaf -> ref t
+    | Node((hk,hv),hp,hl,hr,hc,hrk,hm) ->
+      match t with
+      | Leaf -> h
+      | Node((k,v),_,_,_,c,rk,m) ->
+	match !hl with
+	| Leaf -> 
+	  let newnode = Node((k,v), empty, h, h, c, rk, m) in
+	  h := Node((hk,hv), hp, ref newnode, ref newnode, hc, hrk, hm);
+	  ref newnode
+	| Node(lkv,lp,ll,lr,lc,lrk,lm) ->
+	  let newnode = Node((k,v), empty, hl, h, c, rk, m) in
+	  hl := Node(lkv, lp, ll, ref newnode, lc, lrk, lm);
+	  h := Node((hk,hv), hp, ref newnode, hr, hc, hrk, hm);
+	  ref newnode
+
+  let insert (k: key) (v: value) (h: heap) : heap =
+    let newheap = 
+      general_insert (Node((k,v),empty,empty,empty,empty,0,false)) h in
+    ref (minroot !h !newheap)
+
+  (* merges orphaned tree w/out siblings w/ anothe tree, preserves invariants *)
+  let merge (singlet: tree) (t: tree) : tree =
+    match singlet with
+    | Leaf -> t
+    | Node(skv,_,_,_,sc,srk,sm) ->
+      match t with
+      | Leaf -> singlet
+      | Node(kv,p,l,r,c,rk,m) ->
+	if minroot singlet t = singlet
+	then
+	  Node(skv, p, l, r, general_insert t sc, srk+1, sm)
+	else
+	  Node(kv, p, l, r, general_insert singlet c, rk+1, m)
     
 
   let decrease_key = fun _ _ _ -> ()
