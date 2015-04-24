@@ -133,7 +133,8 @@ struct
 
   let is_empty g = (g.num_nodes = 0)
 
-  (* TODO: Modify to take edge weight into account *)
+  (* TODO: Modify to take edge weight into account and to be undirected
+   * (i.e., we have to add the edge to the list of BOTH nodes, not just one) *)
   (* Adds the nodes if they aren't already present. *)
   let add_edge g src dst =
     let new_neighbors = match EdgeDict.lookup g.edges src with
@@ -147,13 +148,13 @@ struct
        index_to_node_map = g'.index_to_node_map}
 
   (* TODO: Modify to take edge weight into account *)
-  let neighbors g n : node list option =
+  let neighbors g n : (node * weight) list option =
     match EdgeDict.lookup g.edges n with
       | None -> None
       | Some s -> Some (NeighborSet.fold (fun neigh r -> neigh :: r) [] s)
 
   (* TODO: Modify to take edge weight into account *)
-  let outgoing_edges g src : (node * node) list option =
+  let outgoing_edges g src : (node * node * weight) list option =
     match EdgeDict.lookup g.edges src with
       | None -> None
       | Some s -> Some (NeighborSet.fold (fun dst r ->
@@ -186,6 +187,8 @@ struct
     List.fold_left es ~f:(fun g (src, dst) -> add_edge g src dst) ~init:empty
 end
 
+(* TODO: update tests to incorporate weights so we can make sure our weighted
+ * graph implementation works. *)
 (* Wrap our tests in a module so that they don't pollute the namespace *)
 module TestGraph =
 struct

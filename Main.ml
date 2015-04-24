@@ -26,6 +26,7 @@ let get_nodes (g: GeoGraph.graph) : GeoNode.node * GeoNode.node =
 
 (* Run dijkstra's algorithm to find shortest path between start and finish *)
 let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph) =
+
   (* Initialize heap containing only source node with distance of 0 *)
   let with_source = FibHeap.insert 0 st FibHeap.empty in
   (* Insert all other nodes into heap with initial distance of infinity (using
@@ -34,12 +35,32 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph) =
     match (GeoNode.compare s st) with
     | Less | Greater -> 
         let (hp,nd) = FibHeap.insert Float.max_value s h in
-        s.pt <- nd ; hp
+        s.pt <- Some nd ; hp
     | Equal -> h
   in
   let fib_heap = List.fold_left (GeoGraph.nodes g) ~f:insert_not_source
-      ~i:with_source ;
-  (* TODO: continue algorithm *)
+      ~i:with_source in
+
+  (* Keep taking min, adding its neighbors, and updating distances until
+   * our destination node is the min that we take. *)
+  let rec next_node (h: FibHeap.heap) =
+    let (min,hp) = FibHeap.delete_min h in
+    match min with
+    | None -> failwith "heap empty without reaching destination"
+    | Some (dist,nm) ->
+        (match GeoGraph.neighbors g {name = nm; pt = None} with
+        | None -> failwith "heap min is not in graph"
+        | Some ns ->
+            let handle_node (h: FibHeap.heap) (n,w) =
+              let alt = dist + w in
+              (match n.pt with
+              | None -> failwith "no heap entry associated with node"
+              | Some pnt ->
+                  (match FibHeap.get_top_node pnt with
+                  | None -> failwith "node associated with empty heap entry"
+                  | Some (k,v) -> assert(v = n.name) ;
+                      if alt < k then FibHeap.decrease_key pnt alt h else h))
+            in
 
 let graph = read_csv (* cmd line arg *) in
 let (start,finish) = get_nodes graph in

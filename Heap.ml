@@ -18,6 +18,9 @@ sig
   (* Returns an empty heap. *)
   val empty: heap
 
+  (* Checks if heap is empty. *)
+  val is_empty: heap -> bool
+
   (* Inserts an element into the heap. Returns updated handle to heap and
    * handle to inserted node. *)
   val insert: key -> value -> heap -> (heap * heap)
@@ -26,9 +29,13 @@ sig
    * updated handle to heap. If heap is empty, returns None. *)
   val delete_min: heap -> (key * value) option * heap
 
-  (* Decreases the key of the specified element of the heap. Returns updated
+  (* Decreases the key of the specified node of the heap. Returns updated
    * handle to heap. *)
-  val decrease_key: key -> key -> heap -> heap
+  val decrease_key: heap -> key -> heap -> heap
+
+  (* Returns the key and value associated with a particular node, or None
+   * if the node corresponds to an empty heap. *)
+  val get_top_node: heap -> (key * value) option
 
   (* Runs all the tests. *)
   val run_tests: unit -> unit
@@ -40,8 +47,7 @@ sig
   open Order 
 
   type key
-  type value
-
+  type value 
   val compare : key -> key -> Ordering.t
 
   (* For testing purposes *)
@@ -123,7 +129,7 @@ struct
 
   let empty : heap = ref Leaf
 
-  let isempty (h: heap) : bool =
+  let is_empty (h: heap) : bool =
     match !h with
     | Leaf -> true
     | _ -> false
@@ -276,11 +282,6 @@ struct
 	  rk := !rk + 1;
           Node(kv,p,l,r,general_insert single_t c,rk,m)
 	  
-(*
-  let mark = TODO
-
-*)
-
   let delete_min (h: heap) : (key * value) option * heap =
     match !h with
     | Leaf -> (None, h)
@@ -320,8 +321,14 @@ struct
       while comb_more do () done;
       (Some (k,v), new_h)
       
+  let get_top_node (h: heap) : pair option =
+    match !h with
+    | Leaf -> None
+    | Node (p,_,_,_,_,_,_) -> p
 
-  let decrease_key (big: key) (small: key) (h: heap) : unit = ()
+  (* NOTE to self: include assert that small is in fact smaller than
+   * current key at nd? *)
+  let decrease_key (nd: heap) (small: key) (h: heap) : heap = TODO
 
   let test_insert () = TODO
   let test_decrease_key () = TODO
