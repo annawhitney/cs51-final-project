@@ -61,14 +61,12 @@ struct
   *)
 
   (* TODO: replace this with an analogous NeighborDict using Dict.Make
-   * with keys that are nodes and values that are floats (i.e., edge
-   * weights) - we could use ints in some cases but that wouldn't work very
-   * well for geographic distances *)
+   * with keys that are nodes and values that are edge weights *)
   
   module NeighborDict = Dict.Make(
      struct
         type key = node
-        type value = float
+        type value = weight
         let compare = N.compare
         let string_of_t = N.string_of_node
         let gen = N.gen
@@ -137,7 +135,8 @@ struct
 
   let is_empty g = (g.num_nodes = 0)
 
-  (* TODO: Modify to take edge weight into account *)
+  (* TODO: Modify to take edge weight into account and to be undirected
+   * (i.e., we have to add the edge to the list of BOTH nodes, not just one) *)
   (* Adds the nodes if they aren't already present. *)
   (* val would be the weight *)
   let add_edge g src dst val =
@@ -152,13 +151,13 @@ struct
        index_to_node_map = g'.index_to_node_map}
 
   (* TODO: Modify to take edge weight into account *)
-  let neighbors g n : node list option =
+  let neighbors g n : (node * weight) list option =
     match EdgeDict.lookup g.edges n with
       | None -> None
       | Some s -> Some (NeighborDict.fold (fun neigh val r -> (neigh, val) :: r) [] s)
 
   (* TODO: Modify to take edge weight into account *)
-  let outgoing_edges g src : (node * node) list option =
+  let outgoing_edges g src : (node * node * weight) list option =
     match EdgeDict.lookup g.edges src with
       | None -> None
       | Some s -> Some (NeighborDict.fold (fun dst val r ->
@@ -191,6 +190,8 @@ struct
     List.fold_left es ~f:(fun g (src, dst) -> add_edge g src dst) ~init:empty
 end
 
+(* TODO: update tests to incorporate weights so we can make sure our weighted
+ * graph implementation works. *)
 (* Wrap our tests in a module so that they don't pollute the namespace *)
 module TestGraph =
 struct
