@@ -133,16 +133,17 @@ struct
 
   (* TODO: Modify to take edge weight into account *)
   let nodes g =
-    EdgeDict.fold (fun k _ r -> k :: r) [] g.edges
+    EdgeDict.fold (fun k v r -> (k, v) :: r) [] g.edges
 
   let is_empty g = (g.num_nodes = 0)
 
   (* TODO: Modify to take edge weight into account *)
   (* Adds the nodes if they aren't already present. *)
-  let add_edge g src dst =
+  (* val would be the weight *)
+  let add_edge g src dst val =
     let new_neighbors = match EdgeDict.lookup g.edges src with
-      | None -> NeighborDict.insert dst NeighborDict.empty
-      | Some s -> NeighborDict.insert dst s
+      | None -> NeighborDict.insert NeighborDict.empty dst val
+      | Some s -> NeighborDict.insert s dst val
     in
       (* ensure both src and dst in the graph before adding edge *)
     let g' = (add_node (add_node g src) dst) in
@@ -154,14 +155,14 @@ struct
   let neighbors g n : node list option =
     match EdgeDict.lookup g.edges n with
       | None -> None
-      | Some s -> Some (NeighborDict.fold (fun neigh r -> neigh :: r) [] s)
+      | Some s -> Some (NeighborDict.fold (fun neigh val r -> (neigh, val) :: r) [] s)
 
   (* TODO: Modify to take edge weight into account *)
   let outgoing_edges g src : (node * node) list option =
     match EdgeDict.lookup g.edges src with
       | None -> None
-      | Some s -> Some (NeighborDict.fold (fun dst r ->
-                                             (src, dst) :: r) [] s)
+      | Some s -> Some (NeighborDict.fold (fun dst val r ->
+                                             (src, dst, val) :: r) [] s)
 
   let has_node g n =
     match EdgeDict.lookup g.edges n with
