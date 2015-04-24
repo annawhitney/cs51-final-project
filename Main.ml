@@ -11,10 +11,11 @@ let read_csv : fun () -> () = TODO ;;
 (* Request start and finish nodes from user *)
 let get_nodes : fun () -> string * string = 
   (* Should give the user a text prompt so they know what to input *)
-  Printf.printf "What is our start point?" 
-  let st = read_string () in
-  Printf.printf "What is our end point?" 
-  let fin = read_string () in
+  Printf.printf "Starting Point: " 
+  let st = read_line () in
+  (* we need to make sure st is contained in our imported file *) 
+  Printf.printf "End Point: " 
+  let fin = read_line () in
   st, fin ;;
 
 (* Run dijkstra's algorithm to find shortest path between start and finish *)
