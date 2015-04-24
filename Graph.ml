@@ -61,14 +61,12 @@ struct
   *)
 
   (* TODO: replace this with an analogous NeighborDict using Dict.Make
-   * with keys that are nodes and values that are floats (i.e., edge
-   * weights) - we could use ints in some cases but that wouldn't work very
-   * well for geographic distances *)
+   * with keys that are nodes and values that are edge weights *)
   
   module NeighborDict = Dict.Make(
      struct
         type key = node
-        type value = float
+        type value = weight
         let compare = N.compare
         let string_of_t = N.string_of_node
         let gen = N.gen
