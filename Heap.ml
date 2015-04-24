@@ -406,7 +406,7 @@ module FibHeap = FibonacciHeap(GeoHeapArg)
  * exists in the heap) *)
 module GeoNode =
 struct
-  type node = {name: string; mutable pt: FibHeap.heap option;
+  let rec node = {name: string; mutable pt: FibHeap.heap option;
       mutable prev: node ref option}
   type weight = float
   let compare n1 n2 = string_compare s1.name s2.name

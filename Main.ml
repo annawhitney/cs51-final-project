@@ -44,14 +44,15 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
 
   (* Keep taking min, checking its neighbors, and updating distances until
    * our destination node is the min that we take. *)
-  let rec next_node (h: FibHeap.heap) =
+  let rec next_node (h: FibHeap.heap) (prev: string Links.link_node) =
     let (min,hp) = FibHeap.delete_min h in
     match min with
     | None -> failwith "heap empty without reaching destination"
     | Some (dist,nm) ->
-        (* If the min node we pulled was our destination, we're done *)
+        (* If the min node we pulled was our destination, we're done;
+         * return the distance and the list of nodes in the shortest path*)
         (match GeoNode.compare {fin with name = nm} fin with
-        | Equal -> (* We're done! *) TODO
+        | Equal -> dist,(Links.list_of_links prev)
         | Less | Greater ->
             (* Otherwise, get the neighbors of our min *)
             (match GeoGraph.neighbors g {st with name = nm} with
@@ -71,7 +72,8 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
                           if alt < k then FibHeap.decrease_key pnt alt h
                           else h))
                 in
-                next_node (List.fold_left ns ~f:handle_node ~i:hp)))
+                next_node (List.fold_left ns ~f:handle_node ~i:hp)
+                    (Node (nm,ref prev))))
 
   in next_node fib_heap ;;
 
