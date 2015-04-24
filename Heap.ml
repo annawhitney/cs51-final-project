@@ -28,11 +28,14 @@ sig
   (* Decreases the key of the specified element of the heap. *)
   val decrease_key: key -> key -> heap -> unit
 
+  (* Runs all the tests. *)
+  val run_tests: unit -> unit
+
 end
 
 module type HEAP_ARG =
 sig
-  (* open Order (we don't have an Order file :/ ) *)
+  open Order 
 
   type key
   type value
@@ -43,7 +46,7 @@ sig
   val string_of_key : key -> string
   val string_of_value : value -> string
 
-  (* Should return same key every time given same inputs*)
+  (* Should return same key every time given same inputs *)
   val gen_key : unit -> key
   val gen_key_gt : key -> unit -> key
   val gen_key_lt : key -> unit -> key
@@ -53,6 +56,48 @@ sig
   val gen_key_random : unit -> key
   val gen_value : unit -> value
   val gen_pair : unit -> key * value
+end
+
+(* Borrowed wholesale from Moogle (since a HEAP_ARG and a DICT_ARG are
+ * identical) for testing purposes *)
+module IntStringHeapArg : HEAP_ARG =
+struct
+  open Order
+  type key = int
+  type value = string
+  let compare x y = if x < y then Less else if x > y then Greater else Equal
+  let string_of_key = string_of_int
+  let string_of_value v = v
+  let gen_key () = 0
+  let gen_key_gt x () = x + 1
+  let gen_key_lt x () = x - 1
+  let gen_key_between x y () =
+    let (lower, higher) = (min x y, max x y) in
+    if higher - lower < 2 then None else Some (higher - 1)
+  let gen_key_random =
+    let _ = Random.self_init () in
+    (fun () -> Random.int 10000)
+
+  (* returns the nth string in lst, or "cow" n > length of list *)
+  let rec lst_n (lst: string list) (n: int) : string =
+    match lst with
+      | [] -> "cow"
+      | hd::tl -> if n = 0 then hd else lst_n tl (n-1)
+
+  (* list of possible values to generate *)
+  let possible_values = ["a";"c";"d";"e";"f";"g";"h";"i";"j";"k";"m";"n";
+                         "o";"p";"q";"r";"s";"t";"u";"v";"w";"x";"y";"z";
+                         "zzzzzz";"cheese";"foo";"bar";"baz";"quux";"42"]
+  let num_values = List.length possible_values
+  (* gen_value will return the string at this current index *)
+  let current_index = ref 0
+  let gen_value () =
+    let index = !current_index in
+    if index >= num_values then
+      (current_index := 0; lst_n possible_values index)
+    else
+      (current_index := index + 1; lst_n possible_values index)
+  let gen_pair () = (gen_key_random(), gen_value())
 end
 
 module FibonacciHeap(H: HEAP_ARG) : (PRIOHEAP with type value = H.value
@@ -65,7 +110,7 @@ struct
   type marked = bool ref
   (* A heap will consist of either a Leaf ref (empty heap), or of 
    * ((k,v), parent ref, left sib ref, right sib ref,
-   * child ref, no. of children, child cut) *)
+   * child ref, no. of children (rank), child cut (marked)) *)
   type heap = tree ref
   (* This tree data type is not a regular tree; the root of this tree 
    * can have sibling roots and the root can also have a parent. A tree 
@@ -271,20 +316,13 @@ struct
 
   let decrease_key (big: key) (small: key) (h: heap) : unit = ()
 
+  let test_insert () = TODO
+  let test_decrease_key () = TODO
+  let test_delete_min () = TODO
+
 end
-(*
-(* for use in testing *)
-module ListArg(C : COMPARABLE) : (HEAP_ARG with type value = int list
-			   and type key = C.t) =
-struct
-  type key = C.t
-  type value = int list
-  let compare (k1: key) (k2:key) : Ordering.t =
-    if k1 > k2
-    then Greater
-    else 
-      if k1 = k2
-      then Equal
-      else Less
-end
-*)
+
+(* Create a fib heap with (int, string) pairs for testing *)
+module IntStringFibHeap = FibonacciHeap(IntStringHeapArg)
+(* Uncomment the following when ready to run tests on fib heap *)
+IntStringFibHeap.run_tests()
