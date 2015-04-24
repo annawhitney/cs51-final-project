@@ -42,7 +42,7 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
   let fib_heap = List.fold_left (GeoGraph.nodes g) ~f:insert_not_source
       ~i:with_source in
 
-  (* Keep taking min, adding its neighbors, and updating distances until
+  (* Keep taking min, checking its neighbors, and updating distances until
    * our destination node is the min that we take. *)
   let rec next_node (h: FibHeap.heap) =
     let (min,hp) = FibHeap.delete_min h in
@@ -50,18 +50,20 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
     | None -> failwith "heap empty without reaching destination"
     | Some (dist,nm) ->
         (* If the min node we pulled was our destination, we're done *)
-        (match GeoNode.compare {name = nm; pt = None} fin with
+        (match GeoNode.compare {fin with name = nm} fin with
         | Equal -> (* We're done! *) TODO
         | Less | Greater ->
             (* Otherwise, get the neighbors of our min *)
-            (match GeoGraph.neighbors g {name = nm; pt = None} with
+            (match GeoGraph.neighbors g {st with name = nm} with
             | None -> failwith "heap min is not in graph"
             | Some ns ->
                 (* For each neighbor, update distance if necessary *)
                 let handle_node (h: FibHeap.heap) (n,w) =
                   let alt = dist + w in
+                  (* If no heap pointer associated with this node, we must have
+                   * visited it already, so don't decrease key of anything *)
                   (match n.pt with
-                  | None -> failwith "no heap entry associated with node"
+                  | None -> h
                   | Some pnt ->
                       (match FibHeap.get_top_node pnt with
                       | None -> failwith "node with empty heap entry"
