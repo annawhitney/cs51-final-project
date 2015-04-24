@@ -1,5 +1,6 @@
 open Core.Std
 
+(* just making sure that get_nodes works *)
 
 let get_nodes : string * string  = 
   let () = Printf.printf "Starting Point: " in
