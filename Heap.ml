@@ -233,7 +233,7 @@ struct
    * If cut tree has smallest heap node as root, the rest of the tree
    * can be lost unless already referenced elsewhere. *)
   (* NOTE: This is not what cut is supposed to do! Cut should take a non-root
-   * node, remove it from its parent and siblings, and make it a root node.
+   * node, remove it from its parent and siblings, and MAKE IT A ROOT NODE.
    * Its parent should be marked if it isn't already, and if it is already
    * marked, then the parent should be cut as well. Cut should therefore be
    * recursive. See the MIT spec for more details. *)
@@ -339,6 +339,8 @@ module IntStringFibHeap = FibonacciHeap(IntStringHeapArg)
 (* Uncomment the following when ready to run tests on fib heap *)
 (* IntStringFibHeap.run_tests() *)
 
+(* HEAP_ARG for our the Fibonacci Heap representation we will use for our
+ * actual algorithm *)
 module GeoHeapArg : HEAP_ARG =
 struct
   open Order
@@ -387,3 +389,18 @@ end
 
 (* Our actual fib heap module - not sure if this is where it should go *)
 module FibHeap = FibonacciHeap(GeoHeapArg)
+
+(* Our actual graph representation (not sure where to put it either,
+ * but it definitely needs to happen after FibHeap is defined because it
+ * uses FibHeap in its own definition) *)
+(* Nodes consist of a string (the name of the node) and a FibHeap.heap option
+ * (a pointer to the corresponding node in the Fibonacci Heap, if this node
+ * exists in the heap) *)
+module GeoGraph = Graph(
+  struct
+    type node = string * FibHeap.heap option
+    let compare (s1,_) (s2,_) = string_compare s1 s2
+    let string_of_node (s,_) = s
+    let get () = ("",None)
+  end)
+
