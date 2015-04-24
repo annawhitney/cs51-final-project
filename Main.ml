@@ -11,10 +11,10 @@ let read_csv : fun () -> () = TODO ;;
 (* Request start and finish nodes from user *)
 let get_nodes : fun () -> string * string = 
   (* Should give the user a text prompt so they know what to input *)
-  Printf.printf "Starting Point: " 
+  let () = Printf.printf "Starting Point: " in
   let st = read_line () in
   (* we need to make sure st is contained in our imported file *) 
-  Printf.printf "End Point: " 
+  let () = Printf.printf "End Point: " in
   let fin = read_line () in
   st, fin ;;
 
