@@ -15,6 +15,7 @@ let get_nodes : fun () -> string * string =
   let st = read_line () in
   (* we need to make sure st is contained in our imported file *) 
   let () = Printf.printf "End Point: " in
+  (* same goes with fin *) 
   let fin = read_line () in
   st, fin ;;
 
