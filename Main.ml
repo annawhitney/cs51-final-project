@@ -22,12 +22,13 @@ let get_nodes : fun () -> string * string =
 
 (* Run dijkstra's algorithm to find shortest path between start and finish *)
 let dijkstra (st: node) (fin: node) (g: GeoGraph.graph) : node list =
-  (* Initialize empty heap *)
-  let fib_heap = FibHeap.empty in
-  (* Insert all nodes into heap with initial distance of infinity (using
+  (* Initialize heap containing only source node with distance of 0 *)
+  let with_source = FibHeap.insert 0 st FibHeap.empty in
+  (* Insert all other nodes into heap with initial distance of infinity (using
    * Float.max_value to represent infinity) *)
-  List.fold_left (GeoGraph.nodes g)
-      ~f:(fun _ s -> FibHeap.insert Float.max_value s fib_heap) ~i:() ;
+  let fib_heap = List.fold_left (GeoGraph.nodes g)
+    ~f:(fun h s -> if s <> st then FibHeap.insert Float.max_value s h else h) 
+    ~i:with_source ;
   (* TODO: continue algorithm *)
 
 dijkstra st fin (read_csv (* cmd line arg *)) ;;

@@ -18,15 +18,16 @@ sig
   (* Returns an empty heap. *)
   val empty: heap
 
-  (* Inserts an element into the heap. *)
+  (* Inserts an element into the heap. Returns updated handle to heap. *)
   val insert: key -> value -> heap -> heap
 
-  (* Removes the minimum-key element from the heap and returns it.
-   * If heap is empty, returns None. *)
+  (* Removes the minimum-key element from the heap and returns it along with
+   * updated handle to heap. If heap is empty, returns None. *)
   val delete_min: heap -> (key * value) option * heap
 
-  (* Decreases the key of the specified element of the heap. *)
-  val decrease_key: key -> key -> heap -> unit
+  (* Decreases the key of the specified element of the heap. Returns updated
+   * handle to heap. *)
+  val decrease_key: key -> key -> heap -> heap
 
   (* Runs all the tests. *)
   val run_tests: unit -> unit
@@ -231,6 +232,11 @@ struct
    * cut doesn't change parent marked, but it does decrease parent rank.
    * If cut tree has smallest heap node as root, the rest of the tree
    * can be lost unless already referenced elsewhere. *)
+  (* NOTE: This is not what cut is supposed to do! Cut should take a non-root
+   * node, remove it from its parent and siblings, and make it a root node.
+   * Its parent should be marked if it isn't already, and if it is already
+   * marked, then the parent should be cut as well. Cut should therefore be
+   * recursive. See the MIT spec for more details. *)
   let cut (t: tree) : unit =
     match t with
     | Leaf -> ()
