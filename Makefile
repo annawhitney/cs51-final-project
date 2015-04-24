@@ -1,6 +1,6 @@
 all: main
 
-FILES = Heap.ml dict.ml  main.ml
+FILES = Order.ml Dict.ml Graph.ml Heap.ml Main.ml
 
 main: $(FILES)
 	corebuild main.native
