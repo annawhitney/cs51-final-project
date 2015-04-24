@@ -1,5 +1,6 @@
 open Core.Std
 open Graph
+open Heap
 
 exception TODO
 
@@ -26,9 +27,13 @@ let dijkstra (st: node) (fin: node) (g: GeoGraph.graph) : node list =
   let with_source = FibHeap.insert 0 st FibHeap.empty in
   (* Insert all other nodes into heap with initial distance of infinity (using
    * Float.max_value to represent infinity) *)
-  let fib_heap = List.fold_left (GeoGraph.nodes g)
-    ~f:(fun h s -> if s <> st then FibHeap.insert Float.max_value s h else h) 
-    ~i:with_source ;
+  let insert_not_source (h : FibHeap.heap) (s : GeoNode.node) =
+    match (GeoNode.compare s (st,None)) with
+    | Less | Greater -> FibHeap.insert Float.max_value s h
+    | Equal -> h
+  in
+  let fib_heap = List.fold_left (GeoGraph.nodes g) ~f:insert_not_source
+      ~i:with_source ;
   (* TODO: continue algorithm *)
 
 dijkstra st fin (read_csv (* cmd line arg *)) ;;

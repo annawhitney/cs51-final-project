@@ -396,11 +396,13 @@ module FibHeap = FibonacciHeap(GeoHeapArg)
 (* Nodes consist of a string (the name of the node) and a FibHeap.heap option
  * (a pointer to the corresponding node in the Fibonacci Heap, if this node
  * exists in the heap) *)
-module GeoGraph = Graph(
-  struct
-    type node = string * FibHeap.heap option
-    let compare (s1,_) (s2,_) = string_compare s1 s2
-    let string_of_node (s,_) = s
-    let get () = ("",None)
-  end)
+module GeoNode =
+struct
+  type node = string * FibHeap.heap option
+  let compare (s1,_) (s2,_) = string_compare s1 s2
+  let string_of_node (s,_) = s
+  let get () = ("",None)
+end
+
+module GeoGraph = Graph(GeoNode)
 
