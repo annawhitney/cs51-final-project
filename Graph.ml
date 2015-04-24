@@ -168,6 +168,15 @@ struct
     "Graph: " ^ (EdgeDict.string_of_dict g.edges)
 end
 
+(* Our actual graph representation (not sure where to put it) *)
+module GeoGraph = Graph(
+  struct
+    type node = string
+    let compare = string_compare
+    let string_of_node s = s
+    let get () = ""
+  end)
+
 module NamedGraph =
 struct
   include(Graph(struct
