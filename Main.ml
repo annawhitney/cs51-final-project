@@ -48,19 +48,24 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph) =
     match min with
     | None -> failwith "heap empty without reaching destination"
     | Some (dist,nm) ->
-        (match GeoGraph.neighbors g {name = nm; pt = None} with
-        | None -> failwith "heap min is not in graph"
-        | Some ns ->
-            let handle_node (h: FibHeap.heap) (n,w) =
-              let alt = dist + w in
-              (match n.pt with
-              | None -> failwith "no heap entry associated with node"
-              | Some pnt ->
-                  (match FibHeap.get_top_node pnt with
-                  | None -> failwith "node associated with empty heap entry"
-                  | Some (k,v) -> assert(v = n.name) ;
-                      if alt < k then FibHeap.decrease_key pnt alt h else h))
-            in
+        (match GeoNode.compare {name = nm; pt = None} fin with
+        | Equal -> (* We're done! *) TODO
+        | Less | Greater ->
+            (match GeoGraph.neighbors g {name = nm; pt = None} with
+            | None -> failwith "heap min is not in graph"
+            | Some ns ->
+                let handle_node (h: FibHeap.heap) (n,w) =
+                  let alt = dist + w in
+                  (match n.pt with
+                  | None -> failwith "no heap entry associated with node"
+                  | Some pnt ->
+                      (match FibHeap.get_top_node pnt with
+                      | None -> failwith "node with empty heap entry"
+                      | Some (k,v) -> assert(v = n.name) ;
+                          if alt < k then FibHeap.decrease_key pnt alt h
+                          else h))
+                in
+                next_node (List.fold_left ns ~f:handle_node ~i:hp)))
 
 let graph = read_csv (* cmd line arg *) in
 let (start,finish) = get_nodes graph in
