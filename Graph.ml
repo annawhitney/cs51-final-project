@@ -3,6 +3,7 @@ open Core.Std
 module type NODE =
 sig
   type node
+  type weight
 
   (* Require that nodes be comparable for efficiency. *)
   val compare : node -> node -> Ordering.t
@@ -19,6 +20,7 @@ module type GRAPH =
 sig
   module N : NODE
   type node = N.node
+  type weight = N.weight
   type graph
 
   val empty : graph
@@ -30,13 +32,13 @@ sig
   val add_node : graph -> node -> graph
 
   (* Adds the nodes if they aren't already present. *)
-  val add_edge : graph -> node -> node -> graph
+  val add_edge : graph -> node -> node -> weight -> graph
 
   (* Return None if node isn't in the graph *)
-  val neighbors : graph -> node -> node list option
+  val neighbors : graph -> node -> (node * weight) list option
 
   (* Return None if node isn't in the graph *)
-  val outgoing_edges : graph -> node -> (node * node) list option
+  val outgoing_edges : graph -> node -> (node * node * weight) list option
 
   val has_node : graph -> node -> bool
 
@@ -51,6 +53,7 @@ struct
   open Order;;
   module N = NA
   type node = N.node
+  type weight = N.weight
 
   (* We'll represent a graph as an edge dictionary:
      dictionary: node -> neighbor dict (TODO!)
@@ -58,9 +61,7 @@ struct
   *)
 
   (* TODO: replace this with an analogous NeighborDict using Dict.Make
-   * with keys that are nodes and values that are floats (i.e., edge
-   * weights) - we could use ints in some cases but that wouldn't work very
-   * well for geographic distances *)
+   * with keys that are nodes and values that are weights *)
   module NeighborSet = Myset.Make(
      struct
         type t = node
@@ -126,11 +127,13 @@ struct
        index_to_node_map =
          IntNode.insert g.index_to_node_map g.num_nodes n }
 
+  (* TODO: Modify to take edge weight into account *)
   let nodes g =
     EdgeDict.fold (fun k _ r -> k :: r) [] g.edges
 
   let is_empty g = (g.num_nodes = 0)
 
+  (* TODO: Modify to take edge weight into account *)
   (* Adds the nodes if they aren't already present. *)
   let add_edge g src dst =
     let new_neighbors = match EdgeDict.lookup g.edges src with
@@ -143,11 +146,13 @@ struct
        num_nodes = g'.num_nodes;
        index_to_node_map = g'.index_to_node_map}
 
+  (* TODO: Modify to take edge weight into account *)
   let neighbors g n : node list option =
     match EdgeDict.lookup g.edges n with
       | None -> None
       | Some s -> Some (NeighborSet.fold (fun neigh r -> neigh :: r) [] s)
 
+  (* TODO: Modify to take edge weight into account *)
   let outgoing_edges g src : (node * node) list option =
     match EdgeDict.lookup g.edges src with
       | None -> None
@@ -172,6 +177,7 @@ module NamedGraph =
 struct
   include(Graph(struct
                   type node = string
+                  type weight = int
                   let compare = Order.string_compare
                   let string_of_node = fun x -> x
                   let gen () = ""

@@ -18,8 +18,9 @@ sig
   (* Returns an empty heap. *)
   val empty: heap
 
-  (* Inserts an element into the heap. Returns updated handle to heap. *)
-  val insert: key -> value -> heap -> heap
+  (* Inserts an element into the heap. Returns updated handle to heap and
+   * handle to inserted node. *)
+  val insert: key -> value -> heap -> (heap * heap)
 
   (* Removes the minimum-key element from the heap and returns it along with
    * updated handle to heap. If heap is empty, returns None. *)
@@ -398,10 +399,11 @@ module FibHeap = FibonacciHeap(GeoHeapArg)
  * exists in the heap) *)
 module GeoNode =
 struct
-  type node = string * FibHeap.heap option
-  let compare (s1,_) (s2,_) = string_compare s1 s2
-  let string_of_node (s,_) = s
-  let get () = ("",None)
+  type node = {name: string; mutable pt: FibHeap.heap option}
+  type weight = float
+  let compare n1 n2 = string_compare s1.name s2.name
+  let string_of_node n = n.name
+  let get () = {name = ""; pt = None}
 end
 
 module GeoGraph = Graph(GeoNode)
