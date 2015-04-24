@@ -61,10 +61,14 @@ struct
   *)
 
   (* TODO: replace this with an analogous NeighborDict using Dict.Make
-   * with keys that are nodes and values that are weights *)
-  module NeighborSet = Myset.Make(
+   * with keys that are nodes and values that are floats (i.e., edge
+   * weights) - we could use ints in some cases but that wouldn't work very
+   * well for geographic distances *)
+  
+  module NeighborDict = Dict.Make(
      struct
-        type t = node
+        type key = node
+        type value = float
         let compare = N.compare
         let string_of_t = N.string_of_node
         let gen = N.gen
@@ -79,16 +83,16 @@ struct
   module EdgeDict = Dict.Make(
     struct
       type key = node
-      type value = NeighborSet.set
+      type value = NeighborDict.set
       let compare = N.compare
       let string_of_key = N.string_of_node
-      let string_of_value ns = NeighborSet.string_of_set ns
+      let string_of_value ns = NeighborDict.string_of_set ns
       let gen_key = N.gen
       let gen_key_random = N.gen
       let gen_key_gt _ () = N.gen ()
       let gen_key_lt _ () = N.gen ()
       let gen_key_between _ _ () = None
-      let gen_value () = NeighborSet.empty
+      let gen_value () = NeighborDict.empty
       let gen_pair () = (gen_key(),gen_value())
     end)
 
@@ -119,10 +123,10 @@ struct
                        num_nodes = 0;
                        index_to_node_map = IntNode.empty }
 
- let add_node g n =
+ let add_node g n v =
    if EdgeDict.member g.edges n then g
    else
-     { edges = EdgeDict.insert g.edges n (NeighborSet.empty) ;
+     { edges = EdgeDict.insert g.edges n v ;
        num_nodes = g.num_nodes + 1 ;
        index_to_node_map =
          IntNode.insert g.index_to_node_map g.num_nodes n }
@@ -138,8 +142,8 @@ struct
   (* Adds the nodes if they aren't already present. *)
   let add_edge g src dst =
     let new_neighbors = match EdgeDict.lookup g.edges src with
-      | None -> NeighborSet.insert dst NeighborSet.empty
-      | Some s -> NeighborSet.insert dst s
+      | None -> NeighborDict.insert dst NeighborDict.empty
+      | Some s -> NeighborDict.insert dst s
     in
       (* ensure both src and dst in the graph before adding edge *)
     let g' = (add_node (add_node g src) dst) in
@@ -151,13 +155,13 @@ struct
   let neighbors g n : (node * weight) list option =
     match EdgeDict.lookup g.edges n with
       | None -> None
-      | Some s -> Some (NeighborSet.fold (fun neigh r -> neigh :: r) [] s)
+      | Some s -> Some (NeighborDict.fold (fun neigh r -> neigh :: r) [] s)
 
   (* TODO: Modify to take edge weight into account *)
   let outgoing_edges g src : (node * node * weight) list option =
     match EdgeDict.lookup g.edges src with
       | None -> None
-      | Some s -> Some (NeighborSet.fold (fun dst r ->
+      | Some s -> Some (NeighborDict.fold (fun dst r ->
                                              (src, dst) :: r) [] s)
 
   let has_node g n =
