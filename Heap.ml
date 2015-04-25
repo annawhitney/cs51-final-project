@@ -3,6 +3,7 @@
  * CS51
  ***************************************)
 open Core.Std
+open Graph
 
 (* A module signature for an imperative priority heap. *)
 module type PRIOHEAP =
@@ -398,17 +399,21 @@ end
 (* Our actual fib heap module - not sure if this is where it should go *)
 module FibHeap = FibonacciHeap(GeoHeapArg)
 
-(* Our actual graph representation (not sure where to put it either,
+(* Our actual node & graph representations (not sure where to put these either,
  * but it definitely needs to happen after FibHeap is defined because it
  * uses FibHeap in its own definition) *)
-(* Nodes consist of a string (the name of the node) and a FibHeap.heap option
+(* Nodes consist of a string (the name of the node), a FibHeap.heap option
  * (a pointer to the corresponding node in the Fibonacci Heap, if this node
- * exists in the heap) *)
-module GeoNode =
+ * exists in the heap), and a pointer to the previous node in the MST once
+ * Dijkstra's algorithm has reached this node. *)
+module GeoNode : NODE =
 struct
   let rec node = {name: string; mutable pt: FibHeap.heap option;
       mutable prev: node ref option}
   type weight = float
+  type tag = string
+  let tag_of_node n = n.name
+  let node_of_tag t = {name: t; pt = None; prev = None}
   let compare n1 n2 = string_compare s1.name s2.name
   let string_of_node n = n.name
   let get () = {name = ""; pt = None; prev = None}

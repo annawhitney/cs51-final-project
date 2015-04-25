@@ -34,6 +34,10 @@ sig
   (* Returns true if and only if the key is in the dictionary. *)
   val member : dict -> key -> bool
 
+  (* Returns the key if the key is in the dictionary. Useful for finding what
+   * the actual key is when two distinct keys can compare equal. *)
+  val verify_key : dict -> key -> key option
+
   (* Inserts a (key,value) pair into our dictionary. If the key is already
    * in our dictionary, update the key to have the new value. *)
   val insert : dict -> key -> value -> dict
@@ -569,6 +573,27 @@ struct
             | Equal -> true
             | Less -> member m k
             | Greater -> member r k))
+
+  (* A function to return the key (if present) that compares equal to a given
+   * key; useful when the comparison functions ignores part of a key. *)
+  let rec verify_key (d: dict) (k: key) : key option =
+    match d with
+    | Leaf -> None
+    | Two(l,(k1,v1),r) ->
+        (match D.compare k k1 with
+        | Equal -> Some k1
+        | Less -> verify_key l k
+        | Greater -> verify_key r k)
+    | Three(l,(k1,v1),m,(k2,v2),r) ->
+        (match D.compare k k1 with
+        | Equal -> Some k1
+        | Less -> verify_key l k
+        | Greater ->
+            (match D.compare k k2 with
+            | Equal -> Some k2
+            | Less -> verify_key m k
+            | Greater -> verify_key r k))
+
 
   (* Write a function that removes any (key,value) pair from our
    * dictionary (your choice on which one to remove), and returns
