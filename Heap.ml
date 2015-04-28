@@ -331,6 +331,18 @@ struct
    * current key at nd? *)
   let decrease_key (nd: heap) (small: key) (h: heap) : heap = TODO
 
+  (*****************************)
+  (***** Testing functions *****)
+  (*****************************)
+
+  let rec firsts (lst: ('a * 'b) lst) : 'a lst =
+    match lst with
+    | [] -> []
+    | (a,_)::tl -> a::(firsts tl)
+
+  let insert_list (h: heap) (lst: (key * value) list) : heap * (heap list) =
+    let raw_list = List.fold_left lst ~f:(fun r 
+
   let test_insert () = TODO
   let test_decrease_key () = TODO
   let test_delete_min () = TODO
