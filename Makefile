@@ -1,9 +1,9 @@
 all: main
 
-FILES = Order.ml Dict.ml Graph.ml Heap.ml Main.ml
+FILES = Order.ml Dict.ml Graph.ml Links.ml Heap.ml Main.ml
 
 main: $(FILES)
-	corebuild main.native
+	corebuild Main.native
 
 clean:
-	rm -rf _build main.native
+	rm -rf _build Main.native

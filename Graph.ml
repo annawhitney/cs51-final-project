@@ -4,11 +4,15 @@ module type NODE =
 sig
   type node
   type weight
+  (* Allows us to search for a node *)
+  type tag
 
   (* Require that nodes be comparable for efficiency. *)
   val compare : node -> node -> Ordering.t
   val string_of_node : node -> string
   val gen : unit -> node
+
+  val tag_of_node : node -> tag
 end
 
 (* A signature for directed graphs with unweighted edges *)
@@ -21,6 +25,7 @@ sig
   module N : NODE
   type node = N.node
   type weight = N.weight
+  type tag = N.tag
   type graph
 
   val empty : graph
@@ -41,6 +46,9 @@ sig
   val outgoing_edges : graph -> node -> (node * node * weight) list option
 
   val has_node : graph -> node -> bool
+
+  (* Finds a node by its tag; returns None if node is not in graph. *)
+  val get_node_by_tag : graph -> tag -> node option
 
   (* Return None if the graph is empty *)
   val get_random_node : graph -> node option
@@ -167,6 +175,10 @@ struct
     match EdgeDict.lookup g.edges n with
       | None -> false
       | _ -> true
+
+  (* Added this function for convenience in Dijkstra algorithm *)
+  let get_node_by_tag g t : node option =
+    EdgeDict.verify_key g.edges (N.node_of_tag t)
 
   let get_random_node g =
     if g.num_nodes = 0 then None else
