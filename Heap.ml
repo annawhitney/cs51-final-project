@@ -334,6 +334,15 @@ struct
   (***** Testing Functions *****)
   (*****************************)
 
+  let rec firsts (lst: ('a * 'b) lst) : 'a lst =
+    match lst with
+    | [] -> []
+    | (a,_)::tl -> a::(firsts tl)
+(*
+  let insert_list (h: heap) (lst: (key * value) list) : heap * (heap list) =
+    let raw_list = List.fold_left lst ~f:(fun r 
+*)
+
   (* Inserts a list of pairs into the given heap and returns a handle to the
    * resulting heap as well as a list of nodes corresponding to each pair,
    * in the same order as the original pair list it corresponds to. *)
@@ -486,16 +495,16 @@ module FibHeap = FibonacciHeap(GeoHeapArg)
  * Dijkstra's algorithm has reached this node. *)
 module GeoNode : NODE =
 struct
-  let rec node = {name: string; mutable pt: FibHeap.heap option;
+  type node = {name: string; mutable pt: FibHeap.heap option;
       mutable prev: node ref option}
   type weight = float
   type tag = string
   let tag_of_node n = n.name
-  let node_of_tag t = {name: t; pt = None; prev = None}
+  (*let node_of_tag t = {name: t; pt = None; prev = None}*)
   let compare n1 n2 = string_compare s1.name s2.name
   let string_of_node n = n.name
   let get () = {name = ""; pt = None; prev = None}
 end
-
+(*
 module GeoGraph = Graph(GeoNode)
-
+*)
