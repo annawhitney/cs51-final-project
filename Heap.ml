@@ -331,45 +331,91 @@ struct
   let decrease_key (nd: heap) (small: key) (h: heap) : heap = TODO
 
   (*****************************)
-  (***** Testing functions *****)
+  (***** Testing Functions *****)
   (*****************************)
 
-  (* Inserts a list of pairs into the given heap and returns a handle to the
-   * resulting heap as well as a list of nodes corresponding to each pair. *)
+  let rec firsts (lst: ('a * 'b) lst) : 'a lst =
+    match lst with
+    | [] -> []
+    | (a,_)::tl -> a::(firsts tl)
+(*
   let insert_list (h: heap) (lst: (key * value) list) : heap * (heap list) =
-    let insert_keep_track r (k,v) =
-      let (sofar,pts) = r in
-      let (whole,mine) = insert k v sofar in
-      whole,(mine::lst)
-    in
-    List.fold_left lst ~f:insert_keep_track ~i:empty
+    let raw_list = List.fold_left lst ~f:(fun r 
+*)
 
-  (* generates a (key,value) list with n distinct keys in increasing order,
-   * starting from a given key *)
+  (* Inserts a list of pairs into the given heap and returns a handle to the
+   * resulting heap as well as a list of nodes corresponding to each pair,
+   * in the same order as the original pair list it corresponds to. *)
+  let insert_list (h: heap) (lst: (key * value) list) : heap * (heap list) =
+    let insert_keep_track (k,v) r =
+      let (sofar,pts) = r in
+      let (whole,mine) = insert k v sofar in whole,(mine::lst)
+    in
+    List.fold_right lst ~f:insert_keep_track ~i:empty
+
+  (* Generates a (key,value) list with n distinct keys in increasing order,
+   * starting from a given key. *)
   let rec gen_pairs_from (size: int) (current: key) : (key * value) list =
     if size <= 0 then []
     else
-      let new_current = D.gen_key_gt current () in
-      (new_current, D.gen_value()) :: (gen_pairs_from (size - 1) new_current)
+      let new_current = H.gen_key_gt current () in
+      (new_current, H.gen_value()) :: (gen_pairs_from (size - 1) new_current)
 
-  (* generates a (key,value) list with n distinct keys in increasing order *)
+  (* Generates a (key,value) list with n distinct keys in increasing order. *)
   let generate_pair_list (size: int) : (key * value) list =
-    gen_pairs_from size (D.gen_key ())
+    gen_pairs_from size (H.gen_key ())
 
-  (* generates a (key,value) list with keys in random order *)
+  (* Generates a (key,value) list with keys in random order. *)
   let rec generate_random_list (size: int) : (key * value) list =
     if size <= 0 then []
     else
-      (D.gen_key_random(), D.gen_value()) :: (generate_random_list (size - 1))
+      (H.gen_key_random(), H.gen_value()) :: (generate_random_list (size - 1))
 
-  (* generates a (key,value) list with identical keys *)
+  (* Generates a (key,value) list with identical keys. *)
   let rec generate_identical_list (size: int) : (key * value) list =
     if size <= 0 then []
     else
-      (D.gen_key(), D.gen_value()) :: (generate_identical_list (size - 1))
+      (H.gen_key(), H.gen_value()) :: (generate_identical_list (size - 1))
+
+  (* Returns the minimum of a list of pairs. If multiple pairs have the same 
+   * key, returns the first of the pairs. *)
+  let min_pair (lst: pair list) : pair option =
+    let rec min_helper lst curr =
+      match lst with
+      | [] -> curr
+      | (k,v)::tl ->
+          (match curr with
+          | None -> min_helper tl (Some (k,v))
+          | Some (currk,currv) ->
+              (match H.compare k currk with
+              | Less -> min_helper tl (Some (k,v))
+              | Greater | Equal -> min_helper tl (Some (currk,currv))))
+    in
+    min_helper lst None
 
 
-  let test_insert () = TODO
+  let test_insert () = 
+    let top_matches (a: pair) (pt: heap) : bool =
+      match get_top_node pt with
+      | None -> false
+      | Some b -> a = b
+    in
+    (* Fill heap with random pairs *)
+    let randpairs = generate_random_list 100 in
+    let (h1,lst1) = insert_list empty randpairs in
+    (* Check that every pair is where insert said it was *)
+    List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) randpairs lst1 ;
+    (* Check that the minimum pair ended up in the min spot *)
+    assert((min_pair randpairs) = (get_top_node h1)) ;
+    (* Fill heap with sequential pairs *)
+    let seqpairs = generate_pair_list 100 in
+    let (h2,lst2) = insert_list empty seqpairs in
+    (* Check that every pair is where insert said it was *)
+    List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) seqpairs lst2 ;
+    (* Check that the minimum pair ended up in the min spot *)
+    assert((List.hd seqpairs) = (get_top_node h2)) ;
+    ()
+
   let test_decrease_key () = TODO
   let test_delete_min () = TODO
 
@@ -446,16 +492,16 @@ module FibHeap = FibonacciHeap(GeoHeapArg)
  * Dijkstra's algorithm has reached this node. *)
 module GeoNode : NODE =
 struct
-  let rec node = {name: string; mutable pt: FibHeap.heap option;
+  type node = {name: string; mutable pt: FibHeap.heap option;
       mutable prev: node ref option}
   type weight = float
   type tag = string
   let tag_of_node n = n.name
-  let node_of_tag t = {name: t; pt = None; prev = None}
+  (*let node_of_tag t = {name: t; pt = None; prev = None}*)
   let compare n1 n2 = string_compare s1.name s2.name
   let string_of_node n = n.name
   let get () = {name = ""; pt = None; prev = None}
 end
-
+(*
 module GeoGraph = Graph(GeoNode)
-
+*)
