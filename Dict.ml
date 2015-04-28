@@ -28,7 +28,7 @@ sig
   val fold : (key -> value -> 'a -> 'a) -> 'a -> dict -> 'a
 
   (* Returns as an option the value associated with the provided key. If
-   * the key is not in the dictionary, return None. *)
+   * the key is nodeot in the dictionary, return None. *)
   val lookup : dict -> key -> value option
 
   (* Returns true if and only if the key is in the dictionary. *)
