@@ -40,7 +40,6 @@ sig
 
   (* Runs all the tests. *)
   val run_tests: unit -> unit
-
 end
 
 module type HEAP_ARG =
@@ -335,13 +334,40 @@ struct
   (***** Testing functions *****)
   (*****************************)
 
-  let rec firsts (lst: ('a * 'b) lst) : 'a lst =
-    match lst with
-    | [] -> []
-    | (a,_)::tl -> a::(firsts tl)
-
+  (* Inserts a list of pairs into the given heap and returns a handle to the
+   * resulting heap as well as a list of nodes corresponding to each pair. *)
   let insert_list (h: heap) (lst: (key * value) list) : heap * (heap list) =
-    let raw_list = List.fold_left lst ~f:(fun r 
+    let insert_keep_track r (k,v) =
+      let (sofar,pts) = r in
+      let (whole,mine) = insert k v sofar in
+      whole,(mine::lst)
+    in
+    List.fold_left lst ~f:insert_keep_track ~i:empty
+
+  (* generates a (key,value) list with n distinct keys in increasing order,
+   * starting from a given key *)
+  let rec gen_pairs_from (size: int) (current: key) : (key * value) list =
+    if size <= 0 then []
+    else
+      let new_current = D.gen_key_gt current () in
+      (new_current, D.gen_value()) :: (gen_pairs_from (size - 1) new_current)
+
+  (* generates a (key,value) list with n distinct keys in increasing order *)
+  let generate_pair_list (size: int) : (key * value) list =
+    gen_pairs_from size (D.gen_key ())
+
+  (* generates a (key,value) list with keys in random order *)
+  let rec generate_random_list (size: int) : (key * value) list =
+    if size <= 0 then []
+    else
+      (D.gen_key_random(), D.gen_value()) :: (generate_random_list (size - 1))
+
+  (* generates a (key,value) list with identical keys *)
+  let rec generate_identical_list (size: int) : (key * value) list =
+    if size <= 0 then []
+    else
+      (D.gen_key(), D.gen_value()) :: (generate_identical_list (size - 1))
+
 
   let test_insert () = TODO
   let test_decrease_key () = TODO
