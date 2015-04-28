@@ -44,7 +44,7 @@ end
 
 module type HEAP_ARG =
 sig
-  open Order 
+  (*open Order *)
 
   type key
   type value 
@@ -230,10 +230,11 @@ struct
 	  h := Node((hk,hv), hp, ref newnode, hr, hc, hrk, hm);
 	  ref newnode
 
-  let insert (k: key) (v: value) (h: heap) : heap =
+  let insert (k: key) (v: value) (h: heap) : heap * heap =
+    let newnode = Node((k,v),empty,empty,empty,empty,ref 0,ref false) in
     let newheap = 
-      general_insert (Node((k,v),empty,empty,empty,empty,ref 0,ref false)) h in
-    ref (minroot !h !newheap)
+    general_insert newnode h in
+  (ref (minroot !h !newheap), ref newnode)
 
   (* cut removes a tree from the surrounding heap. 
    * cut doesn't change parent marked, but it does decrease parent rank.
@@ -324,17 +325,17 @@ struct
   let get_top_node (h: heap) : pair option =
     match !h with
     | Leaf -> None
-    | Node (p,_,_,_,_,_,_) -> p
+    | Node (p,_,_,_,_,_,_) -> Some p
 
   (* NOTE to self: include assert that small is in fact smaller than
    * current key at nd? *)
-  let decrease_key (nd: heap) (small: key) (h: heap) : heap = TODO
+  let decrease_key (nd: heap) (small: key) (h: heap) : heap = h
 
   (*****************************)
   (***** Testing Functions *****)
   (*****************************)
 
-  let rec firsts (lst: ('a * 'b) lst) : 'a lst =
+  let rec firsts (lst: ('a * 'b) list) : 'a list =
     match lst with
     | [] -> []
     | (a,_)::tl -> a::(firsts tl)
@@ -346,12 +347,12 @@ struct
   (* Inserts a list of pairs into the given heap and returns a handle to the
    * resulting heap as well as a list of nodes corresponding to each pair,
    * in the same order as the original pair list it corresponds to. *)
-  let insert_list (h: heap) (lst: (key * value) list) : heap * (heap list) =
+  let insert_list (h: heap) (lst: (key * value) list) : heap * heap list =
     let insert_keep_track (k,v) r =
-      let (sofar,pts) = r in
-      let (whole,mine) = insert k v sofar in whole,(mine::lst)
+      let (sofar,hs) = r in
+      let (whole,mine) = insert k v sofar in (whole, mine::hs)
     in
-    List.fold_right lst ~f:insert_keep_track ~i:empty
+    List.fold_right lst ~f:insert_keep_track ~init:(h,[])
 
   (* Generates a (key,value) list with n distinct keys in increasing order,
    * starting from a given key. *)
@@ -411,16 +412,16 @@ struct
     let seqpairs = generate_pair_list 100 in
     let (h2,lst2) = insert_list empty seqpairs in
     List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) seqpairs lst2 ;
-    assert((Some (List.hd seqpairs)) = (get_top_node h2)) ;
+    assert((List.hd seqpairs) = (get_top_node h2)) ;
     (* Rinse and repeat with a reverse-sequential list *)
     let revpairs = List.rev seqpairs in
     let (h3,lst3) = insert_list empty revpairs in
     List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) revpairs lst3 ;
-    assert((Some (List.hd seqpairs)) = (get_top_node h3)) ;
+    assert((List.hd seqpairs) = (get_top_node h3)) ;
     ()
 
-  let test_decrease_key () = TODO
-  let test_delete_min () = TODO
+  let test_decrease_key () = () (* TODO *)
+  let test_delete_min () = () (* TODO *)
 
   let run_tests () =
     test_insert () ;
