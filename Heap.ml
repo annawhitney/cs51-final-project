@@ -398,13 +398,16 @@ struct
     List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) randpairs lst1 ;
     (* Check that the minimum pair ended up in the min spot *)
     assert((min_pair randpairs) = (get_top_node h1)) ;
-    (* Fill heap with sequential pairs *)
+    (* Rinse and repeat with a sequential list of pairs *)
     let seqpairs = generate_pair_list 100 in
     let (h2,lst2) = insert_list empty seqpairs in
-    (* Check that every pair is where insert said it was *)
     List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) seqpairs lst2 ;
-    (* Check that the minimum pair ended up in the min spot *)
-    assert((List.hd seqpairs) = (get_top_node h2)) ;
+    assert((Some (List.hd seqpairs)) = (get_top_node h2)) ;
+    (* Rinse and repeat with a reverse-sequential list *)
+    let revpairs = List.rev seqpairs in
+    let (h3,lst3) = insert_list empty revpairs in
+    List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) revpairs lst3 ;
+    assert((Some (List.hd seqpairs)) = (get_top_node h3)) ;
     ()
 
   let test_decrease_key () = TODO
