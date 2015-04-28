@@ -210,8 +210,8 @@ module TestGraph =
 struct
   module G = NamedGraph
 
-  let g = G.add_edge G.empty "a" "b";;
-  let g2 = G.add_edge g "a" "c";;
+  let g = G.add_edge G.empty "a" "b" 4.;;
+  let g2 = G.add_edge g "a" "c" 2.;;
 
   let deopt_len lo =
     match lo with
@@ -229,6 +229,7 @@ struct
       | Some n -> n;;
 
   let _ = (
+    assert (not(G.has_node g "a"));
     assert (G.has_node g "a");
     assert (G.has_node g "b");
     assert (G.has_node g "c" = false);
@@ -253,5 +254,5 @@ struct
     assert (G.neighbors g2 "d" = None) ;
 
     assert (let t = deopt_lst (G.neighbors g2 "a") in
-              t = ["b";"c"] || t = ["c";"b"]) )
+              t = [("b", 4.);("c", 2.)] || t = [("c", 2.);("b", 4.)]) )
 end
