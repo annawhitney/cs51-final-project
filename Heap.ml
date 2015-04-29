@@ -347,13 +347,14 @@ struct
                     (match !top with
                     | None -> failwith "can't cut from empty heap"
                     | Some t ->
-                        left.r <- n.r ; right.l <- n.l ;
-                        n.p <- None ;
+                        let _ = left.r <- n.r ; right.l <- n.l ; n.p <- None in
                         (* If node's siblings are the same as itself, it has no
                          * real siblings -  after cut parent has no children *)
-                        if (phys_equal n.l n) then
-                          par.ch <- None ;
-                        else par.ch <- n.l
+                        let _ = if (phys_equal n.l nd) then par.ch <- None
+                        else par.ch <- n.l in
+                        let _ = n.l <- t.l ; n.r <- top ; t.l <- nd in
+                        if par.mk then cut n.p (minroot top nd)
+                        else minroot top nd))))
 
   (* Decreases key of existing node; cuts the node if heap ordering is
    * violated. *)
