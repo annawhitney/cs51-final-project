@@ -115,17 +115,14 @@ struct
    * a record to key, value, parent heap, left heap, right heap,
    * child heap, no. of children (rank), child cut (marked)) *)
   type node = { mutable k: key; 
-	        v: value; 
+	                v: value; 
 	        mutable p: heap; 
 	        mutable l: heap; 
 	        mutable r: heap; 
 	        mutable c: heap; 
 	        mutable rk: int; 
-          mutable mk: bool}
+		mutable mk: bool}
   and heap = (node option) ref
-  (* This tree data type is not a regular tree; the root of this tree 
-   * can have sibling roots and the root can also have a parent. A tree 
-   * is nothing more than a dereferenced heap in this code *)
 
   let empty : heap = ref None
 
@@ -147,33 +144,33 @@ struct
   let minroot (h1: heap) (h2: heap) : heap =
     match get_top_node h2 with
     | None -> h1
-    | Some (k1,_) ->
+    | Some n1 ->
         (match get_top_node h1 with
         | None -> h2
-        | Some (k2,_) ->
-            if minkey k1 k2 = k2 then h2 else h1)
+        | Some n2 ->
+            if minkey n1.k n2.k = n2.k then h2 else h1)
 
   let lnk_lst_fold (f: 'a -> heap -> 'a) (acc: 'a) (h: heap) : 'a =
     let rec lnk_lst_fold_helper 
 	(f': 'a -> heap -> 'a) (acc': 'a) (h': heap) (h0: heap) : 'a =
       match !h' with
-      | Leaf -> acc'
-      | Node((k,v),p,l,r,c,rk,m) ->
-	if phys_equal l h0
+      | None -> acc'
+      | Some n ->
+	if phys_equal n.l h0
 	then f' acc' h'
 	else 
-	  match !l with
+	  match !(n.l) with
 	  | Leaf -> f' acc' h'
-	  | _ -> lnk_lst_fold_helper f' (f' acc' h') l h0 in
+	  | _ -> lnk_lst_fold_helper f' (f' acc' h') n.l h0 in
     match !h with
-    | Leaf -> acc
-    | Node(_,_,_,r,_,_,_) ->
-      match !r with
-      | Leaf -> f acc h
-      | Node(_,_,l,_,_,_,_) -> lnk_lst_fold_helper f acc h l
+    | None -> acc
+    | Some n ->
+      match !(n.r) with
+      | None -> f acc h
+      | Some rn -> lnk_lst_fold_helper f acc h rn.l
 
   (* Returns smallest root node in heap *)
-  let leastroot (h: heap) : tree =
+  let leastroot (h: heap) : heap =
     lnk_lst_fold (fun a h -> minroot a !h) !h h
 
 (* Old implementation of leastroot; delete when finished
