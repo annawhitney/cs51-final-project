@@ -328,10 +328,32 @@ struct
     | None -> None
     | Some n -> Some (n.k,n.v)
 
+  (* Cut detaches a node from its parent & siblings and adds it to the root
+   * list, returning an updated handle to the heap. *)
   let rec cut (n: heap) (top: heap) : heap =
     match !n with
     | None -> failwith "shouldn't be trying to cut an empty heap"
-    | Some n -> TODO
+    | Some n ->
+        (match !(n.p) with
+        (* If node is already a root, we don't have to do anything *)
+        | None -> top
+        | Some par ->
+            (match !(n.l) with
+            | None -> failwith "siblings should never be empty"
+            | Some left ->
+                (match !(n.r) with
+                | None -> failwith "siblings should never be empty"
+                | Some right ->
+                    (match !top with
+                    | None -> failwith "can't cut from empty heap"
+                    | Some t ->
+                        left.r <- n.r ; right.l <- n.l ;
+                        n.p <- None ;
+                        (* If node's siblings are the same as itself, it has no
+                         * real siblings -  after cut parent has no children *)
+                        if (phys_equal n.l n) then
+                          par.ch <- None ;
+                        else par.ch <- n.l
 
   (* Decreases key of existing node; cuts the node if heap ordering is
    * violated. *)
@@ -340,7 +362,7 @@ struct
     | None -> failwith "shouldn't be trying to decrease key of an empty heap"
     | Some n ->
         assert((H.compare small n.k) = Less) ;
-        (match get_top_node n.par with
+        (match get_top_node n.p with
         (* If parent is a Leaf, this must be a root node already *)
         | None -> let _ = n.k <- small in (minroot h nd)
         | Some (k,_) ->
