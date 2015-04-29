@@ -121,20 +121,17 @@ struct
 	        mutable r: heap; 
 	        mutable c: heap; 
 	        mutable rk: int; 
-		mutable mk: bool}
-  and heap = tree ref
+          mutable mk: bool}
+  and heap = (node option) ref
   (* This tree data type is not a regular tree; the root of this tree 
    * can have sibling roots and the root can also have a parent. A tree 
    * is nothing more than a dereferenced heap in this code *)
-  and tree = 
-  | Leaf
-  | Node of node
 
-  let empty : heap = ref Leaf
+  let empty : heap = ref None
 
   let is_empty (h: heap) : bool =
     match !h with
-    | Leaf -> true
+    | None -> true
     | _ -> false
 
   let minkey (k1: key) (k2: key) : key =
@@ -328,30 +325,30 @@ struct
       
   let get_top_node (h: heap) : (key * value) option =
     match !h with
-    | Leaf -> None
-    | Node n -> let {p=p} = n in (p.k,p.v)
+    | None -> None
+    | Some n -> Some (n.k,n.v)
 
   let rec cut (n: heap) (top: heap) : heap =
     match !n with
-    | Leaf -> failwith "shouldn't be trying to cut a Leaf"
-    | Node n -> (_,par,l,r,_,_,_) -> TODO
+    | None -> failwith "shouldn't be trying to cut an empty heap"
+    | Some n -> TODO
 
   (* Decreases key of existing node; cuts the node if heap ordering is
    * violated. *)
   let decrease_key (nd: heap) (small: key) (h: heap) : heap =
     match !nd with
-    | Leaf -> failwith "shouldn't be trying to decrease key of a Leaf"
-    | Node (p,par,_,_,_,_,_) ->
-        assert((H.compare small p.k) = Less) ;
-        (match get_top_node par with
+    | None -> failwith "shouldn't be trying to decrease key of an empty heap"
+    | Some n ->
+        assert((H.compare small n.k) = Less) ;
+        (match get_top_node n.par with
         (* If parent is a Leaf, this must be a root node already *)
-        | None -> let _ = p.k <- small in (minroot h nd)
+        | None -> let _ = n.k <- small in (minroot h nd)
         | Some (k,_) ->
             (match H.compare k small with
             (* If parent key is still smaller or equal, heap ordering is fine 
              * and we just update without changing anything else *)
-            | Less | Equal -> let _ = p.k <- small in h
-            | Greater -> let _ = p.k <- small in cut nd h
+            | Less | Equal -> let _ = n.k <- small in h
+            | Greater -> let _ = n.k <- small in cut nd h
 
   (*****************************)
   (***** Testing Functions *****)
