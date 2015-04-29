@@ -11,8 +11,9 @@ sig
   (* Require that nodes be comparable for efficiency. *)
   val compare : node -> node -> Ordering.t
   val string_of_node : node -> string
+  val string_of_weight : weight -> string
   val gen : unit -> node
-
+  val gen_weight : unit -> weight
   val tag_of_node : node -> tag
 end
 
@@ -78,19 +79,14 @@ struct
         type value = weight
         let compare = N.compare
         let string_of_t = N.string_of_node
-        let gen = N.gen
-        let gen_random = N.gen
-        let gen_gt _ () = N.gen ()
-        let gen_lt _ () = N.gen ()
-        let gen_between _ _ () = None
-        let gen_pair () = (gen_key_random(), gen_value())
-        let gen_value () = 
-        let gen_key_between x y () = 
-        let gen_key_lt x () = 
-        let gen_key_gt x () = 
-        let gen_key_random () = 
-        let gen_key
-        let string_of_value
+        let gen_key = N.gen ()
+        let gen_key_random = N.gen ()
+        let gen_key_gt _ () = N.gen ()
+        let gen_key_lt _ () = = N.gen ()
+        let gen_key_between _ _ () = None
+        let gen_value () = N.gen_weight
+        let gen_pair () = (gen_key (), gen_value ())
+        let string_of_value = N.string_of_weight
         let string_of_key = N.string_of_node
       end)
 
@@ -139,17 +135,16 @@ struct
                        num_nodes = 0;
                        index_to_node_map = IntNode.empty }
 
- let add_node g n v =
+ let add_node g n =
    if EdgeDict.member g.edges n then g
    else
-     { edges = EdgeDict.insert g.edges n v ;
+     { edges = EdgeDict.insert g.edges n NeighborDict.empty ;
        num_nodes = g.num_nodes + 1 ;
        index_to_node_map =
          IntNode.insert g.index_to_node_map g.num_nodes n }
 
-  (* TODO: Modify to take edge weight into account *)
   let nodes g =
-    EdgeDict.fold (fun k v r -> (k, v) :: r) [] g.edges
+    EdgeDict.fold (fun k _ r -> k :: r) [] g.edges
 
   let is_empty g = (g.num_nodes = 0)
 
@@ -158,7 +153,8 @@ struct
   (* Adds the nodes if they aren't already present. *)
   (* val would be the weight *)
   let add_edge g src dst v =
-    let new_neighbors = (match EdgeDict.lookup g.edges src with
+  let half_add g from to v = 
+    (let new_neighbors = (match EdgeDict.lookup g.edges src with
       | None -> NeighborDict.insert NeighborDict.empty dst v
       | Some s -> NeighborDict.insert s dst v)
     in
@@ -166,7 +162,10 @@ struct
     let g' = (add_node (add_node g src) dst) in
       {edges = EdgeDict.insert g'.edges src new_neighbors;
        num_nodes = g'.num_nodes;
-       index_to_node_map = g'.index_to_node_map}
+       index_to_node_map = g'.index_to_node_map})
+  in
+    (half_add g src dst v;
+    half_add g dst src v)
 
   (* TODO: Modify to take edge weight into account *)
   let neighbors g n : (node * weight) list option =
