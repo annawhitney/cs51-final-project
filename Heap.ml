@@ -111,7 +111,7 @@ module FibonacciHeap(H: HEAP_ARG) : (PRIOHEAP with type value = H.value
 struct
   type key = H.key
   type value = H.value
-  type pair = key * value
+  type pair = {val mutable k : key ; val v : value}
   type rank = int ref
   type marked = bool ref
   (* A heap will consist of either a Leaf ref (empty heap), or of 
@@ -320,21 +320,27 @@ struct
       while comb_more do () done;
       (Some (k,v), new_h)
       
-  let get_top_node (h: heap) : pair option =
+  let get_top_node (h: heap) : (key * value) option =
     match !h with
     | Leaf -> None
-    | Node (p,_,_,_,_,_,_) -> Some p
+    | Node (p,_,_,_,_,_,_) -> Some (p.k,p.v)
 
   (* Decreases key of existing node; cuts the node if heap ordering is
    * violated. *)
   let decrease_key (nd: heap) (small: key) (h: heap) : heap =
     match !nd with
     | Leaf -> failwith "shouldn't be trying to decrease key of a Leaf"
-    | Node ((k,v),par,l,r,ch,rk,mk) ->
-        assert((H.compare nd k) = Less) ;
+    | Node (p,par,_,_,_,_,_) ->
+        assert((H.compare small p.k) = Less) ;
         (match get_top_node par with
         (* If parent is a Leaf, this must be a root node already *)
-        | None -> 
+        | None -> let _ = p.k <- small in (minroot h nd)
+        | Some (k,_) ->
+            (match H.compare k small with
+            (* If parent key is still smaller or equal, heap ordering is fine 
+             * and we just update without changing anything else *)
+            | Less | Equal -> let _ = p.k <- small in h
+            | Greater -> TODO
 
   (*****************************)
   (***** Testing Functions *****)
