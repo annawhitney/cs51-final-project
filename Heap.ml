@@ -44,8 +44,6 @@ end
 
 module type HEAP_ARG =
 sig
-  (*open Order *)
-
   type key
   type value 
   val compare : key -> key -> Ordering.t
@@ -212,7 +210,7 @@ struct
 
   (* treats a node as orphaned and w/out siblings and inserts into a heap 
    * to the left of the root of the 2nd arg *)
-  let general_insert (t: tree) (h: heap) : heap =
+  let general_insert (t: tree) (h: heap) : heap * heap =
     match !h with
     | Leaf -> ref t
     | Node((hk,hv),hp,hl,hr,hc,hrk,hm) ->
@@ -327,9 +325,16 @@ struct
     | Leaf -> None
     | Node (p,_,_,_,_,_,_) -> Some p
 
-  (* NOTE to self: include assert that small is in fact smaller than
-   * current key at nd? *)
-  let decrease_key (nd: heap) (small: key) (h: heap) : heap = h
+  (* Decreases key of existing node; cuts the node if heap ordering is
+   * violated. *)
+  let decrease_key (nd: heap) (small: key) (h: heap) : heap =
+    match !nd with
+    | Leaf -> failwith "shouldn't be trying to decrease key of a Leaf"
+    | Node ((k,v),par,l,r,ch,rk,mk) ->
+        assert((H.compare nd k) = Less) ;
+        (match get_top_node par with
+        (* If parent is a Leaf, this must be a root node already *)
+        | None -> 
 
   (*****************************)
   (***** Testing Functions *****)
