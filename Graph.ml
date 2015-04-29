@@ -82,7 +82,7 @@ struct
         let gen_key = N.gen ()
         let gen_key_random = N.gen ()
         let gen_key_gt _ () = N.gen ()
-        let gen_key_lt _ () = = N.gen ()
+        let gen_key_lt _ () = N.gen ()
         let gen_key_between _ _ () = None
         let gen_value () = N.gen_weight
         let gen_pair () = (gen_key (), gen_value ())
@@ -152,20 +152,20 @@ struct
    * (i.e., we have to add the edge to the list of BOTH nodes, not just one) *)
   (* Adds the nodes if they aren't already present. *)
   (* val would be the weight *)
-  let add_edge g src dst v =
-  let half_add g from to v = 
-    (let new_neighbors = (match EdgeDict.lookup g.edges src with
-      | None -> NeighborDict.insert NeighborDict.empty dst v
-      | Some s -> NeighborDict.insert s dst v)
+  let add_edge g orig dest v =
+    (let half_add g src dst v = 
+      (let new_neighbors = (match EdgeDict.lookup g.edges src with
+        | None -> NeighborDict.insert NeighborDict.empty dst v
+        | Some s -> NeighborDict.insert s dst v)
+      in
+        (* ensure both src and dst in the graph before adding edge *)
+      let g' = (add_node (add_node g src) dst) in
+        {edges = EdgeDict.insert g'.edges src new_neighbors;
+         num_nodes = g'.num_nodes;
+         index_to_node_map = g'.index_to_node_map})
     in
-      (* ensure both src and dst in the graph before adding edge *)
-    let g' = (add_node (add_node g src) dst) in
-      {edges = EdgeDict.insert g'.edges src new_neighbors;
-       num_nodes = g'.num_nodes;
-       index_to_node_map = g'.index_to_node_map})
-  in
-    (half_add g src dst v;
-    half_add g dst src v)
+      (half_add g orig dest v;
+      half_add g dest orig v))
 
   (* TODO: Modify to take edge weight into account *)
   let neighbors g n : (node * weight) list option =

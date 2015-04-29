@@ -579,12 +579,12 @@ struct
   let rec verify_key (d: dict) (k: key) : key option =
     match d with
     | Leaf -> None
-    | Two(l,(k1,v1),r) ->
+    | Two(l,(k1,_),r) ->
         (match D.compare k k1 with
         | Equal -> Some k1
         | Less -> verify_key l k
         | Greater -> verify_key r k)
-    | Three(l,(k1,v1),m,(k2,v2),r) ->
+    | Three(l,(k1,_),m,(k2,_),r) ->
         (match D.compare k k1 with
         | Equal -> Some k1
         | Less -> verify_key l k
