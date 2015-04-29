@@ -137,16 +137,19 @@ struct
     | Less -> k2
     | _ -> k1
 
-  (* Returns tree with smaller root key; if keys equal, first arg 
-   * returned. Empty heap considered smaller than all non-empty heaps *)
-  let minroot (t1: tree) (t2: tree) : tree =
-    match t2 with
-    | Leaf -> t1
-    | Node((k2,_),_,_,_,_,_,_) ->
-      match t1 with
-      | Leaf -> t2
-      | Node((k1,_),_,_,_,_,_,_) ->
-	if minkey k1 k2 = k2 then t2 else t1
+  (* NOTE: to ensure ref integrity, we need minroot to deal with heaps,
+   * not with trees. Dereference to check key and then return the original
+   * heap, so we never assign a new ref to a tree returned by minroot *)
+  (* Returns heap with smaller root key; if keys equal, first arg 
+   * returned. Empty heap considered larger than all non-empty heaps *)
+  let minroot (h1: heap) (h2: heap) : heap =
+    match get_top_node h2 with
+    | None -> h1
+    | Some (k1,_) ->
+        (match get_top_node h1 with
+        | None -> h2
+        | Some (k2,_) ->
+            if minkey k1 k2 = k2 then h2 else h1)
 
   let lnk_lst_fold (f: 'a -> heap -> 'a) (acc: 'a) (h: heap) : 'a =
     let rec lnk_lst_fold_helper 
@@ -238,12 +241,9 @@ struct
    * cut doesn't change parent marked, but it does decrease parent rank.
    * If cut tree has smallest heap node as root, the rest of the tree
    * can be lost unless already referenced elsewhere. *)
-  (* NOTE: This is not what cut is supposed to do! Cut should take a non-root
-   * node, remove it from its parent and siblings, and MAKE IT A ROOT NODE.
-   * Its parent should be marked if it isn't already, and if it is already
-   * marked, then the parent should be cut as well. Cut should therefore be
-   * recursive. See the MIT spec for more details. *)
-  let cut (t: tree) : unit =
+  (* NOTE: I've renamed your cut function to clean so I can use cut as the
+   * name for the actual cut function as described in the spec. *)
+  let clean (t: tree) : unit =
     match t with
     | Leaf -> ()
     | Node(kv,p,l,r,c,rk,m) ->
@@ -264,6 +264,7 @@ struct
       clean_siblings;
       clean_parent
 
+  (* NOTE: to preserve ref integrity, merge needs to work with heaps! *)
   (* merges orphaned tree w/out siblings w/ other tree, preserves invariants *)
   let merge (single_t: tree) (t: tree) : tree =
     match single_t with
@@ -325,6 +326,11 @@ struct
     | Leaf -> None
     | Node (p,_,_,_,_,_,_) -> Some (p.k,p.v)
 
+  let rec cut (n: heap) (top: heap) : heap =
+    match !n with
+    | Leaf -> failwith "shouldn't be trying to cut a Leaf"
+    | Node (_,par,l,r,_,_,_) -> TODO
+
   (* Decreases key of existing node; cuts the node if heap ordering is
    * violated. *)
   let decrease_key (nd: heap) (small: key) (h: heap) : heap =
@@ -340,20 +346,11 @@ struct
             (* If parent key is still smaller or equal, heap ordering is fine 
              * and we just update without changing anything else *)
             | Less | Equal -> let _ = p.k <- small in h
-            | Greater -> TODO
+            | Greater -> let _ = p.k <- small in cut nd h
 
   (*****************************)
   (***** Testing Functions *****)
   (*****************************)
-
-  let rec firsts (lst: ('a * 'b) list) : 'a list =
-    match lst with
-    | [] -> []
-    | (a,_)::tl -> a::(firsts tl)
-(*
-  let insert_list (h: heap) (lst: (key * value) list) : heap * (heap list) =
-    let raw_list = List.fold_left lst ~f:(fun r 
-*)
 
   (* Inserts a list of pairs into the given heap and returns a handle to the
    * resulting heap as well as a list of nodes corresponding to each pair,
