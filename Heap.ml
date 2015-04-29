@@ -111,19 +111,24 @@ module FibonacciHeap(H: HEAP_ARG) : (PRIOHEAP with type value = H.value
 struct
   type key = H.key
   type value = H.value
-  type pair = {val mutable k : key ; val v : value}
-  type rank = int ref
-  type marked = bool ref
   (* A heap will consist of either a Leaf ref (empty heap), or of 
-   * ((k,v), parent ref, left sib ref, right sib ref,
-   * child ref, no. of children (rank), child cut (marked)) *)
-  type heap = tree ref
+   * a record to key, value, parent heap, left heap, right heap,
+   * child heap, no. of children (rank), child cut (marked)) *)
+  type node = { mutable k: key; 
+	        v: value; 
+	        mutable p: heap; 
+	        mutable l: heap; 
+	        mutable r: heap; 
+	        mutable c: heap; 
+	        mutable rk: int; 
+		mutable mk: bool}
+  and heap = tree ref
   (* This tree data type is not a regular tree; the root of this tree 
    * can have sibling roots and the root can also have a parent. A tree 
    * is nothing more than a dereferenced heap in this code *)
   and tree = 
   | Leaf
-  | Node of pair * heap * heap * heap * heap * rank * marked
+  | Node of node
 
   let empty : heap = ref Leaf
 
@@ -231,20 +236,20 @@ struct
 	  h := Node((hk,hv), hp, ref newnode, hr, hc, hrk, hm);
 	  ref newnode
 
+  (* given a key, value, and heap, inserts a new node into the root list 
+   * of the heap with the containing the key value pair and returns the
+   * updated pointer to the min as well as a pointer to the new node *)
   let insert (k: key) (v: value) (h: heap) : heap * heap =
     let newnode = Node((k,v),empty,empty,empty,empty,ref 0,ref false) in
-    let newheap = 
-    general_insert newnode h in
+    let newheap = general_insert newnode h in
   (ref (minroot !h !newheap), ref newnode)
 
-  (* cut removes a tree from the surrounding heap. 
-   * cut doesn't change parent marked, but it does decrease parent rank.
-   * If cut tree has smallest heap node as root, the rest of the tree
+  (* clean removes a tree from the surrounding heap. 
+   * clean doesn't change parent marked, but it does decrease parent rank.
+   * If cleaned tree has smallest heap node as root, the rest of the tree
    * can be lost unless already referenced elsewhere. *)
-  (* NOTE: I've renamed your cut function to clean so I can use cut as the
-   * name for the actual cut function as described in the spec. *)
-  let clean (t: tree) : unit =
-    match t with
+  let clean (h: heap) : unit =
+    match !h with
     | Leaf -> ()
     | Node(kv,p,l,r,c,rk,m) ->
       let clean_siblings : unit =
@@ -266,7 +271,7 @@ struct
 
   (* NOTE: to preserve ref integrity, merge needs to work with heaps! *)
   (* merges orphaned tree w/out siblings w/ other tree, preserves invariants *)
-  let merge (single_t: tree) (t: tree) : tree =
+  let merge (h1: heap) (h2: heap) : tree =
     match single_t with
     | Leaf -> t
     | Node(skv,_,_,_,sc,srk,sm) ->
@@ -324,12 +329,12 @@ struct
   let get_top_node (h: heap) : (key * value) option =
     match !h with
     | Leaf -> None
-    | Node (p,_,_,_,_,_,_) -> Some (p.k,p.v)
+    | Node n -> let {p=p} = n in (p.k,p.v)
 
   let rec cut (n: heap) (top: heap) : heap =
     match !n with
     | Leaf -> failwith "shouldn't be trying to cut a Leaf"
-    | Node (_,par,l,r,_,_,_) -> TODO
+    | Node n -> (_,par,l,r,_,_,_) -> TODO
 
   (* Decreases key of existing node; cuts the node if heap ordering is
    * violated. *)
