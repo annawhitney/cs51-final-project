@@ -83,6 +83,15 @@ struct
         let gen_gt _ () = N.gen ()
         let gen_lt _ () = N.gen ()
         let gen_between _ _ () = None
+        let gen_pair () = (gen_key_random(), gen_value())
+        let gen_value () = 
+        let gen_key_between x y () = 
+        let gen_key_lt x () = 
+        let gen_key_gt x () = 
+        let gen_key_random () = 
+        let gen_key
+        let string_of_value
+        let string_of_key = N.string_of_node
       end)
 
   (* TODO: Change all mentions of NeighborSet in here to NeighborDict, but
@@ -93,7 +102,7 @@ struct
       type value = NeighborDict.set
       let compare = N.compare
       let string_of_key = N.string_of_node
-      let string_of_value ns = NeighborDict.string_of_set ns
+      let string_of_value ns = NeighborDict.string_of_dict ns
       let gen_key = N.gen
       let gen_key_random = N.gen
       let gen_key_gt _ () = N.gen ()
