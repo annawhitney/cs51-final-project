@@ -44,8 +44,6 @@ end
 
 module type HEAP_ARG =
 sig
-  open Order 
-
   type key
   type value 
   val compare : key -> key -> Ordering.t
@@ -113,19 +111,24 @@ module FibonacciHeap(H: HEAP_ARG) : (PRIOHEAP with type value = H.value
 struct
   type key = H.key
   type value = H.value
-  type pair = key * value
-  type rank = int ref
-  type marked = bool ref
   (* A heap will consist of either a Leaf ref (empty heap), or of 
-   * ((k,v), parent ref, left sib ref, right sib ref,
-   * child ref, no. of children (rank), child cut (marked)) *)
-  type heap = tree ref
+   * a record to key, value, parent heap, left heap, right heap,
+   * child heap, no. of children (rank), child cut (marked)) *)
+  type node = { mutable k: key; 
+	        v: value; 
+	        mutable p: heap; 
+	        mutable l: heap; 
+	        mutable r: heap; 
+	        mutable c: heap; 
+	        mutable rk: int; 
+		mutable mk: bool}
+  and heap = tree ref
   (* This tree data type is not a regular tree; the root of this tree 
    * can have sibling roots and the root can also have a parent. A tree 
    * is nothing more than a dereferenced heap in this code *)
   and tree = 
   | Leaf
-  | Node of pair * heap * heap * heap * heap * rank * marked
+  | Node of node
 
   let empty : heap = ref Leaf
 
@@ -139,16 +142,19 @@ struct
     | Less -> k2
     | _ -> k1
 
-  (* Returns tree with smaller root key; if keys equal, first arg 
-   * returned. Empty heap considered smaller than all non-empty heaps *)
-  let minroot (t1: tree) (t2: tree) : tree =
-    match t2 with
-    | Leaf -> t1
-    | Node((k2,_),_,_,_,_,_,_) ->
-      match t1 with
-      | Leaf -> t2
-      | Node((k1,_),_,_,_,_,_,_) ->
-	if minkey k1 k2 = k2 then t2 else t1
+  (* NOTE: to ensure ref integrity, we need minroot to deal with heaps,
+   * not with trees. Dereference to check key and then return the original
+   * heap, so we never assign a new ref to a tree returned by minroot *)
+  (* Returns heap with smaller root key; if keys equal, first arg 
+   * returned. Empty heap considered larger than all non-empty heaps *)
+  let minroot (h1: heap) (h2: heap) : heap =
+    match get_top_node h2 with
+    | None -> h1
+    | Some (k1,_) ->
+        (match get_top_node h1 with
+        | None -> h2
+        | Some (k2,_) ->
+            if minkey k1 k2 = k2 then h2 else h1)
 
   let lnk_lst_fold (f: 'a -> heap -> 'a) (acc: 'a) (h: heap) : 'a =
     let rec lnk_lst_fold_helper 
@@ -212,7 +218,7 @@ struct
 
   (* treats a node as orphaned and w/out siblings and inserts into a heap 
    * to the left of the root of the 2nd arg *)
-  let general_insert (t: tree) (h: heap) : heap =
+  let general_insert (t: tree) (h: heap) : heap * heap =
     match !h with
     | Leaf -> ref t
     | Node((hk,hv),hp,hl,hr,hc,hrk,hm) ->
@@ -230,22 +236,20 @@ struct
 	  h := Node((hk,hv), hp, ref newnode, hr, hc, hrk, hm);
 	  ref newnode
 
-  let insert (k: key) (v: value) (h: heap) : heap =
-    let newheap = 
-      general_insert (Node((k,v),empty,empty,empty,empty,ref 0,ref false)) h in
-    ref (minroot !h !newheap)
+  (* given a key, value, and heap, inserts a new node into the root list 
+   * of the heap with the containing the key value pair and returns the
+   * updated pointer to the min as well as a pointer to the new node *)
+  let insert (k: key) (v: value) (h: heap) : heap * heap =
+    let newnode = Node((k,v),empty,empty,empty,empty,ref 0,ref false) in
+    let newheap = general_insert newnode h in
+  (ref (minroot !h !newheap), ref newnode)
 
-  (* cut removes a tree from the surrounding heap. 
-   * cut doesn't change parent marked, but it does decrease parent rank.
-   * If cut tree has smallest heap node as root, the rest of the tree
+  (* clean removes a tree from the surrounding heap. 
+   * clean doesn't change parent marked, but it does decrease parent rank.
+   * If cleaned tree has smallest heap node as root, the rest of the tree
    * can be lost unless already referenced elsewhere. *)
-  (* NOTE: This is not what cut is supposed to do! Cut should take a non-root
-   * node, remove it from its parent and siblings, and MAKE IT A ROOT NODE.
-   * Its parent should be marked if it isn't already, and if it is already
-   * marked, then the parent should be cut as well. Cut should therefore be
-   * recursive. See the MIT spec for more details. *)
-  let cut (t: tree) : unit =
-    match t with
+  let clean (h: heap) : unit =
+    match !h with
     | Leaf -> ()
     | Node(kv,p,l,r,c,rk,m) ->
       let clean_siblings : unit =
@@ -265,8 +269,9 @@ struct
       clean_siblings;
       clean_parent
 
+  (* NOTE: to preserve ref integrity, merge needs to work with heaps! *)
   (* merges orphaned tree w/out siblings w/ other tree, preserves invariants *)
-  let merge (single_t: tree) (t: tree) : tree =
+  let merge (h1: heap) (h2: heap) : tree =
     match single_t with
     | Leaf -> t
     | Node(skv,_,_,_,sc,srk,sm) ->
@@ -321,37 +326,46 @@ struct
       while comb_more do () done;
       (Some (k,v), new_h)
       
-  let get_top_node (h: heap) : pair option =
+  let get_top_node (h: heap) : (key * value) option =
     match !h with
     | Leaf -> None
-    | Node (p,_,_,_,_,_,_) -> p
+    | Node n -> let {p=p} = n in (p.k,p.v)
 
-  (* NOTE to self: include assert that small is in fact smaller than
-   * current key at nd? *)
-  let decrease_key (nd: heap) (small: key) (h: heap) : heap = TODO
+  let rec cut (n: heap) (top: heap) : heap =
+    match !n with
+    | Leaf -> failwith "shouldn't be trying to cut a Leaf"
+    | Node n -> (_,par,l,r,_,_,_) -> TODO
+
+  (* Decreases key of existing node; cuts the node if heap ordering is
+   * violated. *)
+  let decrease_key (nd: heap) (small: key) (h: heap) : heap =
+    match !nd with
+    | Leaf -> failwith "shouldn't be trying to decrease key of a Leaf"
+    | Node (p,par,_,_,_,_,_) ->
+        assert((H.compare small p.k) = Less) ;
+        (match get_top_node par with
+        (* If parent is a Leaf, this must be a root node already *)
+        | None -> let _ = p.k <- small in (minroot h nd)
+        | Some (k,_) ->
+            (match H.compare k small with
+            (* If parent key is still smaller or equal, heap ordering is fine 
+             * and we just update without changing anything else *)
+            | Less | Equal -> let _ = p.k <- small in h
+            | Greater -> let _ = p.k <- small in cut nd h
 
   (*****************************)
   (***** Testing Functions *****)
   (*****************************)
 
-  let rec firsts (lst: ('a * 'b) lst) : 'a lst =
-    match lst with
-    | [] -> []
-    | (a,_)::tl -> a::(firsts tl)
-(*
-  let insert_list (h: heap) (lst: (key * value) list) : heap * (heap list) =
-    let raw_list = List.fold_left lst ~f:(fun r 
-*)
-
   (* Inserts a list of pairs into the given heap and returns a handle to the
    * resulting heap as well as a list of nodes corresponding to each pair,
    * in the same order as the original pair list it corresponds to. *)
-  let insert_list (h: heap) (lst: (key * value) list) : heap * (heap list) =
+  let insert_list (h: heap) (lst: (key * value) list) : heap * heap list =
     let insert_keep_track (k,v) r =
-      let (sofar,pts) = r in
-      let (whole,mine) = insert k v sofar in whole,(mine::lst)
+      let (sofar,hs) = r in
+      let (whole,mine) = insert k v sofar in (whole, mine::hs)
     in
-    List.fold_right lst ~f:insert_keep_track ~i:empty
+    List.fold_right lst ~f:insert_keep_track ~init:(h,[])
 
   (* Generates a (key,value) list with n distinct keys in increasing order,
    * starting from a given key. *)
@@ -407,17 +421,20 @@ struct
     List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) randpairs lst1 ;
     (* Check that the minimum pair ended up in the min spot *)
     assert((min_pair randpairs) = (get_top_node h1)) ;
-    (* Fill heap with sequential pairs *)
+    (* Rinse and repeat with a sequential list of pairs *)
     let seqpairs = generate_pair_list 100 in
     let (h2,lst2) = insert_list empty seqpairs in
-    (* Check that every pair is where insert said it was *)
     List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) seqpairs lst2 ;
-    (* Check that the minimum pair ended up in the min spot *)
     assert((List.hd seqpairs) = (get_top_node h2)) ;
+    (* Rinse and repeat with a reverse-sequential list *)
+    let revpairs = List.rev seqpairs in
+    let (h3,lst3) = insert_list empty revpairs in
+    List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) revpairs lst3 ;
+    assert((List.hd seqpairs) = (get_top_node h3)) ;
     ()
 
-  let test_decrease_key () = TODO
-  let test_delete_min () = TODO
+  let test_decrease_key () = () (* TODO *)
+  let test_delete_min () = () (* TODO *)
 
   let run_tests () =
     test_insert () ;

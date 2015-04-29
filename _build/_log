@@ -1,4 +1,5 @@
 ### Starting build.
+<<<<<<< HEAD
 # Target: Main.ml.depends, tags: { annot, bin_annot, debug, extension:ml, file:Main.ml, ocaml, ocamldep, package(bin_prot.syntax), package(core), package(sexplib.syntax,comparelib.syntax,fieldslib.syntax,variantslib.syntax), quiet, short_paths, syntax(camlp4o), thread }
 ocamlfind ocamldep -syntax camlp4o -package bin_prot.syntax -package sexplib.syntax,comparelib.syntax,fieldslib.syntax,variantslib.syntax -package core -modules Main.ml > Main.ml.depends # cached
 # Target: Graph.ml.depends, tags: { annot, bin_annot, debug, extension:ml, file:Graph.ml, ocaml, ocamldep, package(bin_prot.syntax), package(core), package(sexplib.syntax,comparelib.syntax,fieldslib.syntax,variantslib.syntax), quiet, short_paths, syntax(camlp4o), thread }
@@ -29,4 +30,6 @@ Error: Signature mismatch:
        The value `string_of_value' is required but not provided
        The value `string_of_key' is required but not provided
 Command exited with code 2.
+=======
+>>>>>>> 478faca40c718f57d44250dac1c2817ab5ce0155
 # Compilation unsuccessful.
