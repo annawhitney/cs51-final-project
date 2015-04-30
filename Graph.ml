@@ -53,6 +53,9 @@ sig
   (* Finds a node by its tag; returns None if node is not in graph. *)
   val get_node_by_tag : graph -> tag -> node option
 
+  (* Create a node from a given tag. *)
+  val node_of_tag : tag -> node
+
   (* Return None if the graph is empty *)
   val get_random_node : graph -> node option
 
@@ -189,6 +192,8 @@ struct
   (* Added this function for convenience in Dijkstra algorithm *)
   let get_node_by_tag g t : node option =
     EdgeDict.verify_key g.edges (N.node_of_tag t)
+
+  let node_of_tag = N.node_of_tag
 
   let get_random_node g =
     if g.num_nodes = 0 then None else
