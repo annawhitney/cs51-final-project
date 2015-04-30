@@ -17,8 +17,7 @@ sig
   type heap
 
   (* Returns an empty heap. *)
-  val empty: heap
-
+  val empty: heap 
   (* Checks if heap is empty. *)
   val is_empty: heap -> bool
 
@@ -111,7 +110,7 @@ module FibonacciHeap(H: HEAP_ARG) : (PRIOHEAP with type value = H.value
 struct
   type key = H.key
   type value = H.value
-  (* A heap will consist of either a Leaf ref (empty heap), or of 
+  (* A heap will consist of a node option, where a node is
    * a record to key, value, parent heap, left heap, right heap,
    * child heap, no. of children (rank), child cut (marked)) *)
   type node = { mutable k: key; 
@@ -347,7 +346,8 @@ struct
                     (match !top with
                     | None -> failwith "can't cut from empty heap"
                     | Some t ->
-                        let _ = left.r <- n.r ; right.l <- n.l ; n.p <- None in
+                        let _ = left.r <- n.r ; right.l <- n.l ;
+                            n.p <- (ref None) in
                         (* If node's siblings are the same as itself, it has no
                          * real siblings -  after cut parent has no children *)
                         let _ = if (phys_equal n.l nd) then par.ch <- None
