@@ -120,7 +120,7 @@ struct
 	        mutable r: heap; 
 	        mutable c: heap; 
 	        mutable rk: int; 
-          mutable mk: bool}
+                mutable mk: bool}
   and heap = (node option) ref
 
   let empty : heap = ref None
@@ -135,43 +135,47 @@ struct
     | Less -> k2
     | _ -> k1
 
-  (* NOTE: to ensure ref integrity, we need minroot to deal with heaps,
-   * not with trees. Dereference to check key and then return the original
-   * heap, so we never assign a new ref to a tree returned by minroot *)
   (* Returns heap with smaller root key; if keys equal, first arg 
    * returned. Empty heap considered larger than all non-empty heaps *)
   let minroot (h1: heap) (h2: heap) : heap =
-    match get_top_node h2 with
-    | None -> h1
-    | Some n1 ->
-        (match get_top_node h1 with
-        | None -> h2
-        | Some n2 ->
-            if minkey n1.k n2.k = n2.k then h2 else h1)
+    match get_top_node h1, get_top_node h2 with
+    | None, None -> h1
+    | Some _, None -> h1
+    | None, Some _ -> h2
+    | Some n1, Some n2 -> if H.compare n2.k n1.k = Less then h2 else h1
 
+  (* A fold function across a double linked list of heaps. The function
+   * folds left and stops when it's made a full loop *)
   let lnk_lst_fold (f: 'a -> heap -> 'a) (acc: 'a) (h: heap) : 'a =
     let rec lnk_lst_fold_helper (f': 'a -> heap -> 'a) (acc': 'a)
         (h': heap) (h0: heap) : 'a =
       match !h' with
       | None -> acc'
       | Some n ->
-          if phys_equal n.l h0
-          then f' acc' h'
-          else 
-            match !(n.l) with
-            | Leaf -> f' acc' h'
-            | _ -> lnk_lst_fold_helper f' (f' acc' h') n.l h0
+        if phys_equal n.l h0
+        then f' acc' h'
+        else 
+          match !(n.l) with
+          | None -> f' acc' h'
+          | _ -> lnk_lst_fold_helper f' (f' acc' h') n.l h0
     in
     match !h with
     | None -> acc
     | Some n ->
-        (match !(n.r) with
-        | None -> f acc h
-        | Some rn -> lnk_lst_fold_helper f acc h rn.l)
+      match !(n.r) with
+      | None -> failwith "nodes must have real siblings"
+      | Some rn -> lnk_lst_fold_helper f acc h rn.l
 
   (* Returns smallest root node in heap *)
-  let leastroot (h: heap) : heap =
-    lnk_lst_fold (fun a h -> minroot a h) h h
+  let leastroot (h: heap) : heap = lnk_lst_fold minroot h h
+
+  (* reassigns sibling fields to make h1 & h2 left/right siblings. If
+   * either arg is None, the other arg is return by itself *)
+  let link (hl: heap) (hr: heap) : unit =
+    match !hl,!hr with
+    | _,None -> hl
+    | None,_ -> hr
+    | Some nl,Some nr -> nl.r <- hr; nr.l <- hl   
 
 (* Old implementation of leastroot; delete when finished
   (* Returns smallest root node in heap *)
@@ -242,67 +246,54 @@ struct
         (* If h is empty, then the new node's siblings should be itself *)
         let newheap = empty in
         let newnode =
-          {k=k;v=v;p=empty;l=newheap;r=newheap;ch=empty;rk=0;mk=false}
-        in
-        let _ = newheap := Some newnode in (newheap,newheap)
+          {k=k;v=v;p=empty;l=newheap;r=newheap;ch=empty;rk=0;mk=false} in
+        newheap := Some newnode; (newheap,newheap)
     | Some n ->
         (* If h is not empty, then insert new node to left of current min *)
         let newnode = {k=k;v=v;p=empty;l=n.l;r=h;ch=empty;rk=0;mk=false} in
         let newheap = ref (Some newnode) in
-        let _ = n.l <- newheap in ((minroot h newheap),newheap)
+	let l = !(n.l) in
+        n.l <- newheap; l.r <- newheap; ((minroot h newheap),newheap)
 
-  (* NOTE: it wasn't clear to me from yesterday whether you still needed this;
-   * uncomment if you do. *)
   (* clean removes a tree from the surrounding heap. 
    * clean doesn't change parent marked, but it does decrease parent rank.
    * If cleaned tree has smallest heap node as root, the rest of the tree
    * can be lost unless already referenced elsewhere. *)
-  (*
   let clean (h: heap) : unit =
     match !h with
-    | Leaf -> ()
-    | Node(kv,p,l,r,c,rk,m) ->
+    | None -> ()
+    | Some n ->
         let clean_siblings : unit =
-          (match !l with
-          | Leaf -> ()
-          | Node(_,_,_,lr,_,_,_) ->
-              lr := !r;
-              (match !r with
-              | Leaf -> failwith "node must be a tree"
-              | Node(_,_,rl,_,_,_,_) -> rl := !l))
-        in
+          match n.l,n.r with
+	  | Some l, Some r -> link l r
+          | _,_ -> failwith "node must have real siblings" in
         let clean_parent : unit =
-          (match !p with
-          | Leaf -> ()
-          | Node(_,_,_,_,pc,prk,_) ->
-            pc := !l; prk := !prk-1)
-        in
+          match n.p with
+          | None -> ()
+          | Some p ->
+	    if p.rk = 1 then p.c <- empty else p.c <- n.l; 
+	    prk <- prk-1 in
         clean_siblings;
         clean_parent
-  *)
 
   (* merges two heaps by making larger-key root a child of smaller-key root *)
-  let merge (h1: heap) (h2: heap) : heap =
-    match !h1 with
-    | None -> h2
-    | Some n1 ->
-        (match !h2 with
-        | None -> h1
-        | Some n2 ->
-            if (minroot h1 h2) = h1 then
-              n1.rk <- n1.rk + 1 ;
-              match !(n1.ch) with
-              (* If minroot has no children, now it has other root as child *)
-              | None -> n1.ch <- h2 ; h1
-              (* If minroot already had children, other root inserted to the
-               * left of the child the minroot has reference to *)
-              | Some chn -> n2.l <- chn.l ; n2.r <- n1.ch ; chn.l <- h2 ; h1
-            else
-              n2.rk <- n2.rk + 1;
-              match !(n2.ch) with
-              | None -> n2.ch <- h1 ; h2
-              | Some chn -> n1.l <- chn.l ; n1.r <- n2.ch ; chn.l <- h1 ; h2)
-
+  let rec merge (h1: heap) (h2: heap) : unit =
+    match !h1,!h2 with
+    | _, None -> h1
+    | None, _ -> h2
+    | Some n1, Some n2 ->
+      match H.compare (!h1).k (!h2).k with
+      | Less | Equal ->
+	n1.rk <- n1.rk + 1; clean h2;
+        (match !(n1.c) with
+	(* If minroot has no children, now it has other root as child *)
+	| None -> n1.c <- h2
+	(* If minroot already had children, other root
+	 * inserted to the left of the referenced child *)
+	| Some cn -> 
+	  let lh = cn.l in 
+	  link lh h2; link h2 n1.c)
+      | _ -> merge h2 h1
 
   (* Deletes the minimum element from the heap and returns it along with an
    * updated handle to the heap. *)
@@ -310,10 +301,36 @@ struct
     match !h with
     | None -> (None, h)
     | Some n ->
-        cut !h;
-        let temp_h = ref !l in
-        lnk_lst_fold (fun () child -> ()(*ignore (general_insert !child temp_h)*)) () c;
-        let new_h = ref (leastroot temp_h) in
+      let insert_children h' : unit =
+	match h'.c with
+	| None -> ()
+	| Some -> lnk_lst_fold (fun () c -> link n.l c; link c h) () h.c in
+      insert_children h;
+      let l = n.l in clean h; 
+      let nh = leastroot l in
+      let rk_lst : heap list ref = ref [] in
+      (* try to merge a heap with any heap in rk_lst *)
+      let try_merge (h': heap) : bool =
+	let merged_once = List.fold_left rk_lst ~init:false
+	  ~f(fun merged comp_h -> 
+	    if merged then merged else
+	      if comp_h.rk = h'.rk
+	      then 
+		let _ = merge comp_h h'; rk_lst := [] in 
+		true
+	      else 
+		false) in
+	if merged_once then true else rk_lst := h'::!rk_lst; false in
+      (* recurse through linked list w/ merged_once until it merges once only *)
+      let merge_more : bool =
+	lnk_lst_fold (fun merged h ->
+	  if merged then merged else try_merge h) in
+      while merge_more do () done;
+      (Some (h.k, h.v), nh)
+	    
+      
+(* Bits of old code from delete_min; delete when done
+
         let rk_lst : (int * heap) list ref = ref [] in
         let comb_more : bool =
           lnk_lst_fold (fun finished root ->
@@ -342,7 +359,7 @@ struct
                         rk_lst := new_elt::!rk_lst; false) false h in
                         while comb_more do () done;
                         (Some (k,v), new_h)
-                          
+*)                         
   let get_top_node (h: heap) : (key * value) option =
     match !h with
     | None -> None
