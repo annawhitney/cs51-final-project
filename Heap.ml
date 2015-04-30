@@ -120,7 +120,7 @@ struct
 	        mutable r: heap; 
 	        mutable c: heap; 
 	        mutable rk: int; 
-		mutable mk: bool}
+          mutable mk: bool}
   and heap = (node option) ref
 
   let empty : heap = ref None
@@ -150,23 +150,24 @@ struct
             if minkey n1.k n2.k = n2.k then h2 else h1)
 
   let lnk_lst_fold (f: 'a -> heap -> 'a) (acc: 'a) (h: heap) : 'a =
-    let rec lnk_lst_fold_helper 
-	(f': 'a -> heap -> 'a) (acc': 'a) (h': heap) (h0: heap) : 'a =
+    let rec lnk_lst_fold_helper (f': 'a -> heap -> 'a) (acc': 'a)
+        (h': heap) (h0: heap) : 'a =
       match !h' with
       | None -> acc'
       | Some n ->
-	if phys_equal n.l h0
-	then f' acc' h'
-	else 
-	  match !(n.l) with
-	  | Leaf -> f' acc' h'
-	  | _ -> lnk_lst_fold_helper f' (f' acc' h') n.l h0 in
+          if phys_equal n.l h0
+          then f' acc' h'
+          else 
+            match !(n.l) with
+            | Leaf -> f' acc' h'
+            | _ -> lnk_lst_fold_helper f' (f' acc' h') n.l h0
+    in
     match !h with
     | None -> acc
     | Some n ->
-      match !(n.r) with
-      | None -> f acc h
-      | Some rn -> lnk_lst_fold_helper f acc h rn.l
+        (match !(n.r) with
+        | None -> f acc h
+        | Some rn -> lnk_lst_fold_helper f acc h rn.l)
 
   (* Returns smallest root node in heap *)
   let leastroot (h: heap) : heap =
@@ -215,19 +216,19 @@ struct
     match !h with
     | Leaf -> ref t
     | Node((hk,hv),hp,hl,hr,hc,hrk,hm) ->
-      match t with
-      | Leaf -> h
-      | Node((k,v),_,_,_,c,rk,m) ->
-	match !hl with
-	| Leaf -> 
-	  let newnode = Node((k,v), empty, h, h, c, rk, m) in
-	  h := Node((hk,hv), hp, ref newnode, ref newnode, hc, hrk, hm);
-	  ref newnode
-	| Node(lkv,lp,ll,lr,lc,lrk,lm) ->
-	  let newnode = Node((k,v), empty, hl, h, c, rk, m) in
-	  hl := Node(lkv, lp, ll, ref newnode, lc, lrk, lm);
-	  h := Node((hk,hv), hp, ref newnode, hr, hc, hrk, hm);
-	  ref newnode
+        (match t with
+        | Leaf -> h
+        | Node((k,v),_,_,_,c,rk,m) ->
+            (match !hl with
+            | Leaf -> 
+                let newnode = Node((k,v), empty, h, h, c, rk, m) in
+                h := Node((hk,hv), hp, ref newnode, ref newnode, hc, hrk, hm);
+                ref newnode
+            | Node(lkv,lp,ll,lr,lc,lrk,lm) ->
+                let newnode = Node((k,v), empty, hl, h, c, rk, m) in
+                hl := Node(lkv, lp, ll, ref newnode, lc, lrk, lm);
+                h := Node((hk,hv), hp, ref newnode, hr, hc, hrk, hm);
+                ref newnode))
 
   (* given a key, value, and heap, inserts a new node into the root list 
    * of the heap with the containing the key value pair and returns the
@@ -235,7 +236,7 @@ struct
   let insert (k: key) (v: value) (h: heap) : heap * heap =
     let newnode = Node((k,v),empty,empty,empty,empty,ref 0,ref false) in
     let newheap = general_insert newnode h in
-  (ref (minroot !h !newheap), ref newnode)
+    (ref (minroot !h !newheap), ref newnode)
 
   (* clean removes a tree from the surrounding heap. 
    * clean doesn't change parent marked, but it does decrease parent rank.
@@ -245,22 +246,23 @@ struct
     match !h with
     | Leaf -> ()
     | Node(kv,p,l,r,c,rk,m) ->
-      let clean_siblings : unit =
-	(match !l with
-	| Leaf -> ()
-	| Node(_,_,_,lr,_,_,_) ->
-	  lr := !r;
-	  (match !r with
-	  | Leaf -> failwith "node must be a tree"
-	  | Node(_,_,rl,_,_,_,_) ->
-	    rl := !l)) in
-      let clean_parent : unit =
-	(match !p with
-	| Leaf -> ()
-	| Node(_,_,_,_,pc,prk,_) ->
-	  pc := !l; prk := !prk-1) in
-      clean_siblings;
-      clean_parent
+        let clean_siblings : unit =
+          (match !l with
+          | Leaf -> ()
+          | Node(_,_,_,lr,_,_,_) ->
+              lr := !r;
+              (match !r with
+              | Leaf -> failwith "node must be a tree"
+              | Node(_,_,rl,_,_,_,_) -> rl := !l))
+        in
+        let clean_parent : unit =
+          (match !p with
+          | Leaf -> ()
+          | Node(_,_,_,_,pc,prk,_) ->
+            pc := !l; prk := !prk-1)
+        in
+        clean_siblings;
+        clean_parent
 
   (* NOTE: to preserve ref integrity, merge needs to work with heaps! *)
   (* merges orphaned tree w/out siblings w/ other tree, preserves invariants *)
@@ -268,57 +270,56 @@ struct
     match single_t with
     | Leaf -> t
     | Node(skv,_,_,_,sc,srk,sm) ->
-      match t with
-      | Leaf -> single_t
-      | Node(kv,p,l,r,c,rk,m) ->
-	match (minroot single_t t)=single_t with
-	| true ->
-	  srk := !srk + 1;
-	  let newtree = Node(skv,p,l,r,general_insert t sc,srk,sm) in
-	  cut t; general_insert newtree r; newtree
-	| false -> 
-	  rk := !rk + 1;
-          Node(kv,p,l,r,general_insert single_t c,rk,m)
-	  
+        (match t with
+        | Leaf -> single_t
+        | Node(kv,p,l,r,c,rk,m) ->
+            if (minroot single_t t)=single_t then
+              srk := !srk + 1;
+              let newtree = Node(skv,p,l,r,general_insert t sc,srk,sm) in
+              cut t; general_insert newtree r; newtree
+            else
+              rk := !rk + 1;
+              Node(kv,p,l,r,general_insert single_t c,rk,m))
+              
   let delete_min (h: heap) : (key * value) option * heap =
     match !h with
     | Leaf -> (None, h)
     | Node((k,v),p,l,r,c,rk,m) ->
-      cut !h;
-      let temp_h = ref !l in
-      lnk_lst_fold (fun () child -> ()(*ignore (general_insert !child temp_h)*)) () c;
-      let new_h = ref (leastroot temp_h) in
-      let rk_lst : (int * heap) list ref = ref [] in
-      let comb_more : bool =
-	lnk_lst_fold (fun finished root ->
-	  match finished with
-	  | true -> true
-	  | false ->
-	    match !root with
-	    | Leaf -> true
-	    | Node(rkv,rp,rl,rr,rc,rrk,rm) ->
-	      let member = List.fold_left !rk_lst 
-		~init:false ~f:(fun b (n,_) -> n = !rrk || b) in
-	      (* let compare = (Some (fun (a,_) (b,_) -> a = b)) in
-	      match List.Assoc.mem !rk_lst 
-		?equal:compare (!rrk,root) with *)
-	      match member with
-	      | true ->
-		(match 
-		  (List.fold_left !rk_lst ~init:None 
-		     ~f:(fun b (n,h) -> if n = !rrk then Some h else b)) with
-		  | None -> failwith "identical rank must exist"
-		  | Some eq_rk_heap ->
-		(* let eq_rk_tree =
-		  List.Assoc.find_exn !rk_lst ?equal:compare (!rrk,root) in *)
-		    cut !root; merge !root !eq_rk_heap; rk_lst := [];
-	            true)
-	      | false -> 
-		let new_elt = (!rrk,root) in
-		rk_lst := new_elt::!rk_lst; false) false h in
-      while comb_more do () done;
-      (Some (k,v), new_h)
-      
+        cut !h;
+        let temp_h = ref !l in
+        lnk_lst_fold (fun () child -> ()(*ignore (general_insert !child temp_h)*)) () c;
+        let new_h = ref (leastroot temp_h) in
+        let rk_lst : (int * heap) list ref = ref [] in
+        let comb_more : bool =
+          lnk_lst_fold (fun finished root ->
+            match finished with
+            | true -> true
+            | false ->
+                (match !root with
+                | Leaf -> true
+                | Node(rkv,rp,rl,rr,rc,rrk,rm) ->
+                    let member = List.fold_left !rk_lst ~init:false
+                        ~f:(fun b (n,_) -> n = !rrk || b) in
+                  (* let compare = (Some (fun (a,_) (b,_) -> a = b)) in
+                  match List.Assoc.mem !rk_lst 
+              ?equal:compare (!rrk,root) with *)
+                    match member with
+                    | true ->
+                        (match (List.fold_left !rk_lst ~init:None 
+                             ~f:(fun b (n,h) -> if n = !rrk then Some h
+                              else b)) with
+                        | None -> failwith "identical rank must exist"
+                        | Some eq_rk_heap ->
+                        (* let eq_rk_tree =
+                          List.Assoc.find_exn !rk_lst ?equal:compare (!rrk,root) in *)
+                            cut !root; merge !root !eq_rk_heap;
+                            rk_lst := []; true)
+                    | false -> 
+                        let new_elt = (!rrk,root) in
+                        rk_lst := new_elt::!rk_lst; false) false h in
+                        while comb_more do () done;
+                        (Some (k,v), new_h)
+                          
   let get_top_node (h: heap) : (key * value) option =
     match !h with
     | None -> None
