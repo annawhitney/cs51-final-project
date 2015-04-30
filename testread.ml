@@ -12,7 +12,9 @@ let rec addedges (castlist: string * (float * float) list)
     | (name2, loc2)::tl -> (let (name1, loc1) = place in
                            match distance cutoff loc1 loc2 with
                            | None -> addhelper place tl graph
-                           | Some d -> Geograph.add_edge graph (GeoNode.node_of_tag name1) (GeoNode.node_of_tag name2) d; 
+                           | Some d -> Geograph.add_edge graph
+                                       (GeoNode.node_of_tag name1)
+                                       (GeoNode.node_of_tag name2) d; 
                                        addhelper place tl graph) in
   match castlist with
   | [] -> graph

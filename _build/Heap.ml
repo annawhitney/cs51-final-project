@@ -572,10 +572,11 @@ struct
   type weight = float
   type tag = string
   let tag_of_node n = n.name
-  let node_of_tag t = {name: t; pt = None; prev = None}
+  let node_of_tag t = {name: t; pt = None; prev = Nil}
   let compare n1 n2 = string_compare s1.name s2.name
   let string_of_node n = n.name
-  let get () = {name = ""; pt = None; prev = None}
+  let gen () = {name = ""; pt = None; prev = Nil}
+  let get_weight () = 0.0
 end
 
 module GeoGraph = Graph(GeoNode)
