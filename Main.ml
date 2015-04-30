@@ -52,16 +52,19 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
         (* Find corresponding node in graph *)
         (match GeoGraph.get_node_by_tag nm with
         | None -> failwith "heap min is not in graph"
-        | Some this_node ->
+        | Some this_nd ->
             (* Record that we've visited this node *)
-            let _ = this_node.pt <- None in
+            let _ = this_nd.pt <- None in
+            (* Record where we've been *)
+            let _ = this_nd.prev <- Link prev in
             (* If the min node we pulled was our destination, we're done;
              * return distance and list of nodes in the shortest path *)
-            (match GeoNode.compare this_node fin with
-            | Equal -> (Links.list_of_links prev),dist
+            (match GeoNode.compare this_nd fin with
+            | Equal ->
+                (Links.list_of_links (Node (this_nd.name,this_nd.prev)),dist
             | Less | Greater ->
                 (* Otherwise, get the neighbors of our min *)
-                (match GeoGraph.neighbors g this_node with
+                (match GeoGraph.neighbors g this_nd with
                 | None -> failwith "we already checked that this_node exists"
                 | Some ns ->
                     (* For each neighbor, update distance if necessary *)
@@ -80,7 +83,7 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
                               else h))
                     in
                     next_node (List.fold_left ns ~f:handle_node ~i:hp)
-                        (Node (nm,ref prev)))))
+                        (Node (nm,Link(ref prev))))))
 
   in next_node fib_heap ;;
 
