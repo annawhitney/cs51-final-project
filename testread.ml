@@ -18,7 +18,7 @@ let rec addedges (castlist: string * (float * float) list)
                                        addhelper place tl graph) in
   match castlist with
   | [] -> graph
-  | hd::tl -> addhelper hd tl graph; addedges tl graph cutoff
+  | hd::tl -> ignore(addhelper hd tl graph); addedges tl graph cutoff
 
    
 
