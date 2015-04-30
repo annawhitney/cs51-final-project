@@ -308,8 +308,8 @@ struct
    * updated handle to the heap. *)
   let delete_min (h: heap) : (key * value) option * heap =
     match !h with
-    | Leaf -> (None, h)
-    | Node((k,v),p,l,r,c,rk,m) ->
+    | None -> (None, h)
+    | Some n ->
         cut !h;
         let temp_h = ref !l in
         lnk_lst_fold (fun () child -> ()(*ignore (general_insert !child temp_h)*)) () c;
@@ -317,9 +317,7 @@ struct
         let rk_lst : (int * heap) list ref = ref [] in
         let comb_more : bool =
           lnk_lst_fold (fun finished root ->
-            match finished with
-            | true -> true
-            | false ->
+            if finished then true else
                 (match !root with
                 | Leaf -> true
                 | Node(rkv,rp,rl,rr,rc,rrk,rm) ->
