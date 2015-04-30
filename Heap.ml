@@ -171,7 +171,7 @@ struct
 
   (* Returns smallest root node in heap *)
   let leastroot (h: heap) : heap =
-    lnk_lst_fold (fun a h -> minroot a !h) !h h
+    lnk_lst_fold (fun a h -> minroot a h) h h
 
 (* Old implementation of leastroot; delete when finished
   (* Returns smallest root node in heap *)
@@ -210,38 +210,54 @@ struct
 	if minkey hk k = hk then h else ref newnode
 *)
 
+  (* NOTE: I don't think we need this anymore, as we discussed yesterday *)
   (* treats a node as orphaned and w/out siblings and inserts into a heap 
    * to the left of the root of the 2nd arg *)
-  let general_insert (t: tree) (h: heap) : heap * heap =
+  (*
+  let general_insert (new_h: heap) (h: heap) : heap =
     match !h with
-    | Leaf -> ref t
-    | Node((hk,hv),hp,hl,hr,hc,hrk,hm) ->
-        (match t with
-        | Leaf -> h
-        | Node((k,v),_,_,_,c,rk,m) ->
-            (match !hl with
-            | Leaf -> 
+    | None -> new_h
+    | Some n ->
+        (match !new_h with
+        | None -> h
+        | Some new_n ->
+            (match !(n.l) with
+            | None -> 
                 let newnode = Node((k,v), empty, h, h, c, rk, m) in
                 h := Node((hk,hv), hp, ref newnode, ref newnode, hc, hrk, hm);
                 ref newnode
-            | Node(lkv,lp,ll,lr,lc,lrk,lm) ->
+            | Some ln ->
                 let newnode = Node((k,v), empty, hl, h, c, rk, m) in
                 hl := Node(lkv, lp, ll, ref newnode, lc, lrk, lm);
                 h := Node((hk,hv), hp, ref newnode, hr, hc, hrk, hm);
                 ref newnode))
+  *)
 
   (* given a key, value, and heap, inserts a new node into the root list 
    * of the heap with the containing the key value pair and returns the
    * updated pointer to the min as well as a pointer to the new node *)
   let insert (k: key) (v: value) (h: heap) : heap * heap =
-    let newnode = Node((k,v),empty,empty,empty,empty,ref 0,ref false) in
-    let newheap = general_insert newnode h in
-    (ref (minroot !h !newheap), ref newnode)
+    match !h with
+    | None ->
+        (* If h is empty, then the new node's siblings should be itself *)
+        let newheap = empty in
+        let newnode =
+          {k=k;v=v;p=empty;l=newheap;r=newheap;ch=empty;rk=0;mk=false}
+        in
+        let _ = newheap := Some newnode in (newheap,newheap)
+    | Some n ->
+        (* If h is not empty, then insert new node to left of current min *)
+        let newnode = {k=k;v=v;p=empty;l=n.l;r=h;ch=empty;rk=0;mk=false} in
+        let newheap = ref (Some newnode) in
+        let _ = n.l <- newheap in ((minroot h newheap),newheap)
 
+  (* NOTE: it wasn't clear to me from yesterday whether you still needed this;
+   * uncomment if you do. *)
   (* clean removes a tree from the surrounding heap. 
    * clean doesn't change parent marked, but it does decrease parent rank.
    * If cleaned tree has smallest heap node as root, the rest of the tree
    * can be lost unless already referenced elsewhere. *)
+  (*
   let clean (h: heap) : unit =
     match !h with
     | Leaf -> ()
@@ -263,24 +279,33 @@ struct
         in
         clean_siblings;
         clean_parent
+  *)
 
-  (* NOTE: to preserve ref integrity, merge needs to work with heaps! *)
-  (* merges orphaned tree w/out siblings w/ other tree, preserves invariants *)
-  let merge (h1: heap) (h2: heap) : tree =
-    match single_t with
-    | Leaf -> t
-    | Node(skv,_,_,_,sc,srk,sm) ->
-        (match t with
-        | Leaf -> single_t
-        | Node(kv,p,l,r,c,rk,m) ->
-            if (minroot single_t t)=single_t then
-              srk := !srk + 1;
-              let newtree = Node(skv,p,l,r,general_insert t sc,srk,sm) in
-              cut t; general_insert newtree r; newtree
+  (* merges two heaps by making larger-key root a child of smaller-key root *)
+  let merge (h1: heap) (h2: heap) : heap =
+    match !h1 with
+    | None -> h2
+    | Some n1 ->
+        (match !h2 with
+        | None -> h1
+        | Some n2 ->
+            if (minroot h1 h2) = h1 then
+              n1.rk <- n1.rk + 1 ;
+              match !(n1.ch) with
+              (* If minroot has no children, now it has other root as child *)
+              | None -> n1.ch <- h2 ; h1
+              (* If minroot already had children, other root inserted to the
+               * left of the child the minroot has reference to *)
+              | Some chn -> n2.l <- chn.l ; n2.r <- n1.ch ; chn.l <- h2 ; h1
             else
-              rk := !rk + 1;
-              Node(kv,p,l,r,general_insert single_t c,rk,m))
-              
+              n2.rk <- n2.rk + 1;
+              match !(n2.ch) with
+              | None -> n2.ch <- h1 ; h2
+              | Some chn -> n1.l <- chn.l ; n1.r <- n2.ch ; chn.l <- h1 ; h2)
+
+
+  (* Deletes the minimum element from the heap and returns it along with an
+   * updated handle to the heap. *)
   let delete_min (h: heap) : (key * value) option * heap =
     match !h with
     | Leaf -> (None, h)
