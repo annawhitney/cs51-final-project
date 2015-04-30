@@ -3,14 +3,28 @@ open Graph
 open Heap
 open test
 
-let addedges (castlist: string * (float * float)) 
-(graph: Geograph.graph) : Geograph.graph = 
+let rec addedges (castlist: string * (float * float) list) 
+(graph: Geograph.graph) (cutoff: float) : Geograph.graph = 
+  let rec addhelper (place: string * (float * float)) (rest: string * (float * float) list)
+    (graph: Geograph.graph) : Geograph.graph = 
+    match rest with
+    | [] -> graph
+    | (name2, loc2)::tl -> (let (name1, loc1) = place in
+                           match distance cutoff loc1 loc2 with
+                           | None -> addhelper place tl graph
+                           | Some d -> Geograph.add_edge graph (GeoNode.node_of_tag name1) (GeoNode.node_of_tag name2) d; 
+                                       addhelper place tl graph) in
+  match castlist with
+  | [] -> graph
+  | hd::tl -> addhelper hd tl graph; addedges tl graph cutoff
+
    
 
 let read_csv () : GeoGraph.graph =  
   let usage () = Printf.print "usage: %s csv cutoff " Sys.argv.(0); exit 1 in 
   if Array.length Sys.argv <> 3 then usage () ;
   (* file pointer - just like in CS50! *)
+  let cutoff = Sys.argv.(2) in
   let file = create Sys.argv.(1) in
   let lines = input_lines file in
   let delimiter = Str.regex ";" in

@@ -99,7 +99,9 @@ struct
   module EdgeDict = Dict.Make(
     struct
       type key = node
-      type value = NeighborDict.set
+
+      (* neighbordict.dict or neighbordict.set ?? *)
+      type value = NeighborDict.dict
       let compare = N.compare
       let string_of_key = N.string_of_node
       let string_of_value ns = NeighborDict.string_of_dict ns
