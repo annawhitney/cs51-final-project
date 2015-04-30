@@ -515,15 +515,15 @@ module FibHeap = FibonacciHeap(GeoHeapArg)
 module GeoNode : NODE =
 struct
   type node = {name: string; mutable pt: FibHeap.heap option;
-      mutable prev: node ref option}
+      mutable prev: Links.link}
   type weight = float
   type tag = string
   let tag_of_node n = n.name
-  (*let node_of_tag t = {name: t; pt = None; prev = None}*)
+  let node_of_tag t = {name: t; pt = None; prev = None}
   let compare n1 n2 = string_compare s1.name s2.name
   let string_of_node n = n.name
   let get () = {name = ""; pt = None; prev = None}
 end
-(*
+
 module GeoGraph = Graph(GeoNode)
-*)
+
