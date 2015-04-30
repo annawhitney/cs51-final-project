@@ -65,6 +65,7 @@ let read_csv () : GeoGraph.graph =
          ((Float.of_string lat) * (Float.of_string long))::(casted tl)
        | _ -> []) in
   let casted = cast parsed in
+  addedges casted Geograph.empty cutoff
   
   
 

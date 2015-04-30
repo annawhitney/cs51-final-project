@@ -61,7 +61,7 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
              * return distance and list of nodes in the shortest path *)
             (match GeoNode.compare this_nd fin with
             | Equal ->
-                (Links.list_of_links (Node (this_nd.name,this_nd.prev)),dist
+                (Links.list_of_links (Node (this_nd.name,this_nd.prev)),dist)
             | Less | Greater ->
                 (* Otherwise, get the neighbors of our min *)
                 (match GeoGraph.neighbors g this_nd with
