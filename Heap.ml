@@ -434,7 +434,7 @@ struct
 
   (* Returns the minimum of a list of pairs. If multiple pairs have the same 
    * key, returns the first of the pairs. *)
-  let min_pair (lst: pair list) : pair option =
+  let min_pair (lst: (key * value) list) : (key * value) option =
     let rec min_helper lst curr =
       match lst with
       | [] -> curr
@@ -450,7 +450,7 @@ struct
 
 
   let test_insert () = 
-    let top_matches (a: pair) (pt: heap) : bool =
+    let top_matches (a: (key * value)) (pt: heap) : bool =
       match get_top_node pt with
       | None -> false
       | Some b -> a = b
