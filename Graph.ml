@@ -15,6 +15,7 @@ sig
   val gen : unit -> node
   val gen_weight : unit -> weight
   val tag_of_node : node -> tag
+  val node_of_tag : tag -> node
 end
 
 (* A signature for directed graphs with unweighted edges *)
