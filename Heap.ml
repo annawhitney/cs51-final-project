@@ -606,9 +606,9 @@ struct
 end
 
 (* Create a fib heap with (int, string) pairs for testing *)
-module IntStringFibHeap = FibonacciHeap(IntStringHeapArg)
+module IntStringFibHeap = FibonacciHeap(IntStringHeapArg) ;;
 (* Uncomment the following when ready to run tests on fib heap *)
-(* IntStringFibHeap.run_tests() *)
+IntStringFibHeap.run_tests()
 
 (* HEAP_ARG for our the Fibonacci Heap representation we will use for our
  * actual algorithm *)
