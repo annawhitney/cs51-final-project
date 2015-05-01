@@ -320,7 +320,7 @@ struct
       in
       insert_children h;
       let l = n.l in clean h; 
-      let nh = leastroot l in
+      let nh = (if phys_equal l h then empty else leastroot l) in
       let rk_lst : heap list ref = ref [] in
       (* try to merge a heap with any heap in rk_lst *)
       let try_merge (h': heap) : bool =
@@ -344,10 +344,13 @@ struct
       (* recurse through lnk list w/ merged_once until it merges once only *)
       let merge_more (h': heap) : bool =
         lnk_lst_fold (fun merged h ->
-          if merged then merged else try_merge h) false h'
-      in
-      while merge_more h do () done;
-      (Some (n.k, n.v), nh)
+          if merged then merged else try_merge h) false h' in
+      let rec merge_finish () : unit =
+      	if merge_more h
+      	then merge_finish ()
+      	else () in
+      merge_finish ();
+    (Some (n.k, n.v), nh)
       
 (* Bits of old code from delete_min; delete when done
 
@@ -450,8 +453,7 @@ struct
     lnk_lst_fold (fun a h' ->
       match !h' with
       | None -> 0
-      | Some n -> a + 1 + (num_nodes n.c))
-    0 h
+      | Some n -> a + 1 + (num_nodes n.c)) 0 h
 
   (* Inserts a list of pairs into the given heap and returns a handle to the
    * resulting heap as well as a list of nodes corresponding to each pair,
@@ -554,22 +556,28 @@ struct
     let key1 = H.gen_key() in
     let identpairs = generate_identical_list key1 100 in
     let (idheap, idlist) = insert_list empty identpairs in
-    let (id1,id2,ide) = match idlist with
+    let (id1,id2,id3) = match idlist with
       | [] -> failwith "list can't be empty"
       | id1::id2::id3::_ -> id1,id2,id3
       | _ -> failwith "list must have 100 nodes" in
-    let key0 = (H.gen_key_lt key1 ()) in
+    let key0 = H.gen_key_lt (H.gen_key_lt key1 ()) () in
     let heap1 = decrease_key id1 key0 idheap in
     match get_top_node heap1 with
-    | None -> failwith "not possible"
+    | None -> failwith "not possible 0"
     | Some (k, _) -> assert(H.compare k key0 = Equal);
     let keymid = match H.gen_key_between key0 key1 () with
-      | None -> failwith "not possible"
+      | None -> failwith "not possible 1"
       | Some keymid -> keymid in
     let heap2 = decrease_key id2 keymid heap1 in
-    assert(Some (key0, H.gen_value()) = get_top_node heap2) ;
+    let key2 = match get_top_node heap2 with
+      | None -> failwith "heap cannot be empty"
+      | Some (key2,_) -> key2 in
+    Printf.printf "0 \n";
+    assert(key0 = key2) ;
+    Printf.printf "1 \n";
     let seqpairs = generate_pair_list 100 in
     let (seqheap, seqlst) = insert_list empty seqpairs in
+    Printf.printf "2 \n";
     let seqlst' = match seqlst with
       | [] -> failwith "list is not empty"
       | _::tl -> tl in
@@ -595,6 +603,9 @@ struct
     let (oneheap, onelst) = insert_list empty [(k,v)] in
     assert(not (is_empty oneheap)) ;
     assert(not ((List.hd onelst) = None)) ;
+    Printf.printf "starting oneheap test \n";
+    let (oneheap, _) = insert k v empty in
+    Printf.printf "oneheap and onelst created \n";
     let (k1,v1),emptyheap = match delete_min oneheap with
       | None,_ -> failwith "heap is not empty"
       | (Some kv),h -> kv,h in
@@ -603,8 +614,10 @@ struct
     assert(is_empty emptyheap) ;
     let seqpairs = generate_pair_list 100 in
     let (seqheap, seqlst) = insert_list empty seqpairs in
+        (* ok to here *)
     let emptyheap = List.fold_left ~f:(fun h t ->
       let (kv_op, nh) = delete_min t in
+      (* not ok *)
       let (k,v) = match kv_op with
 	| None -> failwith "all nodes are real"
 	| Some (k,v) -> k,v in
@@ -614,9 +627,9 @@ struct
     ()
 
   let run_tests () =
-    test_insert () ;
-    (*test_decrease_key () ;*)
-    (*test_delete_min () ;*)
+    (*test_insert () ;*)
+    (*test_decrease_key () ; *)
+    test_delete_min () ;
     ()
 
 end
@@ -806,19 +819,20 @@ let read_csv () : GeoGraph.graph =
 let rec get_nodes (g: GeoGraph.graph) : GeoNode.node * GeoNode.node =
   (* get_nodes should actually return an option GeoNode.node * GeoNode.node *) 
   (* Should give the user a text prompt so they know what to input *)
-  let () = Printf.printf "Starting Point: " in
+  let () = Printf.printf "Origin City: " in
   let st = read_line () in
+  let try_again = Printf.print ("City not in database. \n
+  Please make sure that you type in the city comma state abbreviation \n
+  For example: Boston, MA") in
   let stnode = GeoNode.node_of_tag st in
   if (not (GeoGraph.has_node g stnode)) then
-    let () = Printf.printf "Node is not in graph. Try again.\n" in
-    get_nodes g
+    try_again;get_nodes g
   else 
-    let () = Printf.printf "End Point: " in
+    let () = Printf.printf "Destination City: " in
     let fin = read_line () in
     let finnode = GeoNode.node_of_tag fin in
     if (not (GeoGraph.has_node g finnode)) then
-      let () = Printf.printf "Node is not in graph. Try again.\n" in
-      get_nodes g
+      try_again; get_nodes g
     else (stnode, finnode) ;;
 
 (* Run dijkstra's algorithm to find shortest path between start and finish *)
@@ -894,7 +908,7 @@ let (nodelist, weight) = dijkstra start finish graph in
 let rec printnodes (lst: GeoNode.node list) : unit = 
   match lst with 
   | [] -> ()
-  | hd::tl -> Printf.printf "%s ->\n" (GeoNode.tag_of_node hd) ; printnodes tl
+  | hd::tl -> Printf.printf "%s -> " (GeoNode.tag_of_node hd) ; printnodes tl
 in
 printnodes nodelist; Printf.printf "\nTotal distance: %f km\n" weight; ()
 
