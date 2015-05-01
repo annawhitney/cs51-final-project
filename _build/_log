@@ -20,8 +20,8 @@ ocamlfind ocamldep -syntax camlp4o -package bin_prot.syntax -package sexplib.syn
 # Target: Links.cmo, tags: { annot, bin_annot, byte, compile, debug, extension:cmo, extension:ml, file:Links.cmo, file:Links.ml, implem, ocaml, package(bin_prot.syntax), package(core), package(sexplib.syntax,comparelib.syntax,fieldslib.syntax,variantslib.syntax), quiet, short_paths, syntax(camlp4o), thread }
 ocamlfind ocamlc -c -w A-4-33-40-41-42-43-34-44 -strict-sequence -g -annot -bin-annot -short-paths -thread -syntax camlp4o -package bin_prot.syntax -package sexplib.syntax,comparelib.syntax,fieldslib.syntax,variantslib.syntax -package core -o Links.cmo Links.ml
 + ocamlfind ocamlc -c -w A-4-33-40-41-42-43-34-44 -strict-sequence -g -annot -bin-annot -short-paths -thread -syntax camlp4o -package bin_prot.syntax -package sexplib.syntax,comparelib.syntax,fieldslib.syntax,variantslib.syntax -package core -o Links.cmo Links.ml
-File "Links.ml", line 7, characters 26-28:
-Error: Unbound type parameter 'a
-
+File "Links.ml", line 14, characters 28-30:
+Error: This expression has type 'a link
+       but an expression was expected of type 'b ref
 Command exited with code 2.
 # Compilation unsuccessful.
