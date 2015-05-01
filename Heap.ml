@@ -450,13 +450,23 @@ struct
   (***** Testing Functions *****)
   (*****************************)
 
+  (* Finds number of nodes inside a Fibonacci heap *)
+  let rec num_nodes (h: heap) : int =
+    lnk_lst_fold (fun a h' ->
+      match !h' with
+      | None -> a
+      | Some n ->
+	a + 1 + (num_nodes n.c) ) 0 h
+
   (* Inserts a list of pairs into the given heap and returns a handle to the
    * resulting heap as well as a list of nodes corresponding to each pair,
    * in the same order as the original pair list it corresponds to. *)
   let insert_list (h: heap) (lst: (key * value) list) : heap * heap list =
     let insert_keep_track (k,v) r =
       let (sofar,hs) = r in
-      let (whole,mine) = insert k v sofar in (whole, mine::hs)
+      let (whole,mine) = insert k v sofar in 
+      assert ((num_nodes sofar) + 1 = (num_nodes whole));
+      (whole, mine::hs)
     in
     List.fold_right lst ~f:insert_keep_track ~init:(h,[])
 
@@ -479,10 +489,10 @@ struct
       (H.gen_key_random(), H.gen_value()) :: (generate_random_list (size - 1))
 
   (* Generates a (key,value) list with identical keys. *)
-  let rec generate_identical_list (size: int) : (key * value) list =
+  let rec generate_identical_list (k: key) (size: int) : (key * value) list =
     if size <= 0 then []
     else
-      (H.gen_key(), H.gen_value()) :: (generate_identical_list (size - 1))
+      (k, H.gen_value()) :: (generate_identical_list k (size - 1))
 
   (* Returns the minimum of a list of pairs. If multiple pairs have the same 
    * key, returns the first of the pairs. *)
@@ -500,18 +510,19 @@ struct
     in
     min_helper lst None
 
-
+  let top_matches (a: (key * value)) (pt: heap) : bool =
+    match get_top_node pt with
+    | None -> false
+    | Some b -> a = b
+    
   let test_insert () = 
-    let top_matches (a: (key * value)) (pt: heap) : bool =
-      match get_top_node pt with
-      | None -> false
-      | Some b -> a = b
-    in
     (* Fill heap with random pairs *)
     let randpairs = generate_random_list 100 in
     let (h1,lst1) = insert_list empty randpairs in
     (* Check that every pair is where insert said it was *)
     List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) randpairs lst1 ;
+    (* Check that are 100 nodes in the heap *)
+    assert((num_nodes h1) = 100) ;
     (* Check that the minimum pair ended up in the min spot *)
     assert((min_pair randpairs) = (get_top_node h1)) ;
     (* Rinse and repeat with a sequential list of pairs *)
@@ -526,7 +537,42 @@ struct
     assert((List.hd seqpairs) = (get_top_node h3)) ;
     ()
 
-  let test_decrease_key () = () (* TODO *)
+  let test_decrease_key () =
+    (* Fill heap with identical pairs *)
+    let key1 = H.gen_key() in
+    let identpairs = generate_identical_list key1 100 in
+    let (idheap, idlist) = insert_list empty identpairs in
+    let (id1,id2,ide) = match idlist with
+      | [] -> failwith "list can't be empty"
+      | id1::id2::id3::_ -> id1,id2,id3
+      | _ -> failwith "list must have 100 nodes" in
+    let key0 = (H.gen_key_lt (H.gen_key()) ()) in
+    let heap1 = decrease_key id1 key0 idheap in
+    assert(Some (key0, H.gen_value()) = get_top_node heap1) ;
+    let keymid = match H.gen_key_between key0 key1 () with
+      | None -> failwith "not possible"
+      | Some keymid -> keymid in
+    let heap2 = decrease_key id2 keymid heap1 in
+    assert(Some (key0, H.gen_value()) = get_top_node heap2) ;
+    let seqpairs = generate_pair_list 100 in
+    let (seqheap, seqlst) = insert_list empty seqpairs in
+    let seqlst' = match seqlst with
+      | [] -> failwith "list is not empty"
+      | _::tl -> tl in
+    let (_,seqheap') = delete_min seqheap in
+    let seqheap'' = List.fold_left ~f:(fun t h ->
+      match !h with
+      | None -> failwith "all nodes are real"
+      | Some n ->
+	match !(n.p) with
+	| None -> let nh = decrease_key h (H.gen_key_lt (n.k) ()) t in
+		  assert(!(n.p) = None) ; nh
+	| Some p -> let nh = decrease_key h (H.gen_key_lt (p.k) ()) t in
+		    assert(!(n.p) = None) ; nh) ~init:seqheap' seqlst'
+    in
+    assert((num_nodes seqheap'') = (num_nodes seqheap')) ;
+    ()
+    
   let test_delete_min () = () (* TODO *)
 
   let run_tests () =
