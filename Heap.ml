@@ -450,22 +450,10 @@ struct
 
   (* Finds number of nodes inside a Fibonacci heap *)
   let rec num_nodes (h: heap) : int =
-<<<<<<< HEAD
-    let num_nodes_print (h: heap) : int =
-      let num = lnk_lst_fold (fun a h' ->
-	match !h' with
-	| None -> 0
-	| Some n ->
-	  a + 1 + (num_nodes n.c)) 0 h in
-      let _ = Printf.printf "final num: %i \n" in num in
-    num_nodes_print h
-=======
     lnk_lst_fold (fun a h' ->
       match !h' with
       | None -> 0
-      | Some n -> a + 1 + (num_nodes n.c))
-    0 h
->>>>>>> cd41eed0a18503b3ad62a2b459c40d58af13fd3e
+      | Some n -> a + 1 + (num_nodes n.c)) 0 h
 
   (* Inserts a list of pairs into the given heap and returns a handle to the
    * resulting heap as well as a list of nodes corresponding to each pair,
@@ -613,23 +601,15 @@ struct
     let (oneheap, onelst) = insert_list empty [(k,v)] in
     assert(not (is_empty oneheap)) ;
     assert(not ((List.hd onelst) = None)) ;
-<<<<<<< HEAD
     Printf.printf "starting oneheap test \n";
     let (oneheap, _) = insert k v empty in
     Printf.printf "oneheap and onelst created \n";
-    (* let (k1,v1),emptyheap = match delete_min oneheap with
-=======
     let (k1,v1),emptyheap = match delete_min oneheap with
->>>>>>> b4a462b5fcc067855b5aacc669872d8b236931af
       | None,_ -> failwith "heap is not empty"
       | (Some kv),h -> kv,h in
     assert(num_nodes oneheap = 1) ;
     assert((k1,v1) = (k,v)) ;
-<<<<<<< HEAD
-    assert(is_empty emptyheap) ; *)
-=======
     assert(is_empty emptyheap) ;
->>>>>>> b4a462b5fcc067855b5aacc669872d8b236931af
     let seqpairs = generate_pair_list 100 in
     let (seqheap, seqlst) = insert_list empty seqpairs in
         (* ok to here *)
@@ -645,15 +625,9 @@ struct
     ()
 
   let run_tests () =
-<<<<<<< HEAD
     (*test_insert () ;*)
     (*test_decrease_key () ; *)
     test_delete_min () ;
-=======
-    test_insert () ;
-    (*test_decrease_key () ;*)
-    (*test_delete_min () ;*)
->>>>>>> b4a462b5fcc067855b5aacc669872d8b236931af
     ()
 
 end
