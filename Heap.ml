@@ -135,6 +135,11 @@ struct
     | Less -> k2
     | _ -> k1
 
+  let get_top_node (h: heap) : (key * value) option =
+    match !h with
+    | None -> None
+    | Some n -> Some (n.k,n.v)
+
   (* Returns heap with smaller root key; if keys equal, first arg 
    * returned. Empty heap considered larger than all non-empty heaps *)
   let minroot (h1: heap) (h2: heap) : heap =
@@ -142,7 +147,7 @@ struct
     | None, None -> h1
     | Some _, None -> h1
     | None, Some _ -> h2
-    | Some n1, Some n2 -> if H.compare n2.k n1.k = Less then h2 else h1
+    | Some (k1,_), Some (k2,_) -> if H.compare k2 k1 = Less then h2 else h1
 
   (* A fold function across a double linked list of heaps. The function
    * folds left and stops when it's made a full loop *)
@@ -173,8 +178,8 @@ struct
    * either arg is None, the other arg is return by itself *)
   let link (hl: heap) (hr: heap) : unit =
     match !hl,!hr with
-    | _,None -> hl
-    | None,_ -> hr
+    | _,None -> ()
+    | None,_ -> ()
     | Some nl,Some nr -> nl.r <- hr; nr.l <- hl   
 
 (* Old implementation of leastroot; delete when finished
@@ -246,15 +251,17 @@ struct
         (* If h is empty, then the new node's siblings should be itself *)
         let newheap = empty in
         let newnode =
-          {k=k;v=v;p=empty;l=newheap;r=newheap;ch=empty;rk=0;mk=false} in
+          {k=k;v=v;p=empty;l=newheap;r=newheap;c=empty;rk=0;mk=false} in
         newheap := Some newnode; (newheap,newheap)
     | Some n ->
         (* If h is not empty, then insert new node to left of current min *)
-        let newnode = {k=k;v=v;p=empty;l=n.l;r=h;ch=empty;rk=0;mk=false} in
+        let newnode = {k=k;v=v;p=empty;l=n.l;r=h;c=empty;rk=0;mk=false} in
         let newheap = ref (Some newnode) in
-	let l = !(n.l) in
-        n.l <- newheap; l.r <- newheap; ((minroot h newheap),newheap)
-
+	match !(n.l) with
+	| None -> failwith "Node must have real siblings"
+	| Some l ->
+          n.l <- newheap; l.r <- newheap; ((minroot h newheap),newheap)
+ 
   (* clean removes a tree from the surrounding heap. 
    * clean doesn't change parent marked, but it does decrease parent rank.
    * If cleaned tree has smallest heap node as root, the rest of the tree
@@ -264,25 +271,25 @@ struct
     | None -> ()
     | Some n ->
         let clean_siblings : unit =
-          match n.l,n.r with
-	  | Some l, Some r -> link l r
+          match !(n.l),!(n.r) with
+	  | Some l, Some r -> link n.l n.r
           | _,_ -> failwith "node must have real siblings" in
         let clean_parent : unit =
-          match n.p with
+          match !(n.p) with
           | None -> ()
           | Some p ->
 	    if p.rk = 1 then p.c <- empty else p.c <- n.l; 
-	    prk <- prk-1 in
+	    p.rk <- p.rk-1 in
         clean_siblings;
         clean_parent
 
   (* merges two heaps by making larger-key root a child of smaller-key root *)
   let rec merge (h1: heap) (h2: heap) : unit =
     match !h1,!h2 with
-    | _, None -> h1
-    | None, _ -> h2
+    | _, None -> ()
+    | None, _ -> ()
     | Some n1, Some n2 ->
-      match H.compare (!h1).k (!h2).k with
+      match H.compare n1.k n2.k with
       | Less | Equal ->
 	n1.rk <- n1.rk + 1; clean h2;
         (match !(n1.c) with
@@ -301,10 +308,17 @@ struct
     match !h with
     | None -> (None, h)
     | Some n ->
-      let insert_children h' : unit =
-	match h'.c with
+      let insert_children (h': heap) : unit =
+	(match !h' with
 	| None -> ()
-	| Some -> lnk_lst_fold (fun () c -> link n.l c; link c h) () h.c in
+	| Some n' -> 
+	  lnk_lst_fold 
+	    (fun () c -> 
+	      match !c with
+	      | None -> failwith "node cannot be empty"
+	      | Some cn -> link n.l c; link c h; cn.p <- empty) () n'.c;
+	  n'.rk <- 0)
+      in
       insert_children h;
       let l = n.l in clean h; 
       let nh = leastroot l in
@@ -327,7 +341,6 @@ struct
 	  if merged then merged else try_merge h) in
       while merge_more do () done;
       (Some (h.k, h.v), nh)
-	    
       
 (* Bits of old code from delete_min; delete when done
 
@@ -360,10 +373,6 @@ struct
                         while comb_more do () done;
                         (Some (k,v), new_h)
 *)                         
-  let get_top_node (h: heap) : (key * value) option =
-    match !h with
-    | None -> None
-    | Some n -> Some (n.k,n.v)
 
   (* Cut detaches a node from its parent & siblings and adds it to the root
    * list, then recursively cuts node parents that are marked until it 
