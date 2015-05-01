@@ -468,7 +468,7 @@ struct
    * resulting heap as well as a list of nodes corresponding to each pair,
    * in the same order as the original pair list it corresponds to. *)
   let insert_list (h: heap) (lst: (key * value) list) : heap * heap list =
-    let insert_keep_track r (k,v) =
+    let insert_keep_track (k,v) r =
       let (sofar,hs) = r in
       let size1 = num_nodes sofar in
       (* Printf.printf "num_nodes works on heap of size %i \n" size1; *)
@@ -481,7 +481,7 @@ struct
       (* Printf.printf "assert on size %i \n" size1; *)
       (whole, mine::hs)
     in
-    List.fold_left lst ~init:(h,[]) ~f:insert_keep_track 
+    List.fold_right lst ~init:(h,[]) ~f:insert_keep_track 
 
   (* Generates a (key,value) list with n distinct keys in increasing order,
    * starting from a given key. *)
@@ -523,12 +523,20 @@ struct
     in
     min_helper lst None
 
-  let top_matches (a: (key * value)) (pt: heap) : bool =
+  let top_matches ((ka,_): (key * value)) (pt: heap) : bool =
     match get_top_node pt with
     | None -> false
-    | Some b -> a = b
+    | Some (kb,_) ->
+        (match H.compare ka kb with
+        | Equal -> true
+        | _ -> false)
     
   let test_insert () = 
+    (* Insert a single pair *)
+    let (k,v) = H.gen_pair () in
+    let (hp,nd) = insert k v empty in
+    assert(top_matches (k,v) nd);
+    assert(top_matches (k,v) hp);
     (* Fill heap with random pairs *)
     let randpairs = generate_random_list 100 in
     let (h1,lst1) = insert_list empty randpairs in
