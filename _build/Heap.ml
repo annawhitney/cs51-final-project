@@ -381,7 +381,7 @@ struct
 	| Some tn ->
 	  let _ = clean h; n.p <- empty; link tn.l h; link h top in
 	  let newtop = minroot top h in
-	  if pn.mk then cut ph newtop else 
+	  if pn.mk then cut ph newtop else
 	    if pn.p = None 
 	    then newtop
 	    else pn.mk <- true; newtop
@@ -423,7 +423,7 @@ struct
           (* If parent key is still smaller or equal, heap ordering is
            * fine and we just update without changing anything else *)
           | Less | Equal -> t
-          | Greater -> cut nd t
+          | Greater -> cut n t
 
   (*****************************)
   (***** Testing Functions *****)
