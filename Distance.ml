@@ -26,7 +26,6 @@ let coords_to_rad (x: float * float) : float * float =
 
 let distance (cutoff: float) (st: float * float)
  (fin: float * float) : float option = 
-  let _ = Printf.printf "I'm inside the distance function!\n" in
   let (lat1, long1) = coords_to_rad st in 
   let (lat2, long2) = coords_to_rad fin in
   let a = haversin (lat2 -. lat1) +. ((cos lat1) *. (cos lat2) *. 
