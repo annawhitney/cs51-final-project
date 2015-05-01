@@ -3,6 +3,7 @@
  * CS51
  ***************************************)
 open Core.Std
+module Regex = Re2.Regex
 open Graph
 open Links
 
@@ -669,8 +670,8 @@ let read_csv () : GeoGraph.graph =
   let cutoff = Float.of_string (Sys.argv.(2)) in
   let file = In_channel.create Sys.argv.(1) in
   let lines = In_channel.input_lines file in
-  let delimiter = Str.regexp ";" in
-  let parse_line line = Str.split_delim delimiter line in
+  let delimiter = Regex.create_exn ";" in
+  let parse_line line = Regex.split delimiter line in
   let parsed : string list list = List.map lines ~f:parse_line in
   let rec cast (parselist: string list list) :
       (string * (float * float)) list =
