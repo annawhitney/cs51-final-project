@@ -160,13 +160,13 @@ struct
         (h': heap) (h0: heap) : 'a =
       match !h' with
       | None -> acc'
-      | Some n ->
-        if phys_equal n.l h0
+      | Some n' ->
+        if phys_equal n'.l h0
         then f' acc' h'
         else 
-          match !(n.l) with
+          match !(n'.l) with
           | None -> f' acc' h'
-          | _ -> lnk_lst_fold_helper f' (f' acc' h') n.l h0
+          | _ -> lnk_lst_fold_helper f' (f' acc' h') n'.l h0
     in
     match !h with
     | None -> acc
@@ -250,6 +250,7 @@ struct
    * of the heap with the containing the key value pair and returns the
    * updated pointer to the min as well as a pointer to the new node *)
   let insert (k: key) (v: value) (h: heap) : heap * heap =
+    Printf.printf "starting insert \n";
     match !h with
     | None ->
         (* If h is empty, then the new node's siblings should be itself *)
@@ -257,15 +258,21 @@ struct
         let newnode =
           {k=k;v=v;p=empty;l=newheap;r=newheap;c=empty;rk=0;mk=false}
         in
-        newheap := Some newnode; (newheap,newheap)
+        newheap := Some newnode;
+	Printf.printf "inserted into empty heap \n";
+	(newheap,newheap)
     | Some n ->
+      Printf.printf "starting insert on real heap \n";
         (* If h is not empty, then insert new node to left of current min *)
         let newnode = {k=k;v=v;p=empty;l=n.l;r=h;c=empty;rk=0;mk=false} in
         let newheap = ref (Some newnode) in
         match !(n.l) with
         | None -> failwith "Node must have real siblings"
         | Some l ->
-            n.l <- newheap; l.r <- newheap; ((minroot h newheap),newheap)
+          n.l <- newheap; 
+	  l.r <- newheap; 
+	  Printf.printf "inserted into real heap \n";
+	  ((minroot h newheap),newheap)
  
   (* clean removes a tree from the surrounding heap. 
    * clean doesn't change parent marked, but it does decrease parent rank.
@@ -453,23 +460,30 @@ struct
 
   (* Finds number of nodes inside a Fibonacci heap *)
   let rec num_nodes (h: heap) : int =
-    lnk_lst_fold (fun a h' ->
-      match !h' with
-      | None -> a
-      | Some n ->
-	a + 1 + (num_nodes n.c) ) 0 h
+    let num_nodes_print (h: heap) : int =
+      let num = lnk_lst_fold (fun a h' ->
+	match !h' with
+	| None -> 0
+	| Some n ->
+	  (*Printf.printf "current acc value: %i \n" a;*)
+	  a + 1 + ((*Printf.printf "starting num_nodes on child \n "; *)
+		   num_nodes n.c) ) 0 h in
+      let _ = Printf.printf "final num: %i \n" in num in
+    num_nodes_print h
 
   (* Inserts a list of pairs into the given heap and returns a handle to the
    * resulting heap as well as a list of nodes corresponding to each pair,
    * in the same order as the original pair list it corresponds to. *)
   let insert_list (h: heap) (lst: (key * value) list) : heap * heap list =
-    let insert_keep_track (k,v) r =
+    let insert_keep_track r (k,v) =
       let (sofar,hs) = r in
       let (whole,mine) = insert k v sofar in 
+      Printf.printf "insert called and completed \n";
       assert ((num_nodes sofar) + 1 = (num_nodes whole));
+      Printf.printf "assert statement passed \n";
       (whole, mine::hs)
     in
-    List.fold_right lst ~f:insert_keep_track ~init:(h,[])
+    List.fold_left lst ~init:(h,[]) ~f:insert_keep_track 
 
   (* Generates a (key,value) list with n distinct keys in increasing order,
    * starting from a given key. *)
@@ -579,7 +593,12 @@ struct
     let oneelt = match onepair with
       | [] -> failwith "list is not empty"
       | hd::_ -> hd in
+    (*let (oneheap, onelst) = insert_list empty [(H.gen_key(),H.gen_value())] in
+    assert(not (is_empty oneheap)) ;
+    assert(not ((List.hd onelst) = None)) ;*)
+    Printf.printf "starting oneheap test \n";
     let (oneheap, onelst) = insert_list empty onepair in
+    Printf.printf "oneheap and onelst created \n";
     let (k1,v1),emptyheap = match delete_min oneheap with
       | None,_ -> failwith "heap is not empty"
       | (Some kv),h -> kv,h in
@@ -598,8 +617,8 @@ struct
     ()
 
   let run_tests () =
-    test_insert () ;
-    test_decrease_key () ;
+    (*test_insert () ;*)
+    (*test_decrease_key () ;*)
     test_delete_min () ;
     ()
 
