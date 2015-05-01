@@ -4,16 +4,16 @@ open Heap
 open Distance
 
 let rec addedges (castlist: string * (float * float) list) 
-(graph: Geograph.graph) (cutoff: float) : Geograph.graph = 
+(graph: GeoGraph.graph) (cutoff: float) : GeoGraph.graph = 
   let rec addhelper (place: string * (float * float)) 
-  (rest: string * (float * float) list) (graph: Geograph.graph)
-  : Geograph.graph = 
+  (rest: string * (float * float) list) (graph: GeoGraph.graph)
+  : GeoGraph.graph = 
     match rest with
     | [] -> graph
     | (name2, loc2)::tl -> (let (name1, loc1) = place in
                            match distance cutoff loc1 loc2 with
                            | None -> addhelper place tl graph
-                           | Some d -> Geograph.add_edge graph
+                           | Some d -> GeoGraph.add_edge graph
                                        (GeoNode.node_of_tag name1)
                                        (GeoNode.node_of_tag name2) d; 
                                        addhelper place tl graph) in
@@ -41,5 +41,5 @@ let read_csv () : GeoGraph.graph =
          ((Float.of_string lat) * (Float.of_string long))::(casted tl)
        | _ -> []) in
   let casted = cast parsed in
-  addedges casted Geograph.empty cutoff
+  addedges casted GeoGraph.empty cutoff
   
