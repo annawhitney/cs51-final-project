@@ -3,33 +3,6 @@ open Graph
 open Heap
 open Distance
 
-let earthrad = 6371.0 
-
-let pi = 4. *. atan 1.
-
-(* haversin = (sin(theta/2))^2 *)
-let haversin (x:float) : float =
-  (sin (x /. 2.0)) ** 2.0
-
-(* converts lat and long pairs from degrees into radians *)
-let coords_to_rad (x: float * float) : float * float = 
-  let radians =  ( *.) (pi /. 180.0) in
-  match x with 
-  | (a, b) -> (radians a, radians b)
-
-(* our spherical distance function is all based on the Haversine Formula -
- * see https://www.youtube.com/watch?v=y1JZNTRDn_w *
- * also see http://www.movable-type.co.uk/scripts/latlong.html *)
-
-let distance (cutoff: float) (st: float * float)
- (fin: float * float) : float option = 
-  let (lat1, long1) = coords_to_rad st in 
-  let (lat2, long2) = coords_to_rad fin in
-  let a = haversin (lat2 -. lat1) +. ((cos lat1) *. (cos lat2) *. 
-    haversin (long2 -. long1)) in
-  let dis = 2.0 *. earthrad *. (atan2 (sqrt a) (sqrt (1.0 -. a))) in  
-  if dis < cutoff then Some dis else None 
-
 let rec addedges (castlist: string * (float * float) list) 
 (graph: Geograph.graph) (cutoff: float) : Geograph.graph = 
   let rec addhelper (place: string * (float * float)) (rest: string * (float * float) list)
@@ -39,11 +12,13 @@ let rec addedges (castlist: string * (float * float) list)
     | (name2, loc2)::tl -> (let (name1, loc1) = place in
                            match distance cutoff loc1 loc2 with
                            | None -> addhelper place tl graph
-                           | Some d -> Geograph.add_edge graph (GeoNode.node_of_tag name1) (GeoNode.node_of_tag name2) d; 
+                           | Some d -> Geograph.add_edge graph
+                                       (GeoNode.node_of_tag name1)
+                                       (GeoNode.node_of_tag name2) d; 
                                        addhelper place tl graph) in
   match castlist with
   | [] -> graph
-  | hd::tl -> addhelper hd tl graph; addedges tl graph cutoff
+  | hd::tl -> ignore(addhelper hd tl graph); addedges tl graph cutoff
 
    
 
