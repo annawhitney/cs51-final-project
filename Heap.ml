@@ -694,16 +694,17 @@ let addedges (castlist: (string * (float * float)) list)
   (rest: (string * (float * float)) list) (graph: GeoGraph.graph)
   : GeoGraph.graph = 
     match rest with
-    | [] -> graph
+    | [] -> let _ = Printf.printf "rest of location list is empty\n" in graph
     | (name2, loc2)::tl ->
         (let (name1,loc1) = place in
-        match Distance.distance cutoff loc1 loc2 with
+        match (Distance.distance cutoff loc1 loc2) with
         | None -> addhelper place tl graph
         | Some d ->
             let newgraph = GeoGraph.add_edge graph
                           (GeoNode.node_of_tag name1)
                           (GeoNode.node_of_tag name2) d 
             in
+            let _ = Printf.printf "Added edge between %s and %s with distance %f to graph.\n" name1 name2 d in
             addhelper place tl newgraph)
   in
   match castlist with
@@ -716,22 +717,24 @@ let read_csv () : GeoGraph.graph =
   let cutoff = Float.of_string (Sys.argv.(2)) in
   let delimiter = Regex.create_exn ";" in
   let parse_line line = Regex.split delimiter line in
+  let rec cast (parseline: string list) : (string * (float * float)) =
+     match parseline with
+     | [name;lat;lng] ->
+         let _ = Printf.printf "%s %s %s\n" name lat lng in
+         (name,((Float.of_string lat),(Float.of_string lng)))
+     | _ -> ("dummy",(0.0,0.0))
+  in
+  let lines = In_channel.read_lines Sys.argv.(1) in
+  let parse_and_cast line = cast (parse_line line) in
+  let casted = List.map lines ~f:parse_and_cast in
   (* Read in and parse the file into a string list list. *)
-  let parsed = In_channel.with_file Sys.argv.(1)
+  (*let casted = In_channel.with_file Sys.argv.(1)
                ~f:(fun file -> In_channel.fold_lines file ~init:[]
-               ~f:(fun lst ln -> (parse_line ln)::lst))
-  in
-  let rec cast (parselist: string list list) :
-    (string * (float * float)) list =
-     match parselist with
-     | [] -> []  
-     | hd::tl ->
-         (match hd with 
-         | [name;lat;lng] ->
-           (name,((Float.of_string lat),(Float.of_string lng)))::(cast tl)
-         | _ -> [])
-  in
-  let casted = cast parsed in
+               ~f:(fun lst ln -> match parse_and_cast ln with
+                                 | Some p -> p::lst
+                                 | None -> lst))
+  in*)
+  let _ = List.iter casted ~f:(fun (nm,(lat,lng)) -> Printf.printf "%s %f %f\n" nm lat lng) in
   addedges casted GeoGraph.empty cutoff
 
 
