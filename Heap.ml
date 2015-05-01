@@ -746,12 +746,12 @@ let read_csv () : GeoGraph.graph =
                   Sys.argv.(1); exit 1) in 
   let delimiter = Regex.create_exn ";" in
   let parse_line line = Regex.split delimiter line in
-  let rec cast (parseline: string list) : (string * (float * float)) =
+  let rec cast (parseline: string list) : (string * (float * float)) option =
      match parseline with
      | [name;lat;lng] ->
          let _ = Printf.printf "%s %s %s\n" name lat lng in
-         (name,((Float.of_string lat),(Float.of_string lng)))
-     | _ -> ("dummy",(0.0,0.0))
+         Some (name,((Float.of_string lat),(Float.of_string lng)))
+     | _ -> None
   in
   (*let file = In_channel.create Sys.argv.(1) in
   let get_lines f : string list =
@@ -762,9 +762,9 @@ let read_csv () : GeoGraph.graph =
     in
     lines_helper f []
   in
-  let lines = get_lines file in
+  let lines = get_lines file in*)
   let parse_and_cast line = cast (parse_line line) in
-  let casted = List.map lines ~f:parse_and_cast in*)
+  (*let casted = List.map lines ~f:parse_and_cast in*)
   (* Read in and parse the file into a string list list. *)
   let casted = In_channel.with_file Sys.argv.(1)
                ~f:(fun file -> In_channel.fold_lines file ~init:[]
