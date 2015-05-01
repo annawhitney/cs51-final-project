@@ -350,8 +350,12 @@ struct
       let merge_more (h': heap) : bool =
         lnk_lst_fold (fun merged h ->
           if merged then merged else try_merge h) false h' in
-            while merge_more h do () done;
-            (Some (n.k, n.v), nh)
+      let rec merge_finish () : unit =
+	if merge_more h
+	then merge_finish ()
+	else () in
+      merge_finish ();
+      (Some (n.k, n.v), nh)
       
 (* Bits of old code from delete_min; delete when done
 
@@ -553,22 +557,28 @@ struct
     let key1 = H.gen_key() in
     let identpairs = generate_identical_list key1 100 in
     let (idheap, idlist) = insert_list empty identpairs in
-    let (id1,id2,ide) = match idlist with
+    let (id1,id2,id3) = match idlist with
       | [] -> failwith "list can't be empty"
       | id1::id2::id3::_ -> id1,id2,id3
       | _ -> failwith "list must have 100 nodes" in
-    let key0 = (H.gen_key_lt key1 ()) in
+    let key0 = H.gen_key_lt (H.gen_key_lt key1 ()) () in
     let heap1 = decrease_key id1 key0 idheap in
     match get_top_node heap1 with
-    | None -> failwith "not possible"
+    | None -> failwith "not possible 0"
     | Some (k, _) -> assert(H.compare k key0 = Equal);
     let keymid = match H.gen_key_between key0 key1 () with
-      | None -> failwith "not possible"
+      | None -> failwith "not possible 1"
       | Some keymid -> keymid in
     let heap2 = decrease_key id2 keymid heap1 in
-    assert(Some (key0, H.gen_value()) = get_top_node heap2) ;
+    let key2 = match get_top_node heap2 with
+      | None -> failwith "heap cannot be empty"
+      | Some (key2,_) -> key2 in
+    Printf.printf "0 \n";
+    assert(key0 = key2) ;
+    Printf.printf "1 \n";
     let seqpairs = generate_pair_list 100 in
     let (seqheap, seqlst) = insert_list empty seqpairs in
+    Printf.printf "2 \n";
     let seqlst' = match seqlst with
       | [] -> failwith "list is not empty"
       | _::tl -> tl in
