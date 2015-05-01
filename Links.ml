@@ -2,7 +2,7 @@ open Core.Std
 
 (* A singly linked list implementation that, unlike OCaml's built-in version,
  * allows for multiple nodes to point to the same next node. *)
-let rec link = Nil | Link of 'a link_node ref
+type link = Nil | Link of 'a link_node ref
 and 'a link_node = Node of ('a * link)
 
 (* Turns a link_node-based list into a normal OCaml list. *)
