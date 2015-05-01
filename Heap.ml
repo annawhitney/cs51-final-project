@@ -20,6 +20,7 @@ sig
 
   (* Returns an empty heap. *)
   val empty: heap 
+
   (* Checks if heap is empty. *)
   val is_empty: heap -> bool
 
@@ -67,7 +68,8 @@ end
 
 (* Borrowed wholesale from Moogle (since a HEAP_ARG and a DICT_ARG are
  * identical) for testing purposes *)
-module IntStringHeapArg : HEAP_ARG =
+module IntStringHeapArg : (HEAP_ARG with type key = int
+    with type value = string) =
 struct
   open Order
   type key = int
@@ -132,13 +134,6 @@ struct
     | None -> true
     | _ -> false
 
-(* unused; remove unless needed later
-
-  let minkey (k1: key) (k2: key) : key =
-    match H.compare k2 k1 with
-    | Less -> k2
-    | _ -> k1
-*)
   let get_top_node (h: heap) : (key * value) option =
     match !h with
     | None -> None
@@ -154,30 +149,22 @@ struct
     | Some (k1,_), Some (k2,_) -> if H.compare k2 k1 = Less then h2 else h1
 
   (* A fold function across a double linked list of heaps. The function
-   * folds left and stops when it's made a full loop *)
+   * folds right and stops when it's made a full loop *)
   let lnk_lst_fold (f: 'a -> heap -> 'a) (acc: 'a) (h: heap) : 'a =
-    let rec lnk_lst_fold_helper (f': 'a -> heap -> 'a) (acc': 'a)
-        (h': heap) (h0: heap) : 'a =
-      match !h' with
-      | None -> acc'
-      | Some n' -> 
-        if phys_equal n'.l h0
-        then (Printf.printf "hallo" ; f' acc' h')
-        else 
-          match !(n'.l) with
-          | None -> f' acc' h'
-          | _ -> lnk_lst_fold_helper f' (f' acc' h') n'.l h0
+    let rec lnk_lst_fold_helper (f: 'a -> heap -> 'a) (acc: 'a)
+        (h: heap) (h0: heap) : 'a =
+      match !h with
+      | None -> acc
+      | Some n ->
+        if phys_equal n.r h0
+        then f acc h
+        else lnk_lst_fold_helper f (f acc h) n.r h0
     in
-    match !h with
-    | None -> acc
-    | Some n ->
-      match !(n.r) with
-      | None -> failwith "nodes must have real siblings"
-      | Some rn -> lnk_lst_fold_helper f acc h rn.l
-
+    lnk_lst_fold_helper f acc h h
+      
   (* Returns smallest root node in heap *)
   let leastroot (h: heap) : heap = lnk_lst_fold minroot h h
-
+    
   (* reassigns sibling fields to make h1 & h2 left/right siblings. If
    * either arg is None, the other arg is return by itself *)
   let link (hl: heap) (hr: heap) : unit =
@@ -250,19 +237,17 @@ struct
    * of the heap with the containing the key value pair and returns the
    * updated pointer to the min as well as a pointer to the new node *)
   let insert (k: key) (v: value) (h: heap) : heap * heap =
-    Printf.printf "starting insert \n";
     match !h with
     | None ->
         (* If h is empty, then the new node's siblings should be itself *)
-        let newheap = empty in
+        let newheap = ref None in
         let newnode =
           {k=k;v=v;p=empty;l=newheap;r=newheap;c=empty;rk=0;mk=false}
         in
         newheap := Some newnode;
-	Printf.printf "inserted into empty heap \n";
+	(* Printf.printf "inserted into empty heap \n"; *)
 	(newheap,newheap)
     | Some n ->
-      Printf.printf "starting insert on real heap \n";
         (* If h is not empty, then insert new node to left of current min *)
         let newnode = {k=k;v=v;p=empty;l=n.l;r=h;c=empty;rk=0;mk=false} in
         let newheap = ref (Some newnode) in
@@ -271,7 +256,7 @@ struct
         | Some l ->
           n.l <- newheap; 
 	  l.r <- newheap; 
-	  Printf.printf "inserted into real heap \n";
+	  (* Printf.printf "inserted into real heap \n"; *)
 	  ((minroot h newheap),newheap)
  
   (* clean removes a tree from the surrounding heap. 
@@ -339,28 +324,30 @@ struct
       let rk_lst : heap list ref = ref [] in
       (* try to merge a heap with any heap in rk_lst *)
       let try_merge (h': heap) : bool =
-	let merged_once = List.fold_left !rk_lst ~init:false
-	  ~f:(fun merged comp_h -> 
-	    if merged then merged else
-	      match !comp_h, !h with
-	      | None,_ | _,None -> failwith "node cannot be empty"
-	      | Some comp_n, Some n' ->
-		if comp_n.rk = n'.rk
-		then 
-		  let _ = merge comp_h h'; rk_lst := [] in 
-		  true
-		else 
-		  false) in
-	if merged_once 
-	then true 
-	else (let _ = rk_lst := h'::!rk_lst in false)
+        let merged_once = List.fold_left !rk_lst ~init:false
+          ~f:(fun merged comp_h -> 
+            if merged then merged else
+              match !comp_h, !h with
+              | None,_ | _,None -> failwith "node cannot be empty"
+              | Some comp_n, Some n' ->
+          if comp_n.rk = n'.rk
+          then 
+            let _ = merge comp_h h'; rk_lst := [] in 
+            true
+          else 
+            false)
+        in
+        if merged_once 
+        then true 
+        else (let _ = rk_lst := h'::!rk_lst in false)
       in
       (* recurse through lnk list w/ merged_once until it merges once only *)
       let merge_more (h': heap) : bool =
         lnk_lst_fold (fun merged h ->
-          if merged then merged else try_merge h) false h' in
-            while merge_more h do () done;
-            (Some (n.k, n.v), nh)
+          if merged then merged else try_merge h) false h'
+      in
+      while merge_more h do () done;
+      (Some (n.k, n.v), nh)
       
 (* Bits of old code from delete_min; delete when done
 
@@ -460,6 +447,7 @@ struct
 
   (* Finds number of nodes inside a Fibonacci heap *)
   let rec num_nodes (h: heap) : int =
+<<<<<<< HEAD
     let num_nodes_print (h: heap) : int =
       let num = lnk_lst_fold (fun a h' ->
 	match !h' with
@@ -468,6 +456,13 @@ struct
 	  a + 1 + (num_nodes n.c)) 0 h in
       let _ = Printf.printf "final num: %i \n" in num in
     num_nodes_print h
+=======
+    lnk_lst_fold (fun a h' ->
+      match !h' with
+      | None -> 0
+      | Some n -> a + 1 + (num_nodes n.c))
+    0 h
+>>>>>>> cd41eed0a18503b3ad62a2b459c40d58af13fd3e
 
   (* Inserts a list of pairs into the given heap and returns a handle to the
    * resulting heap as well as a list of nodes corresponding to each pair,
@@ -475,10 +470,15 @@ struct
   let insert_list (h: heap) (lst: (key * value) list) : heap * heap list =
     let insert_keep_track r (k,v) =
       let (sofar,hs) = r in
+      let size1 = num_nodes sofar in
+      (* Printf.printf "num_nodes works on heap of size %i \n" size1; *)
       let (whole,mine) = insert k v sofar in 
-      Printf.printf "insert called and completed \n";
-      assert ((num_nodes sofar) + 1 = (num_nodes whole));
-      Printf.printf "assert statement passed \n";
+      (* Printf.printf "insert function just finished \n"; *)
+      (*  if !whole = None 
+	  then Printf.printf "None child \n"
+	  else Printf.printf "Some child \n"); *)
+      assert(size1 + 1 = num_nodes whole) ; 
+      (* Printf.printf "assert on size %i \n" size1; *)
       (whole, mine::hs)
     in
     List.fold_left lst ~init:(h,[]) ~f:insert_keep_track 
@@ -559,9 +559,11 @@ struct
       | [] -> failwith "list can't be empty"
       | id1::id2::id3::_ -> id1,id2,id3
       | _ -> failwith "list must have 100 nodes" in
-    let key0 = (H.gen_key_lt (H.gen_key()) ()) in
+    let key0 = (H.gen_key_lt key1 ()) in
     let heap1 = decrease_key id1 key0 idheap in
-    assert(Some (key0, H.gen_value()) = get_top_node heap1) ;
+    match get_top_node heap1 with
+    | None -> failwith "not possible"
+    | Some (k, _) -> assert(H.compare k key0 = Equal);
     let keymid = match H.gen_key_between key0 key1 () with
       | None -> failwith "not possible"
       | Some keymid -> keymid in
@@ -588,20 +590,18 @@ struct
     
   let test_delete_min () =
     let onepair = generate_pair_list 1 in
-    let oneelt = match onepair with
+    let (k,v) = match onepair with
       | [] -> failwith "list is not empty"
-      | hd::_ -> hd in
-    (*let (oneheap, onelst) = insert_list empty [(H.gen_key(),H.gen_value())] in
+      | (a,b)::_ -> (a,b) in
+    let (oneheap, onelst) = insert_list empty [(k,v)] in
     assert(not (is_empty oneheap)) ;
-    assert(not ((List.hd onelst) = None)) ;*)
-    Printf.printf "starting oneheap test \n";
-    let (oneheap, onelst) = insert_list empty onepair in
-    Printf.printf "oneheap and onelst created \n";
+    assert(not ((List.hd onelst) = None)) ;
     let (k1,v1),emptyheap = match delete_min oneheap with
       | None,_ -> failwith "heap is not empty"
       | (Some kv),h -> kv,h in
+    assert(num_nodes oneheap = 1) ;
+    assert((k1,v1) = (k,v)) ;
     assert(is_empty emptyheap) ;
-    assert((k1,v1) = oneelt) ;
     let seqpairs = generate_pair_list 100 in
     let (seqheap, seqlst) = insert_list empty seqpairs in
     let emptyheap = List.fold_left ~f:(fun h t ->
@@ -615,15 +615,16 @@ struct
     ()
 
   let run_tests () =
-    (*test_insert () ;*)
+    test_insert () ;
     (*test_decrease_key () ;*)
-    test_delete_min () ;
+    (*test_delete_min () ;*)
     ()
 
 end
 
 (* Create a fib heap with (int, string) pairs for testing *)
-module IntStringFibHeap = FibonacciHeap(IntStringHeapArg) ;;
+module IntStringFibHeap : (PRIOHEAP with type value = IntStringHeapArg.value
+    with type key = IntStringHeapArg.key) = FibonacciHeap(IntStringHeapArg) ;;
 (* Uncomment the following when ready to run tests on fib heap *)
 IntStringFibHeap.run_tests()
 
