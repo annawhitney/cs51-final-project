@@ -84,9 +84,9 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
                     in
                     next_node (List.fold_left ns ~f:handle_node ~i:hp)
                         (Node (nm,Link(ref prev))))))
-
   in next_node fib_heap ;;
 
 let graph = read_csv (* cmd line arg *) in
 let (start,finish) = get_nodes graph in
 dijkstra start finish graph ;;
+(* TODO: which parts do we actually want to print out? *)
