@@ -739,6 +739,11 @@ let read_csv () : GeoGraph.graph =
                 | _ -> Printf.printf 
                   "'%s' is an invalid cutoff value\ncutoff value must be numerical\n"
                   Sys.argv.(2); exit 1) in
+  let csv = (match Sys.file_exists ?follow_symlinks:(Some true) (Sys.argv.(1)) with
+             | `Yes -> Sys.argv.(1)
+             | _ -> Printf.printf 
+                  "file '%s' not found"
+                  Sys.argv.(1); exit 1) in 
   let delimiter = Regex.create_exn ";" in
   let parse_line line = Regex.split delimiter line in
   let rec cast (parseline: string list) : (string * (float * float)) =
