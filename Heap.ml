@@ -745,16 +745,25 @@ let read_csv () : GeoGraph.graph =
          (name,((Float.of_string lat),(Float.of_string lng)))
      | _ -> ("dummy",(0.0,0.0))
   in
-  let lines = In_channel.read_lines Sys.argv.(1) in
+  (*let file = In_channel.create Sys.argv.(1) in
+  let get_lines f : string list =
+    let rec lines_helper f lst =
+      match In_channel.input_line f with
+      | None -> lst
+      | Some l -> let _ = Printf.printf "%s\n" l in lines_helper f (l::lst)
+    in
+    lines_helper f []
+  in
+  let lines = get_lines file in
   let parse_and_cast line = cast (parse_line line) in
-  let casted = List.map lines ~f:parse_and_cast in
+  let casted = List.map lines ~f:parse_and_cast in*)
   (* Read in and parse the file into a string list list. *)
-  (*let casted = In_channel.with_file Sys.argv.(1)
+  let casted = In_channel.with_file Sys.argv.(1)
                ~f:(fun file -> In_channel.fold_lines file ~init:[]
                ~f:(fun lst ln -> match parse_and_cast ln with
                                  | Some p -> p::lst
                                  | None -> lst))
-  in*)
+  in
   let _ = List.iter casted ~f:(fun (nm,(lat,lng)) -> Printf.printf "%s %f %f\n" nm lat lng) in
   addedges casted GeoGraph.empty cutoff
 
