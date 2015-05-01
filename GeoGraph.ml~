@@ -1,0 +1,25 @@
+open Core.Std
+open Heap
+open Graph
+
+module GeoNode : NODE =
+struct
+  type weight = float
+  type tag = string
+  type node = {name: tag; mutable pt: FibHeap.heap option;
+	       mutable prev: tag link}
+  let tag_of_node = (fun n -> n.name)
+  let node_of_tag t = {name = t; pt = None; prev = Nil}
+  let compare n1 n2 = 
+    let ord = String.compare n1.name n2.name in
+    if ord < 0 then Less else
+      if ord = 0 then Equal
+      else Greater
+  let string_of_node n = n.name
+  let gen () = {name = ""; pt = None; prev = Nil}
+  let gen_weight () = 0.0
+  let string_of_weight = Float.to_string
+end
+
+
+module GeoGraph = Graph(GeoNode)

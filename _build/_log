@@ -1,0 +1,40 @@
+### Starting build.
+# Target: Heap.ml.depends, tags: { extension:ml, file:Heap.ml, ocaml, ocamldep, package(core), package(re2), quiet, thread }
+ocamlfind ocamldep -package core -package re2 -modules Heap.ml > Heap.ml.depends
+# Target: Distance.ml.depends, tags: { extension:ml, file:Distance.ml, ocaml, ocamldep, package(core), package(re2), quiet, thread }
+ocamlfind ocamldep -package core -package re2 -modules Distance.ml > Distance.ml.depends
+# Target: Graph.ml.depends, tags: { extension:ml, file:Graph.ml, ocaml, ocamldep, package(core), package(re2), quiet, thread }
+ocamlfind ocamldep -package core -package re2 -modules Graph.ml > Graph.ml.depends
+# Target: Dict.ml.depends, tags: { extension:ml, file:Dict.ml, ocaml, ocamldep, package(core), package(re2), quiet, thread }
+ocamlfind ocamldep -package core -package re2 -modules Dict.ml > Dict.ml.depends
+# Target: Order.ml.depends, tags: { extension:ml, file:Order.ml, ocaml, ocamldep, package(core), package(re2), quiet, thread }
+ocamlfind ocamldep -package core -package re2 -modules Order.ml > Order.ml.depends
+# Target: Order.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:Order.cmo, file:Order.ml, implem, ocaml, package(core), package(re2), quiet, thread }
+ocamlfind ocamlc -c -thread -package core -package re2 -o Order.cmo Order.ml
+# Target: Dict.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:Dict.cmo, file:Dict.ml, implem, ocaml, package(core), package(re2), quiet, thread }
+ocamlfind ocamlc -c -thread -package core -package re2 -o Dict.cmo Dict.ml
+# Target: Links.ml.depends, tags: { extension:ml, file:Links.ml, ocaml, ocamldep, package(core), package(re2), quiet, thread }
+ocamlfind ocamldep -package core -package re2 -modules Links.ml > Links.ml.depends
+# Target: Distance.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:Distance.cmo, file:Distance.ml, implem, ocaml, package(core), package(re2), quiet, thread }
+ocamlfind ocamlc -c -thread -package core -package re2 -o Distance.cmo Distance.ml
+# Target: Graph.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:Graph.cmo, file:Graph.ml, implem, ocaml, package(core), package(re2), quiet, thread }
+ocamlfind ocamlc -c -thread -package core -package re2 -o Graph.cmo Graph.ml
+# Target: Links.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:Links.cmo, file:Links.ml, implem, ocaml, package(core), package(re2), quiet, thread }
+ocamlfind ocamlc -c -thread -package core -package re2 -o Links.cmo Links.ml
+# Target: Heap.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:Heap.cmo, file:Heap.ml, implem, ocaml, package(core), package(re2), quiet, thread }
+ocamlfind ocamlc -c -thread -package core -package re2 -o Heap.cmo Heap.ml
+# Target: Order.cmx, tags: { compile, extension:cmx, extension:ml, file:Order.cmx, file:Order.ml, implem, native, ocaml, package(core), package(re2), quiet, thread }
+ocamlfind ocamlopt -c -thread -package core -package re2 -o Order.cmx Order.ml
+# Target: Dict.cmx, tags: { compile, extension:cmx, extension:ml, file:Dict.cmx, file:Dict.ml, implem, native, ocaml, package(core), package(re2), quiet, thread }
+ocamlfind ocamlopt -c -thread -package core -package re2 -o Dict.cmx Dict.ml
+# Target: Distance.cmx, tags: { compile, extension:cmx, extension:ml, file:Distance.cmx, file:Distance.ml, implem, native, ocaml, package(core), package(re2), quiet, thread }
+ocamlfind ocamlopt -c -thread -package core -package re2 -o Distance.cmx Distance.ml
+# Target: Graph.cmx, tags: { compile, extension:cmx, extension:ml, file:Graph.cmx, file:Graph.ml, implem, native, ocaml, package(core), package(re2), quiet, thread }
+ocamlfind ocamlopt -c -thread -package core -package re2 -o Graph.cmx Graph.ml
+# Target: Links.cmx, tags: { compile, extension:cmx, extension:ml, file:Links.cmx, file:Links.ml, implem, native, ocaml, package(core), package(re2), quiet, thread }
+ocamlfind ocamlopt -c -thread -package core -package re2 -o Links.cmx Links.ml
+# Target: Heap.cmx, tags: { compile, extension:cmx, extension:ml, file:Heap.cmx, file:Heap.ml, implem, native, ocaml, package(core), package(re2), quiet, thread }
+ocamlfind ocamlopt -c -thread -package core -package re2 -o Heap.cmx Heap.ml
+# Target: Heap.native, tags: { dont_link_with, extension:native, file:Heap.native, link, native, ocaml, package(core), package(re2), program, quiet, thread }
+ocamlfind ocamlopt -linkpkg -thread -package core -package re2 Order.cmx Dict.cmx Distance.cmx Graph.cmx Links.cmx Heap.cmx -o Heap.native
+# Compilation successful.
