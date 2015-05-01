@@ -735,7 +735,10 @@ let addedges (castlist: (string * (float * float)) list)
 let read_csv () : GeoGraph.graph =  
   let usage () = Printf.printf "usage: %s csv cutoff\n" Sys.argv.(0); exit 1 in 
   if Array.length Sys.argv <> 3 then usage () ;
-  let cutoff = Float.of_string (Sys.argv.(2)) in
+  let cutoff = (try (Float.of_string (Sys.argv.(2))) with
+                | _ -> Printf.printf 
+                  "'%s' is an invalid cutoff value\ncutoff value must be numerical\n"
+                  Sys.argv.(2); exit 1) in
   let delimiter = Regex.create_exn ";" in
   let parse_line line = Regex.split delimiter line in
   let rec cast (parseline: string list) : (string * (float * float)) =
