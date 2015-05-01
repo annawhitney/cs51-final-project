@@ -451,13 +451,23 @@ struct
   (***** Testing Functions *****)
   (*****************************)
 
+  (* Finds number of nodes inside a Fibonacci heap *)
+  let rec num_nodes (h: heap) : int =
+    lnk_lst_fold (fun a h' ->
+      match !h' with
+      | None -> a
+      | Some n ->
+	a + 1 + (num_nodes n.c) ) 0 h
+
   (* Inserts a list of pairs into the given heap and returns a handle to the
    * resulting heap as well as a list of nodes corresponding to each pair,
    * in the same order as the original pair list it corresponds to. *)
   let insert_list (h: heap) (lst: (key * value) list) : heap * heap list =
     let insert_keep_track (k,v) r =
       let (sofar,hs) = r in
-      let (whole,mine) = insert k v sofar in (whole, mine::hs)
+      let (whole,mine) = insert k v sofar in 
+      assert ((num_nodes sofar) + 1 = (num_nodes whole));
+      (whole, mine::hs)
     in
     List.fold_right lst ~f:insert_keep_track ~init:(h,[])
 
@@ -480,10 +490,10 @@ struct
       (H.gen_key_random(), H.gen_value()) :: (generate_random_list (size - 1))
 
   (* Generates a (key,value) list with identical keys. *)
-  let rec generate_identical_list (size: int) : (key * value) list =
+  let rec generate_identical_list (k: key) (size: int) : (key * value) list =
     if size <= 0 then []
     else
-      (H.gen_key(), H.gen_value()) :: (generate_identical_list (size - 1))
+      (k, H.gen_value()) :: (generate_identical_list k (size - 1))
 
   (* Returns the minimum of a list of pairs. If multiple pairs have the same 
    * key, returns the first of the pairs. *)
@@ -501,18 +511,19 @@ struct
     in
     min_helper lst None
 
-
+  let top_matches (a: (key * value)) (pt: heap) : bool =
+    match get_top_node pt with
+    | None -> false
+    | Some b -> a = b
+    
   let test_insert () = 
-    let top_matches (a: (key * value)) (pt: heap) : bool =
-      match get_top_node pt with
-      | None -> false
-      | Some b -> a = b
-    in
     (* Fill heap with random pairs *)
     let randpairs = generate_random_list 100 in
     let (h1,lst1) = insert_list empty randpairs in
     (* Check that every pair is where insert said it was *)
     List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) randpairs lst1 ;
+    (* Check that are 100 nodes in the heap *)
+    assert((num_nodes h1) = 100) ;
     (* Check that the minimum pair ended up in the min spot *)
     assert((min_pair randpairs) = (get_top_node h1)) ;
     (* Rinse and repeat with a sequential list of pairs *)
@@ -527,8 +538,64 @@ struct
     assert((List.hd seqpairs) = (get_top_node h3)) ;
     ()
 
-  let test_decrease_key () = () (* TODO *)
-  let test_delete_min () = () (* TODO *)
+  let test_decrease_key () =
+    (* Fill heap with identical pairs *)
+    let key1 = H.gen_key() in
+    let identpairs = generate_identical_list key1 100 in
+    let (idheap, idlist) = insert_list empty identpairs in
+    let (id1,id2,ide) = match idlist with
+      | [] -> failwith "list can't be empty"
+      | id1::id2::id3::_ -> id1,id2,id3
+      | _ -> failwith "list must have 100 nodes" in
+    let key0 = (H.gen_key_lt (H.gen_key()) ()) in
+    let heap1 = decrease_key id1 key0 idheap in
+    assert(Some (key0, H.gen_value()) = get_top_node heap1) ;
+    let keymid = match H.gen_key_between key0 key1 () with
+      | None -> failwith "not possible"
+      | Some keymid -> keymid in
+    let heap2 = decrease_key id2 keymid heap1 in
+    assert(Some (key0, H.gen_value()) = get_top_node heap2) ;
+    let seqpairs = generate_pair_list 100 in
+    let (seqheap, seqlst) = insert_list empty seqpairs in
+    let seqlst' = match seqlst with
+      | [] -> failwith "list is not empty"
+      | _::tl -> tl in
+    let (_,seqheap') = delete_min seqheap in
+    let seqheap'' = List.fold_left ~f:(fun t h ->
+      match !h with
+      | None -> failwith "all nodes are real"
+      | Some n ->
+	match !(n.p) with
+	| None -> let nh = decrease_key h (H.gen_key_lt (n.k) ()) t in
+		  assert(!(n.p) = None) ; nh
+	| Some p -> let nh = decrease_key h (H.gen_key_lt (p.k) ()) t in
+		    assert(!(n.p) = None) ; nh) ~init:seqheap' seqlst'
+    in
+    assert((num_nodes seqheap'') = (num_nodes seqheap')) ;
+    ()
+    
+  let test_delete_min () =
+    let onepair = generate_pair_list 1 in
+    let oneelt = match onepair with
+      | [] -> failwith "list is not empty"
+      | hd::_ -> hd in
+    let (oneheap, onelst) = insert_list empty onepair in
+    let (k1,v1),emptyheap = match delete_min oneheap with
+      | None,_ -> failwith "heap is not empty"
+      | (Some kv),h -> kv,h in
+    assert(is_empty emptyheap) ;
+    assert((k1,v1) = oneelt) ;
+    let seqpairs = generate_pair_list 100 in
+    let (seqheap, seqlst) = insert_list empty seqpairs in
+    let emptyheap = List.fold_left ~f:(fun h t ->
+      let (kv_op, nh) = delete_min t in
+      let (k,v) = match kv_op with
+	| None -> failwith "all nodes are real"
+	| Some (k,v) -> k,v in
+      assert(Some (k,v) = get_top_node h) ;
+      assert((num_nodes nh) + 1 = num_nodes t) ; nh) ~init:seqheap seqlst in
+    assert(is_empty emptyheap) ;
+    ()
 
   let run_tests () =
     test_insert () ;
@@ -592,6 +659,7 @@ end
 
 
 (* Our actual fib heap module - not sure if this is where it should go *)
+
 module FibHeap : (PRIOHEAP with type value = GeoHeapArg.value
     with type key = GeoHeapArg.key) = FibonacciHeap(GeoHeapArg) 
 
@@ -647,16 +715,17 @@ let addedges (castlist: (string * (float * float)) list)
   (rest: (string * (float * float)) list) (graph: GeoGraph.graph)
   : GeoGraph.graph = 
     match rest with
-    | [] -> graph
+    | [] -> let _ = Printf.printf "rest of location list is empty\n" in graph
     | (name2, loc2)::tl ->
         (let (name1,loc1) = place in
-        match Distance.distance cutoff loc1 loc2 with
+        match (Distance.distance cutoff loc1 loc2) with
         | None -> addhelper place tl graph
         | Some d ->
             let newgraph = GeoGraph.add_edge graph
                           (GeoNode.node_of_tag name1)
                           (GeoNode.node_of_tag name2) d 
             in
+            let _ = Printf.printf "Added edge between %s and %s with distance %f to graph.\n" name1 name2 d in
             addhelper place tl newgraph)
   in
   match castlist with
@@ -666,37 +735,44 @@ let addedges (castlist: (string * (float * float)) list)
 let read_csv () : GeoGraph.graph =  
   let usage () = Printf.printf "usage: %s csv cutoff\n" Sys.argv.(0); exit 1 in 
   if Array.length Sys.argv <> 3 then usage () ;
-  (* file pointer - just like in CS50! *)
-  let cutoff = Float.of_string (Sys.argv.(2)) in
+  let cutoff = (try (Float.of_string (Sys.argv.(2))) with
+                | _ -> Printf.printf 
+                  "'%s' is an invalid cutoff value\ncutoff value must be numerical\n"
+                  Sys.argv.(2); exit 1) in
   let delimiter = Regex.create_exn ";" in
   let parse_line line = Regex.split delimiter line in
-  let parsed = In_channel.with_file Sys.argv.(1)
-               ~f:(fun file -> In_channel.fold_lines file ~init:[]
-               ~f:(fun lst ln -> (parse_line ln)::lst))
+  let rec cast (parseline: string list) : (string * (float * float)) =
+     match parseline with
+     | [name;lat;lng] ->
+         let _ = Printf.printf "%s %s %s\n" name lat lng in
+         (name,((Float.of_string lat),(Float.of_string lng)))
+     | _ -> ("dummy",(0.0,0.0))
   in
   (*let file = In_channel.create Sys.argv.(1) in
-  let lines = In_channel.input_lines file in*)
-  match parsed with
-  | [] -> failwith "CSV file empty or could not be read"
-  | []::_ -> failwith "CSV file should not start with empty line"
-  | (hd::_)::_ ->
-      let _ = Printf.printf "%s\n" hd in
-      let rec cast (parselist: string list list) :
-          (string * (float * float)) list =
-         match parselist with
-         | [] -> []  
-         | hd::tl ->
-             (match hd with 
-             | [name;lat;lng] ->
-               (name,((Float.of_string lat),(Float.of_string lng)))::(cast tl)
-             | _ -> [])
-      in
-      let casted = cast parsed in
-      addedges casted GeoGraph.empty cutoff
+  let get_lines f : string list =
+    let rec lines_helper f lst =
+      match In_channel.input_line f with
+      | None -> lst
+      | Some l -> let _ = Printf.printf "%s\n" l in lines_helper f (l::lst)
+    in
+    lines_helper f []
+  in
+  let lines = get_lines file in
+  let parse_and_cast line = cast (parse_line line) in
+  let casted = List.map lines ~f:parse_and_cast in*)
+  (* Read in and parse the file into a string list list. *)
+  let casted = In_channel.with_file Sys.argv.(1)
+               ~f:(fun file -> In_channel.fold_lines file ~init:[]
+               ~f:(fun lst ln -> match parse_and_cast ln with
+                                 | Some p -> p::lst
+                                 | None -> lst))
+  in
+  let _ = List.iter casted ~f:(fun (nm,(lat,lng)) -> Printf.printf "%s %f %f\n" nm lat lng) in
+  addedges casted GeoGraph.empty cutoff
 
 
 
-(* beginning of heap.ml *)
+
 
 
 (* Request start and finish nodes from user *)
@@ -723,6 +799,7 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
     : (GeoNode.node list) * GeoNode.weight =
   
   (* Initialize heap containing only source node with distance of 0 *)
+
   let (with_source,_) =
     FibHeap.insert 0. (GeoNode.tag_of_node st) FibHeap.empty
   in

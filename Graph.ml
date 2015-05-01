@@ -259,15 +259,14 @@ struct
 
     assert (List.length (G.nodes g2) = 3) ;
 
-    Printf.printf "Node a has %i outgoing edges.\n" (deopt_len (G.outgoing_edges g2 "a")) ;
     assert (deopt_len (G.outgoing_edges g2 "a") = 2) ;
-    assert (deopt_len (G.outgoing_edges g2 "b") = 0) ;
-    assert (deopt_len (G.outgoing_edges g2 "c") = 0) ;
+    assert (deopt_len (G.outgoing_edges g2 "b") = 1) ;
+    assert (deopt_len (G.outgoing_edges g2 "c") = 1) ;
     assert (G.outgoing_edges g2 "d" = None) ;
 
     assert (deopt_len (G.neighbors g2 "a") = 2) ;
-    assert (deopt_len (G.neighbors g2 "b") = 0) ;
-    assert (deopt_len (G.neighbors g2 "c") = 0) ;
+    assert (deopt_len (G.neighbors g2 "b") = 1) ;
+    assert (deopt_len (G.neighbors g2 "c") = 1) ;
     assert (G.neighbors g2 "d" = None) ;
 
     assert (let t = deopt_lst (G.neighbors g2 "a") in
