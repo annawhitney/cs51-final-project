@@ -603,13 +603,15 @@ module FibHeap : (PRIOHEAP with type value = GeoHeapArg.value
  * exists in the heap), and a pointer to the previous node in the MST once
  * Dijkstra's algorithm has reached this node. *)
 
+type node_record = {name: string; mutable pt: FibHeap.heap option;
+    mutable prev: string link}
 
-module GeoNode : (NODE with type tag = string with type weight = float) =
+module NodeBase : (NODE with type tag = string with type weight = float
+    with type node = node_record) =
 struct
   type weight = float
   type tag = string
-  type node = {name: tag; mutable pt: FibHeap.heap option;
-	       mutable prev: node link}
+  type node = node_record
   let tag_of_node = (fun n -> n.name)
   let node_of_tag t = {name = t; pt = None; prev = Nil}
   let compare n1 n2 = 
@@ -623,6 +625,16 @@ struct
   let string_of_weight = Float.to_string
 end
 
+module GeoNode =
+struct
+  include NodeBase
+
+  let set_node_pt (n: node) (p: FibHeap.heap option) : unit = n.pt <- p
+  let set_node_prev (n: node) (p: tag link) : unit = n.prev <- p
+
+  let get_node_pt (n: node) : FibHeap.heap option = n.pt
+  let get_node_prev (n: node) : tag link = n.prev
+end
 
 module GeoGraph : (GRAPH with type node = GeoNode.node
     with type weight = GeoNode.weight with type tag = GeoNode.tag) = 
@@ -702,36 +714,38 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
   
   (* Initialize heap containing only source node with distance of 0 *)
 
-  let with_source = FibHeap.insert 0. (GeoNode.tag_of_node st) FibHeap.empty in
+  let (with_source,_) =
+    FibHeap.insert 0. (GeoNode.tag_of_node st) FibHeap.empty
+  in
   (* Insert all other nodes into heap with initial distance of infinity (using
    * Float.max_value to represent infinity) and hold on to a pointer to each *)
-  let insert_not_source (h: FibHeap.heap) (s: GeoNode.node) =
+  let insert_not_source (h: FibHeap.heap) (s: GeoNode.node) : FibHeap.heap =
     match (GeoNode.compare s st) with
     | Less | Greater -> 
         let (hp,nd) =
           FibHeap.insert Float.max_value (GeoNode.tag_of_node s) h
         in
-        s.pt <- Some nd ; hp
+        let _ = GeoNode.set_node_pt s (Some nd) in hp
     | Equal -> h
   in
   let fib_heap = List.fold_left (GeoGraph.nodes g) ~f:insert_not_source
-      ~i:with_source in
+      ~init:with_source in
 
   (* Keep taking min, checking its neighbors, and updating distances until
    * our destination node is the min that we take. *)
-  let rec next_node (h: FibHeap.heap) (prev: string Links.link_node) =
+  let rec next_node (h: FibHeap.heap) (prev: string Links.link) =
     let (min,hp) = FibHeap.delete_min h in
     match min with
     | None -> failwith "heap empty without reaching destination"
     | Some (dist,nm) ->
         (* Find corresponding node in graph *)
-        (match GeoGraph.get_node_by_tag nm with
+        (match GeoGraph.get_node_by_tag g nm with
         | None -> failwith "heap min is not in graph"
         | Some this_nd ->
             (* Record that we've visited this node *)
-            let _ = this_nd.pt <- None in
+            let _ = GeoNode.set_node_pt this_nd None in
             (* Record where we've been *)
-            let _ = this_nd.prev <- Link prev in
+            let _ = GeoNode.set_node_prev this_nd prev in
             (* If the min node we pulled was our destination, we're done;
              * return distance and list of nodes in the shortest path *)
             (match GeoNode.compare this_nd fin with
@@ -744,7 +758,7 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
                 | Some ns ->
                     (* For each neighbor, update distance if necessary *)
                     let handle_node (h: FibHeap.heap) (n,w) =
-                      let alt = dist + w in
+                      let alt = dist +. w in
                       (* If no heap pointer associated with this node, we must
                        * have visited it already, so don't decrease any key *)
                       (match n.pt with
@@ -757,9 +771,9 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
                               if alt < k then FibHeap.decrease_key pnt alt h
                               else h))
                     in
-                    next_node (List.fold_left ns ~f:handle_node ~i:hp)
-                        (Node (nm,Link(ref prev))))))
-  in next_node fib_heap ;;
+                    next_node (List.fold_left ns ~f:handle_node ~init:hp)
+                        (Link (Node (nm,prev)) ))))
+  in next_node fib_heap Nil ;;
 
 let graph = read_csv () in
 let (start,finish) = get_nodes graph in
