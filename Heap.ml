@@ -3,6 +3,7 @@
  * CS51
  ***************************************)
 open Core.Std
+module Regex = Re2.Regex
 open Graph
 open Links
 
@@ -650,7 +651,7 @@ module FibHeap : (PRIOHEAP with type value = GeoHeapArg.value
  * Dijkstra's algorithm has reached this node. *)
 
 type node_record = {name: string; mutable pt: FibHeap.heap option;
-    mutable prev: string link}
+    mutable prev: node_record link}
 
 module NodeBase : (NODE with type tag = string with type weight = float
     with type node = node_record) =
@@ -676,10 +677,10 @@ struct
   include NodeBase
 
   let set_node_pt (n: node) (p: FibHeap.heap option) : unit = n.pt <- p
-  let set_node_prev (n: node) (p: tag link) : unit = n.prev <- p
+  let set_node_prev (n: node) (p: node link) : unit = n.prev <- p
 
   let get_node_pt (n: node) : FibHeap.heap option = n.pt
-  let get_node_prev (n: node) : tag link = n.prev
+  let get_node_prev (n: node) : node link = n.prev
 end
 
 module GeoGraph : (GRAPH with type node = GeoNode.node
@@ -710,27 +711,35 @@ let addedges (castlist: (string * (float * float)) list)
   | hd::tl -> addhelper hd tl graph
 
 let read_csv () : GeoGraph.graph =  
-  let usage () = Printf.printf "usage: %s csv cutoff " Sys.argv.(0); exit 1 in 
+  let usage () = Printf.printf "usage: %s csv cutoff\n" Sys.argv.(0); exit 1 in 
   if Array.length Sys.argv <> 3 then usage () ;
   (* file pointer - just like in CS50! *)
   let cutoff = Float.of_string (Sys.argv.(2)) in
-  let file = In_channel.create Sys.argv.(1) in
-  let lines = In_channel.input_lines file in
-  let delimiter = Str.regexp ";" in
-  let parse_line line = Str.split_delim delimiter line in
-  let parsed : string list list = List.map lines ~f:parse_line in
-  let rec cast (parselist: string list list) :
-      (string * (float * float)) list =
-     match parselist with
-     | [] -> []  
-     | hd::tl ->
-         (match hd with 
-         | [name;lat;lng] ->
-             (name , ((Float.of_string lat),(Float.of_string lng)))::(cast tl)
-         | _ -> [])
+  let delimiter = Regex.create_exn ";" in
+  let parse_line line = Regex.split delimiter line in
+  let parsed = In_channel.with_file Sys.argv.(1)
+               ~f:(fun file -> In_channel.fold_lines file ~init:[]
+               ~f:(fun lst ln -> (parse_line ln)::lst))
   in
-  let casted = cast parsed in
-  addedges casted GeoGraph.empty cutoff
+  (*let file = In_channel.create Sys.argv.(1) in
+  let lines = In_channel.input_lines file in*)
+  match parsed with
+  | [] -> failwith "CSV file empty or could not be read"
+  | []::_ -> failwith "CSV file should not start with empty line"
+  | (hd::_)::_ ->
+      let _ = Printf.printf "%s\n" hd in
+      let rec cast (parselist: string list list) :
+          (string * (float * float)) list =
+         match parselist with
+         | [] -> []  
+         | hd::tl ->
+             (match hd with 
+             | [name;lat;lng] ->
+               (name,((Float.of_string lat),(Float.of_string lng)))::(cast tl)
+             | _ -> [])
+      in
+      let casted = cast parsed in
+      addedges casted GeoGraph.empty cutoff
 
 
 
@@ -738,21 +747,23 @@ let read_csv () : GeoGraph.graph =
 
 
 (* Request start and finish nodes from user *)
-let get_nodes (g: GeoGraph.graph) : (GeoNode.node * GeoNode.node) option =
+let rec get_nodes (g: GeoGraph.graph) : GeoNode.node * GeoNode.node =
   (* get_nodes should actually return an option GeoNode.node * GeoNode.node *) 
   (* Should give the user a text prompt so they know what to input *)
   let () = Printf.printf "Starting Point: " in
   let st = read_line () in
   let stnode = GeoNode.node_of_tag st in
-  if (GeoGraph.has_node g stnode) then None else 
+  if (not (GeoGraph.has_node g stnode)) then
+    let () = Printf.printf "Node is not in graph. Try again.\n" in
+    get_nodes g
+  else 
     let () = Printf.printf "End Point: " in
     let fin = read_line () in
     let finnode = GeoNode.node_of_tag fin in
-    if (GeoGraph.has_node g finnode) then None else
-  (* NOTE: Don't just return the strings directly - look up the strings in the
-   * graph and return their node counterparts. If they're not in the graph,
-   * re-prompt the user. *)
-    Some (stnode, finnode) ;;
+    if (not (GeoGraph.has_node g finnode)) then
+      let () = Printf.printf "Node is not in graph. Try again.\n" in
+      get_nodes g
+    else (stnode, finnode) ;;
 
 (* Run dijkstra's algorithm to find shortest path between start and finish *)
 let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
@@ -779,7 +790,7 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
 
   (* Keep taking min, checking its neighbors, and updating distances until
    * our destination node is the min that we take. *)
-  let rec next_node (h: FibHeap.heap) (prev: string Links.link) =
+  let rec next_node (h: FibHeap.heap) (prev: GeoNode.node Links.link) =
     let (min,hp) = FibHeap.delete_min h in
     match min with
     | None -> failwith "heap empty without reaching destination"
@@ -796,7 +807,7 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
              * return distance and list of nodes in the shortest path *)
             (match GeoNode.compare this_nd fin with
             | Equal ->
-                (Links.list_of_links (Node (this_nd.name,this_nd.prev)),dist)
+                (Links.list_of_links (Node (this_nd,this_nd.prev)),dist)
             | Less | Greater ->
                 (* Otherwise, get the neighbors of our min *)
                 (match GeoGraph.neighbors g this_nd with
@@ -818,7 +829,7 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
                               else h))
                     in
                     next_node (List.fold_left ns ~f:handle_node ~init:hp)
-                        (Link (Node (nm,prev)) ))))
+                        (Link (ref (Node (this_nd,prev))) ))))
   in next_node fib_heap Nil ;;
 
 let graph = read_csv () in
@@ -827,9 +838,8 @@ let (nodelist, weight) = dijkstra start finish graph in
 let rec printnodes (lst: GeoNode.node list) : unit = 
   match lst with 
   | [] -> ()
-  | hd::tl -> Printf.printf "%s ->\n" (tag_of_node hd) ; printnodes tl
+  | hd::tl -> Printf.printf "%s ->\n" (GeoNode.tag_of_node hd) ; printnodes tl
 in
 printnodes nodelist; Printf.printf "\nTotal distance: %f" weight; ()
-
 
 
