@@ -205,7 +205,7 @@ struct
   let string_of_graph g =
     "Graph: " ^ (EdgeDict.string_of_dict g.edges)
 end
-
+(*
 module NamedGraph =
 struct
   include(Graph(struct
@@ -270,5 +270,5 @@ struct
     assert (G.neighbors g2 "d" = None) ;
 
     assert (let t = deopt_lst (G.neighbors g2 "a") in
-              t = [("b", 4.);("c", 2.)] || t = [("c", 2.);("b", 4.)]) )
+              t = [("b", 4.);("c", 2.)] || t = [("c", 2.);("b", 4.)]) ) *)
 end
