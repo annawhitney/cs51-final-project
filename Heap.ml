@@ -739,7 +739,7 @@ let read_csv () : GeoGraph.graph =
                 | _ -> Printf.printf 
                   "'%s' is an invalid cutoff value\ncutoff value must be numerical\n"
                   Sys.argv.(2); exit 1) in
-  let csv = (match Sys.file_exists ?follow_symlinks:(Some false) (Sys.argv.(1)) with
+  let csv = (match Sys.file_exists (Sys.argv.(1)) with
              | `Yes -> Sys.argv.(1)
              | _ -> Printf.printf 
                   "file '%s' not found\n"
