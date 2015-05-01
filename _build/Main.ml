@@ -1,6 +1,6 @@
 open Core.Std
-open Graph
 open Heap
+open Read
 
 exception TODO
 
@@ -8,26 +8,30 @@ exception TODO
 (* NOTE: We probably want this function to return the graph the csv
  * was read into! *)
 (* We also need to look at pset 7 to figure out how to handle cmd line args *)
-let read_csv () : GeoGraph.graph = TODO ;;
+(* read_csv is now done in the Read.ml file *)
+(*let read_csv () : GeoGraph.graph = TODO ;;*)
 
 (* Request start and finish nodes from user *)
-let get_nodes (g: GeoGraph.graph) : GeoNode.node * GeoNode.node = 
+let get_nodes (g: GeoGraph.graph) : GeoNode.node * GeoNode.node =
+  (* get_nodes should actually return an option GeoNode.node * GeoNode.node *) 
   (* Should give the user a text prompt so they know what to input *)
   let () = Printf.printf "Starting Point: " in
   let st = read_line () in
-  (* we need to make sure st is contained in our imported file *) 
-  let () = Printf.printf "End Point: " in
-  (* same goes with fin *) 
-  let fin = read_line () in
+  let stnode = node_of_tag st in
+  if !(hasnode g stnode) then None else 
+    let () = Printf.printf "End Point: " in
+    let fin = read_line () in
+    let finnode = node_of_tag fin in
+    if !(hasnode g finnode) then None else
   (* NOTE: Don't just return the strings directly - look up the strings in the
    * graph and return their node counterparts. If they're not in the graph,
    * re-prompt the user. *)
-  st, fin ;;
+    Some (stnode, finnode) ;;
 
 (* Run dijkstra's algorithm to find shortest path between start and finish *)
 let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
     : (GeoNode.node list) * GeoNode.weight =
-
+  
   (* Initialize heap containing only source node with distance of 0 *)
   let with_source = FibHeap.insert 0 st FibHeap.empty in
   (* Insert all other nodes into heap with initial distance of infinity (using

@@ -616,5 +616,5 @@ struct
   let string_of_weight = Float.to_string
 end
 
-module GeoGraph = Graph(GeoNode)
+module GeoGraph : GRAPH = Graph(GeoNode);;
 

@@ -1,5 +1,4 @@
 open Core.Std
-open Graph
 open Heap
 open Read
 
