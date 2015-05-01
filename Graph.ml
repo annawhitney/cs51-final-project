@@ -199,29 +199,35 @@ struct
   let string_of_graph g =
     "Graph: " ^ (EdgeDict.string_of_dict g.edges)
 end
-(*
+
 module NamedGraph =
 struct
   include(Graph(struct
                   type node = string
                   type weight = int
+		  type tag =  string 
                   let compare = Order.string_compare
                   let string_of_node = fun x -> x
                   let gen () = ""
+	          let node_of_tag t = t
+		  let tag_of_node n = n
+		  let gen_weight () = 1 
+		  let string_of_weight w = Int.to_string w 
                 end))
   let from_edges (es: (string * string) list) : graph =
-    List.fold_left es ~f:(fun g (src, dst) -> add_edge g src dst) ~init:empty
+    List.fold_left es ~f:(fun g (src, dst) -> add_edge g src dst 1) ~init:empty
 end
 
 (* TODO: update tests to incorporate weights so we can make sure our weighted
  * graph implementation works. *)
+
 (* Wrap our tests in a module so that they don't pollute the namespace *)
 module TestGraph =
 struct
   module G = NamedGraph
 
-  let g = G.add_edge G.empty "a" "b" 4.;;
-  let g2 = G.add_edge g "a" "c" 2.;;
+  let g = G.add_edge G.empty "a" "b" 4;;
+  let g2 = G.add_edge g "a" "c" 2;;
 
   let deopt_len lo =
     match lo with
@@ -264,9 +270,9 @@ struct
     assert (G.neighbors g2 "d" = None) ;
 
     assert (let t = deopt_lst (G.neighbors g2 "a") in
-              t = [("b", 4.);("c", 2.)] || t = [("c", 2.);("b", 4.)]) ) 
+              t = [("b", 4);("c", 2)] || t = [("c", 2);("b", 4)]) ) 
 end
-*)
+
 
 
 
