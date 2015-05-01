@@ -465,9 +465,8 @@ struct
 	match !h' with
 	| None -> 0
 	| Some n ->
-	  (*Printf.printf "current acc value: %i \n" a;*)
-	  a + 1 + ((*Printf.printf "starting num_nodes on child \n "; *)
-		   num_nodes n.c) ) 0 h in
+	  Printf.printf "current acc value: %i \n" a;
+	  a + 1 + (num_nodes n.c)) 0 h in
       let _ = Printf.printf "final num: %i \n" in num in
     num_nodes_print h
 
