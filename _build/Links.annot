@@ -1,0 +1,204 @@
+"Links.ml" 9 307 311 "Links.ml" 9 307 324
+type(
+  'a link_node -> 'a list
+)
+ident(
+  def list_of_links "Links.ml" 16 496 514 "Links.ml" 1 0 -1
+)
+"Links.ml" 9 307 326 "Links.ml" 9 307 328
+type(
+  'a link_node
+)
+ident(
+  def ll "Links.ml" 9 307 344 "Links.ml" 16 496 514
+)
+"Links.ml" 10 356 366 "Links.ml" 10 356 376
+type(
+  'b link_node -> 'b list -> 'b list
+)
+ident(
+  def lol_helper "Links.ml" 10 356 358 "Links.ml" 16 496 514
+)
+"Links.ml" 10 356 377 "Links.ml" 10 356 379
+type(
+  'b link_node
+)
+ident(
+  def ll "Links.ml" 10 356 380 "Links.ml" 14 452 490
+)
+"Links.ml" 10 356 380 "Links.ml" 10 356 383
+type(
+  'b list
+)
+ident(
+  def lst "Links.ml" 11 386 390 "Links.ml" 14 452 490
+)
+"Links.ml" 11 386 400 "Links.ml" 11 386 401
+type(
+  'b
+)
+ident(
+  def a "Links.ml" 12 414 418 "Links.ml" 14 452 490
+)
+"Links.ml" 11 386 402 "Links.ml" 11 386 404
+type(
+  'b link
+)
+ident(
+  def lk "Links.ml" 12 414 418 "Links.ml" 14 452 490
+)
+"Links.ml" 11 386 394 "Links.ml" 11 386 405
+type(
+  'b link_node
+)
+type(
+  'b * 'b link
+)
+"Links.ml" 11 386 408 "Links.ml" 11 386 410
+type(
+  'b link_node
+)
+ident(
+  int_ref ll "Links.ml" 10 356 377 "Links.ml" 10 356 379
+)
+"Links.ml" 12 414 424 "Links.ml" 12 414 426
+type(
+  'b link
+)
+ident(
+  int_ref lk "Links.ml" 11 386 402 "Links.ml" 11 386 404
+)
+"Links.ml" 13 432 438 "Links.ml" 13 432 441
+type(
+  'b link
+)
+"Links.ml" 13 432 445 "Links.ml" 13 432 446
+type(
+  'b
+)
+ident(
+  int_ref a "Links.ml" 11 386 400 "Links.ml" 11 386 401
+)
+"Links.ml" 13 432 448 "Links.ml" 13 432 451
+type(
+  'b list
+)
+ident(
+  int_ref lst "Links.ml" 10 356 380 "Links.ml" 10 356 383
+)
+"Links.ml" 13 432 445 "Links.ml" 13 432 451
+type(
+  'b list
+)
+"Links.ml" 14 452 463 "Links.ml" 14 452 464
+type(
+  'b link_node ref
+)
+ident(
+  def r "Links.ml" 14 452 468 "Links.ml" 14 452 490
+)
+"Links.ml" 14 452 458 "Links.ml" 14 452 464
+type(
+  'b link
+)
+"Links.ml" 14 452 468 "Links.ml" 14 452 478
+type(
+  'b link_node -> 'b list -> 'b list
+)
+ident(
+  int_ref lol_helper "Links.ml" 10 356 366 "Links.ml" 10 356 376
+)
+"Links.ml" 14 452 480 "Links.ml" 14 452 481
+type(
+  'b link_node ref
+)
+ident(
+  int_ref r "Links.ml" 14 452 463 "Links.ml" 14 452 464
+)
+"Links.ml" 14 452 479 "Links.ml" 14 452 481
+type(
+  'b link_node
+)
+type(
+  'b link_node ref -> 'b link_node
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Links.ml" 14 452 483 "Links.ml" 14 452 484
+type(
+  'b
+)
+ident(
+  int_ref a "Links.ml" 11 386 400 "Links.ml" 11 386 401
+)
+"Links.ml" 14 452 486 "Links.ml" 14 452 489
+type(
+  'b list
+)
+ident(
+  int_ref lst "Links.ml" 10 356 380 "Links.ml" 10 356 383
+)
+"Links.ml" 14 452 483 "Links.ml" 14 452 489
+type(
+  'b list
+)
+"Links.ml" 14 452 468 "Links.ml" 14 452 490
+call(
+  tail
+)
+type(
+  'b list
+)
+"Links.ml" 12 414 418 "Links.ml" 14 452 490
+type(
+  'b list
+)
+"Links.ml" 11 386 390 "Links.ml" 14 452 490
+type(
+  'b list
+)
+"Links.ml" 10 356 380 "Links.ml" 14 452 490
+type(
+  'b list -> 'b list
+)
+"Links.ml" 10 356 377 "Links.ml" 14 452 490
+type(
+  'b link_node -> 'b list -> 'b list
+)
+"Links.ml" 16 496 498 "Links.ml" 16 496 508
+type(
+  'a link_node -> 'a list -> 'a list
+)
+ident(
+  int_ref lol_helper "Links.ml" 10 356 366 "Links.ml" 10 356 376
+)
+"Links.ml" 16 496 509 "Links.ml" 16 496 511
+type(
+  'a link_node
+)
+ident(
+  int_ref ll "Links.ml" 9 307 326 "Links.ml" 9 307 328
+)
+"Links.ml" 16 496 512 "Links.ml" 16 496 514
+type(
+  'a list
+)
+"Links.ml" 16 496 498 "Links.ml" 16 496 514
+call(
+  tail
+)
+type(
+  'a list
+)
+"Links.ml" 10 356 358 "Links.ml" 16 496 514
+type(
+  'a list
+)
+type(
+  'a list
+)
+"Links.ml" 9 307 325 "Links.ml" 16 496 514
+type(
+  'a link_node -> 'a list
+)

@@ -1,0 +1,4076 @@
+"Heap.ml" 73 1979 1985 "Heap.ml" 73 1979 1992
+type(
+  'a -> 'a -> Ordering.t
+)
+ident(
+  def compare "Heap.ml" 74 2056 2058 "Heap.ml" 106 3320 3323
+)
+"Heap.ml" 73 1979 1993 "Heap.ml" 73 1979 1994
+type(
+  'a
+)
+ident(
+  def x "Heap.ml" 73 1979 1995 "Heap.ml" 73 1979 2055
+)
+"Heap.ml" 73 1979 1995 "Heap.ml" 73 1979 1996
+type(
+  'a
+)
+ident(
+  def y "Heap.ml" 73 1979 1999 "Heap.ml" 73 1979 2055
+)
+"Heap.ml" 73 1979 2002 "Heap.ml" 73 1979 2003
+type(
+  'a
+)
+ident(
+  int_ref x "Heap.ml" 73 1979 1993 "Heap.ml" 73 1979 1994
+)
+"Heap.ml" 73 1979 2004 "Heap.ml" 73 1979 2005
+type(
+  'a -> 'a -> bool
+)
+ident(
+  ext_ref Pervasives.( < )
+)
+"Heap.ml" 73 1979 2006 "Heap.ml" 73 1979 2007
+type(
+  'a
+)
+ident(
+  int_ref y "Heap.ml" 73 1979 1995 "Heap.ml" 73 1979 1996
+)
+"Heap.ml" 73 1979 2002 "Heap.ml" 73 1979 2007
+type(
+  bool
+)
+"Heap.ml" 73 1979 2013 "Heap.ml" 73 1979 2017
+type(
+  Ordering.t
+)
+"Heap.ml" 73 1979 2026 "Heap.ml" 73 1979 2027
+type(
+  'a
+)
+ident(
+  int_ref x "Heap.ml" 73 1979 1993 "Heap.ml" 73 1979 1994
+)
+"Heap.ml" 73 1979 2028 "Heap.ml" 73 1979 2029
+type(
+  'a -> 'a -> bool
+)
+ident(
+  ext_ref Pervasives.( > )
+)
+"Heap.ml" 73 1979 2030 "Heap.ml" 73 1979 2031
+type(
+  'a
+)
+ident(
+  int_ref y "Heap.ml" 73 1979 1995 "Heap.ml" 73 1979 1996
+)
+"Heap.ml" 73 1979 2026 "Heap.ml" 73 1979 2031
+type(
+  bool
+)
+"Heap.ml" 73 1979 2037 "Heap.ml" 73 1979 2044
+type(
+  Ordering.t
+)
+"Heap.ml" 73 1979 2050 "Heap.ml" 73 1979 2055
+type(
+  Ordering.t
+)
+"Heap.ml" 73 1979 2023 "Heap.ml" 73 1979 2055
+type(
+  Ordering.t
+)
+"Heap.ml" 73 1979 1999 "Heap.ml" 73 1979 2055
+type(
+  Ordering.t
+)
+"Heap.ml" 73 1979 1995 "Heap.ml" 73 1979 2055
+type(
+  'a -> Ordering.t
+)
+"Heap.ml" 73 1979 1993 "Heap.ml" 73 1979 2055
+type(
+  'a -> 'a -> Ordering.t
+)
+"Heap.ml" 74 2056 2062 "Heap.ml" 74 2056 2075
+type(
+  key -> value
+)
+ident(
+  def string_of_key "Heap.ml" 75 2092 2094 "Heap.ml" 106 3320 3323
+)
+"Heap.ml" 74 2056 2078 "Heap.ml" 74 2056 2091
+type(
+  key -> value
+)
+ident(
+  ext_ref Pervasives.string_of_int
+)
+"Heap.ml" 75 2092 2098 "Heap.ml" 75 2092 2113
+type(
+  'b -> 'b
+)
+ident(
+  def string_of_value "Heap.ml" 76 2120 2122 "Heap.ml" 106 3320 3323
+)
+"Heap.ml" 75 2092 2114 "Heap.ml" 75 2092 2115
+type(
+  'b
+)
+ident(
+  def v "Heap.ml" 75 2092 2118 "Heap.ml" 75 2092 2119
+)
+"Heap.ml" 75 2092 2118 "Heap.ml" 75 2092 2119
+type(
+  'b
+)
+ident(
+  int_ref v "Heap.ml" 75 2092 2114 "Heap.ml" 75 2092 2115
+)
+"Heap.ml" 75 2092 2114 "Heap.ml" 75 2092 2119
+type(
+  'b -> 'b
+)
+"Heap.ml" 76 2120 2126 "Heap.ml" 76 2120 2133
+type(
+  unit -> key
+)
+ident(
+  def gen_key "Heap.ml" 77 2141 2143 "Heap.ml" 106 3320 3323
+)
+"Heap.ml" 76 2120 2134 "Heap.ml" 76 2120 2136
+type(
+  unit
+)
+"Heap.ml" 76 2120 2139 "Heap.ml" 76 2120 2140
+type(
+  key
+)
+"Heap.ml" 76 2120 2134 "Heap.ml" 76 2120 2140
+type(
+  unit -> key
+)
+"Heap.ml" 77 2141 2147 "Heap.ml" 77 2141 2157
+type(
+  key -> unit -> key
+)
+ident(
+  def gen_key_gt "Heap.ml" 78 2171 2173 "Heap.ml" 106 3320 3323
+)
+"Heap.ml" 77 2141 2158 "Heap.ml" 77 2141 2159
+type(
+  key
+)
+ident(
+  def x "Heap.ml" 77 2141 2160 "Heap.ml" 77 2141 2170
+)
+"Heap.ml" 77 2141 2160 "Heap.ml" 77 2141 2162
+type(
+  unit
+)
+"Heap.ml" 77 2141 2165 "Heap.ml" 77 2141 2166
+type(
+  key
+)
+ident(
+  int_ref x "Heap.ml" 77 2141 2158 "Heap.ml" 77 2141 2159
+)
+"Heap.ml" 77 2141 2167 "Heap.ml" 77 2141 2168
+type(
+  key -> key -> key
+)
+ident(
+  ext_ref Pervasives.( + )
+)
+"Heap.ml" 77 2141 2169 "Heap.ml" 77 2141 2170
+type(
+  key
+)
+"Heap.ml" 77 2141 2165 "Heap.ml" 77 2141 2170
+type(
+  key
+)
+"Heap.ml" 77 2141 2160 "Heap.ml" 77 2141 2170
+type(
+  unit -> key
+)
+"Heap.ml" 77 2141 2158 "Heap.ml" 77 2141 2170
+type(
+  key -> unit -> key
+)
+"Heap.ml" 78 2171 2177 "Heap.ml" 78 2171 2187
+type(
+  key -> unit -> key
+)
+ident(
+  def gen_key_lt "Heap.ml" 79 2201 2203 "Heap.ml" 106 3320 3323
+)
+"Heap.ml" 78 2171 2188 "Heap.ml" 78 2171 2189
+type(
+  key
+)
+ident(
+  def x "Heap.ml" 78 2171 2190 "Heap.ml" 78 2171 2200
+)
+"Heap.ml" 78 2171 2190 "Heap.ml" 78 2171 2192
+type(
+  unit
+)
+"Heap.ml" 78 2171 2195 "Heap.ml" 78 2171 2196
+type(
+  key
+)
+ident(
+  int_ref x "Heap.ml" 78 2171 2188 "Heap.ml" 78 2171 2189
+)
+"Heap.ml" 78 2171 2197 "Heap.ml" 78 2171 2198
+type(
+  key -> key -> key
+)
+ident(
+  ext_ref Pervasives.( - )
+)
+"Heap.ml" 78 2171 2199 "Heap.ml" 78 2171 2200
+type(
+  key
+)
+"Heap.ml" 78 2171 2195 "Heap.ml" 78 2171 2200
+type(
+  key
+)
+"Heap.ml" 78 2171 2190 "Heap.ml" 78 2171 2200
+type(
+  unit -> key
+)
+"Heap.ml" 78 2171 2188 "Heap.ml" 78 2171 2200
+type(
+  key -> unit -> key
+)
+"Heap.ml" 79 2201 2207 "Heap.ml" 79 2201 2222
+type(
+  key -> key -> unit -> key option
+)
+ident(
+  def gen_key_between "Heap.ml" 82 2339 2341 "Heap.ml" 106 3320 3323
+)
+"Heap.ml" 79 2201 2223 "Heap.ml" 79 2201 2224
+type(
+  key
+)
+ident(
+  def x "Heap.ml" 79 2201 2225 "Heap.ml" 81 2280 2338
+)
+"Heap.ml" 79 2201 2225 "Heap.ml" 79 2201 2226
+type(
+  key
+)
+ident(
+  def y "Heap.ml" 79 2201 2227 "Heap.ml" 81 2280 2338
+)
+"Heap.ml" 79 2201 2227 "Heap.ml" 79 2201 2229
+type(
+  unit
+)
+"Heap.ml" 80 2232 2241 "Heap.ml" 80 2232 2246
+type(
+  key
+)
+ident(
+  def lower "Heap.ml" 81 2280 2284 "Heap.ml" 81 2280 2338
+)
+"Heap.ml" 80 2232 2248 "Heap.ml" 80 2232 2254
+type(
+  key
+)
+ident(
+  def higher "Heap.ml" 81 2280 2284 "Heap.ml" 81 2280 2338
+)
+"Heap.ml" 80 2232 2241 "Heap.ml" 80 2232 2254
+type(
+  key * key
+)
+"Heap.ml" 80 2232 2259 "Heap.ml" 80 2232 2262
+type(
+  key -> key -> key
+)
+ident(
+  ext_ref Pervasives.min
+)
+"Heap.ml" 80 2232 2263 "Heap.ml" 80 2232 2264
+type(
+  key
+)
+ident(
+  int_ref x "Heap.ml" 79 2201 2223 "Heap.ml" 79 2201 2224
+)
+"Heap.ml" 80 2232 2265 "Heap.ml" 80 2232 2266
+type(
+  key
+)
+ident(
+  int_ref y "Heap.ml" 79 2201 2225 "Heap.ml" 79 2201 2226
+)
+"Heap.ml" 80 2232 2259 "Heap.ml" 80 2232 2266
+type(
+  key
+)
+"Heap.ml" 80 2232 2268 "Heap.ml" 80 2232 2271
+type(
+  key -> key -> key
+)
+ident(
+  ext_ref Pervasives.max
+)
+"Heap.ml" 80 2232 2272 "Heap.ml" 80 2232 2273
+type(
+  key
+)
+ident(
+  int_ref x "Heap.ml" 79 2201 2223 "Heap.ml" 79 2201 2224
+)
+"Heap.ml" 80 2232 2274 "Heap.ml" 80 2232 2275
+type(
+  key
+)
+ident(
+  int_ref y "Heap.ml" 79 2201 2225 "Heap.ml" 79 2201 2226
+)
+"Heap.ml" 80 2232 2268 "Heap.ml" 80 2232 2275
+type(
+  key
+)
+"Heap.ml" 80 2232 2259 "Heap.ml" 80 2232 2275
+type(
+  key * key
+)
+"Heap.ml" 81 2280 2287 "Heap.ml" 81 2280 2293
+type(
+  key
+)
+ident(
+  int_ref higher "Heap.ml" 80 2232 2248 "Heap.ml" 80 2232 2254
+)
+"Heap.ml" 81 2280 2294 "Heap.ml" 81 2280 2295
+type(
+  key -> key -> key
+)
+ident(
+  ext_ref Pervasives.( - )
+)
+"Heap.ml" 81 2280 2296 "Heap.ml" 81 2280 2301
+type(
+  key
+)
+ident(
+  int_ref lower "Heap.ml" 80 2232 2241 "Heap.ml" 80 2232 2246
+)
+"Heap.ml" 81 2280 2287 "Heap.ml" 81 2280 2301
+type(
+  key
+)
+"Heap.ml" 81 2280 2302 "Heap.ml" 81 2280 2303
+type(
+  key -> key -> bool
+)
+ident(
+  ext_ref Pervasives.( < )
+)
+"Heap.ml" 81 2280 2304 "Heap.ml" 81 2280 2305
+type(
+  key
+)
+"Heap.ml" 81 2280 2287 "Heap.ml" 81 2280 2305
+type(
+  bool
+)
+"Heap.ml" 81 2280 2311 "Heap.ml" 81 2280 2315
+type(
+  key option
+)
+"Heap.ml" 81 2280 2327 "Heap.ml" 81 2280 2333
+type(
+  key
+)
+ident(
+  int_ref higher "Heap.ml" 80 2232 2248 "Heap.ml" 80 2232 2254
+)
+"Heap.ml" 81 2280 2334 "Heap.ml" 81 2280 2335
+type(
+  key -> key -> key
+)
+ident(
+  ext_ref Pervasives.( - )
+)
+"Heap.ml" 81 2280 2336 "Heap.ml" 81 2280 2337
+type(
+  key
+)
+"Heap.ml" 81 2280 2327 "Heap.ml" 81 2280 2337
+type(
+  key
+)
+"Heap.ml" 81 2280 2321 "Heap.ml" 81 2280 2338
+type(
+  key option
+)
+"Heap.ml" 81 2280 2284 "Heap.ml" 81 2280 2338
+type(
+  key option
+)
+"Heap.ml" 80 2232 2236 "Heap.ml" 81 2280 2338
+type(
+  key option
+)
+"Heap.ml" 79 2201 2227 "Heap.ml" 81 2280 2338
+type(
+  unit -> key option
+)
+"Heap.ml" 79 2201 2225 "Heap.ml" 81 2280 2338
+type(
+  key -> unit -> key option
+)
+"Heap.ml" 79 2201 2223 "Heap.ml" 81 2280 2338
+type(
+  key -> key -> unit -> key option
+)
+"Heap.ml" 82 2339 2345 "Heap.ml" 82 2339 2359
+type(
+  unit -> key
+)
+ident(
+  def gen_key_random "Heap.ml" 87 2498 2500 "Heap.ml" 106 3320 3323
+)
+"Heap.ml" 83 2362 2370 "Heap.ml" 83 2362 2371
+type(
+  unit
+)
+"Heap.ml" 83 2362 2374 "Heap.ml" 83 2362 2390
+type(
+  unit -> unit
+)
+ident(
+  ext_ref Core.Std.Random.self_init
+)
+"Heap.ml" 83 2362 2391 "Heap.ml" 83 2362 2393
+type(
+  unit
+)
+"Heap.ml" 83 2362 2374 "Heap.ml" 83 2362 2393
+type(
+  unit
+)
+"Heap.ml" 84 2397 2406 "Heap.ml" 84 2397 2408
+type(
+  unit
+)
+"Heap.ml" 84 2397 2412 "Heap.ml" 84 2397 2422
+type(
+  key -> key
+)
+ident(
+  ext_ref Core.Std.Random.int
+)
+"Heap.ml" 84 2397 2423 "Heap.ml" 84 2397 2428
+type(
+  key
+)
+"Heap.ml" 84 2397 2412 "Heap.ml" 84 2397 2428
+type(
+  key
+)
+"Heap.ml" 84 2397 2406 "Heap.ml" 84 2397 2428
+type(
+  unit -> key
+)
+"Heap.ml" 83 2362 2366 "Heap.ml" 84 2397 2429
+type(
+  unit -> key
+)
+"Heap.ml" 87 2498 2508 "Heap.ml" 87 2498 2513
+type(
+  value list -> key -> value
+)
+ident(
+  def lst_n "Heap.ml" 87 2498 2500 "Heap.ml" 106 3320 3323
+)
+"Heap.ml" 87 2498 2515 "Heap.ml" 87 2498 2518
+type(
+  value list
+)
+ident(
+  def lst "Heap.ml" 87 2498 2533 "Heap.ml" 90 2592 2646
+)
+"Heap.ml" 87 2498 2534 "Heap.ml" 87 2498 2535
+type(
+  key
+)
+ident(
+  def n "Heap.ml" 87 2498 2542 "Heap.ml" 90 2592 2646
+)
+"Heap.ml" 88 2553 2563 "Heap.ml" 88 2553 2566
+type(
+  value list
+)
+ident(
+  int_ref lst "Heap.ml" 87 2498 2515 "Heap.ml" 87 2498 2518
+)
+"Heap.ml" 89 2572 2580 "Heap.ml" 89 2572 2582
+type(
+  value list
+)
+"Heap.ml" 89 2572 2586 "Heap.ml" 89 2572 2591
+type(
+  value
+)
+"Heap.ml" 90 2592 2600 "Heap.ml" 90 2592 2602
+type(
+  value
+)
+ident(
+  def hd "Heap.ml" 90 2592 2610 "Heap.ml" 90 2592 2646
+)
+"Heap.ml" 90 2592 2604 "Heap.ml" 90 2592 2606
+type(
+  value list
+)
+ident(
+  def tl "Heap.ml" 90 2592 2610 "Heap.ml" 90 2592 2646
+)
+"Heap.ml" 90 2592 2600 "Heap.ml" 90 2592 2606
+type(
+  value list
+)
+"Heap.ml" 90 2592 2613 "Heap.ml" 90 2592 2614
+type(
+  key
+)
+ident(
+  int_ref n "Heap.ml" 87 2498 2534 "Heap.ml" 87 2498 2535
+)
+"Heap.ml" 90 2592 2615 "Heap.ml" 90 2592 2616
+type(
+  key -> key -> bool
+)
+ident(
+  ext_ref Pervasives.( = )
+)
+"Heap.ml" 90 2592 2617 "Heap.ml" 90 2592 2618
+type(
+  key
+)
+"Heap.ml" 90 2592 2613 "Heap.ml" 90 2592 2618
+type(
+  bool
+)
+"Heap.ml" 90 2592 2624 "Heap.ml" 90 2592 2626
+type(
+  value
+)
+ident(
+  int_ref hd "Heap.ml" 90 2592 2600 "Heap.ml" 90 2592 2602
+)
+"Heap.ml" 90 2592 2632 "Heap.ml" 90 2592 2637
+type(
+  value list -> key -> value
+)
+ident(
+  int_ref lst_n "Heap.ml" 87 2498 2508 "Heap.ml" 87 2498 2513
+)
+"Heap.ml" 90 2592 2638 "Heap.ml" 90 2592 2640
+type(
+  value list
+)
+ident(
+  int_ref tl "Heap.ml" 90 2592 2604 "Heap.ml" 90 2592 2606
+)
+"Heap.ml" 90 2592 2642 "Heap.ml" 90 2592 2643
+type(
+  key
+)
+ident(
+  int_ref n "Heap.ml" 87 2498 2534 "Heap.ml" 87 2498 2535
+)
+"Heap.ml" 90 2592 2643 "Heap.ml" 90 2592 2644
+type(
+  key -> key -> key
+)
+ident(
+  ext_ref Pervasives.( - )
+)
+"Heap.ml" 90 2592 2644 "Heap.ml" 90 2592 2645
+type(
+  key
+)
+"Heap.ml" 90 2592 2642 "Heap.ml" 90 2592 2645
+type(
+  key
+)
+"Heap.ml" 90 2592 2632 "Heap.ml" 90 2592 2646
+type(
+  value
+)
+"Heap.ml" 90 2592 2610 "Heap.ml" 90 2592 2646
+type(
+  value
+)
+"Heap.ml" 88 2553 2557 "Heap.ml" 90 2592 2646
+type(
+  value
+)
+type(
+  value
+)
+"Heap.ml" 87 2498 2533 "Heap.ml" 90 2592 2646
+type(
+  key -> value
+)
+"Heap.ml" 87 2498 2514 "Heap.ml" 90 2592 2646
+type(
+  value list -> key -> value
+)
+"Heap.ml" 93 2692 2698 "Heap.ml" 93 2692 2713
+type(
+  value list
+)
+ident(
+  def possible_values "Heap.ml" 96 2914 2916 "Heap.ml" 106 3320 3323
+)
+"Heap.ml" 93 2692 2717 "Heap.ml" 93 2692 2720
+type(
+  value
+)
+"Heap.ml" 93 2692 2721 "Heap.ml" 93 2692 2724
+type(
+  value
+)
+"Heap.ml" 93 2692 2725 "Heap.ml" 93 2692 2728
+type(
+  value
+)
+"Heap.ml" 93 2692 2729 "Heap.ml" 93 2692 2732
+type(
+  value
+)
+"Heap.ml" 93 2692 2733 "Heap.ml" 93 2692 2736
+type(
+  value
+)
+"Heap.ml" 93 2692 2737 "Heap.ml" 93 2692 2740
+type(
+  value
+)
+"Heap.ml" 93 2692 2741 "Heap.ml" 93 2692 2744
+type(
+  value
+)
+"Heap.ml" 93 2692 2745 "Heap.ml" 93 2692 2748
+type(
+  value
+)
+"Heap.ml" 93 2692 2749 "Heap.ml" 93 2692 2752
+type(
+  value
+)
+"Heap.ml" 93 2692 2753 "Heap.ml" 93 2692 2756
+type(
+  value
+)
+"Heap.ml" 93 2692 2757 "Heap.ml" 93 2692 2760
+type(
+  value
+)
+"Heap.ml" 93 2692 2761 "Heap.ml" 93 2692 2764
+type(
+  value
+)
+"Heap.ml" 94 2766 2791 "Heap.ml" 94 2766 2794
+type(
+  value
+)
+"Heap.ml" 94 2766 2795 "Heap.ml" 94 2766 2798
+type(
+  value
+)
+"Heap.ml" 94 2766 2799 "Heap.ml" 94 2766 2802
+type(
+  value
+)
+"Heap.ml" 94 2766 2803 "Heap.ml" 94 2766 2806
+type(
+  value
+)
+"Heap.ml" 94 2766 2807 "Heap.ml" 94 2766 2810
+type(
+  value
+)
+"Heap.ml" 94 2766 2811 "Heap.ml" 94 2766 2814
+type(
+  value
+)
+"Heap.ml" 94 2766 2815 "Heap.ml" 94 2766 2818
+type(
+  value
+)
+"Heap.ml" 94 2766 2819 "Heap.ml" 94 2766 2822
+type(
+  value
+)
+"Heap.ml" 94 2766 2823 "Heap.ml" 94 2766 2826
+type(
+  value
+)
+"Heap.ml" 94 2766 2827 "Heap.ml" 94 2766 2830
+type(
+  value
+)
+"Heap.ml" 94 2766 2831 "Heap.ml" 94 2766 2834
+type(
+  value
+)
+"Heap.ml" 94 2766 2835 "Heap.ml" 94 2766 2838
+type(
+  value
+)
+"Heap.ml" 95 2840 2865 "Heap.ml" 95 2840 2873
+type(
+  value
+)
+"Heap.ml" 95 2840 2874 "Heap.ml" 95 2840 2882
+type(
+  value
+)
+"Heap.ml" 95 2840 2883 "Heap.ml" 95 2840 2888
+type(
+  value
+)
+"Heap.ml" 95 2840 2889 "Heap.ml" 95 2840 2894
+type(
+  value
+)
+"Heap.ml" 95 2840 2895 "Heap.ml" 95 2840 2900
+type(
+  value
+)
+"Heap.ml" 95 2840 2901 "Heap.ml" 95 2840 2907
+type(
+  value
+)
+"Heap.ml" 95 2840 2908 "Heap.ml" 95 2840 2912
+type(
+  value
+)
+type(
+  value list
+)
+"Heap.ml" 95 2840 2901 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 95 2840 2895 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 95 2840 2889 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 95 2840 2883 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 95 2840 2874 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 95 2840 2865 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 94 2766 2835 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 94 2766 2831 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 94 2766 2827 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 94 2766 2823 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 94 2766 2819 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 94 2766 2815 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 94 2766 2811 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 94 2766 2807 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 94 2766 2803 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 94 2766 2799 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 94 2766 2795 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 94 2766 2791 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 93 2692 2761 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 93 2692 2757 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 93 2692 2753 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 93 2692 2749 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 93 2692 2745 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 93 2692 2741 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 93 2692 2737 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 93 2692 2733 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 93 2692 2729 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 93 2692 2725 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 93 2692 2721 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 93 2692 2717 "Heap.ml" 95 2840 2912
+type(
+  value list
+)
+"Heap.ml" 93 2692 2716 "Heap.ml" 95 2840 2913
+type(
+  value list
+)
+"Heap.ml" 96 2914 2920 "Heap.ml" 96 2914 2930
+type(
+  key
+)
+ident(
+  def num_values "Heap.ml" 98 3024 3026 "Heap.ml" 106 3320 3323
+)
+"Heap.ml" 96 2914 2933 "Heap.ml" 96 2914 2944
+type(
+  value list -> key
+)
+ident(
+  ext_ref Core.Std.List.length
+)
+"Heap.ml" 96 2914 2945 "Heap.ml" 96 2914 2960
+type(
+  value list
+)
+ident(
+  int_ref possible_values "Heap.ml" 93 2692 2698 "Heap.ml" 93 2692 2713
+)
+"Heap.ml" 96 2914 2933 "Heap.ml" 96 2914 2960
+type(
+  key
+)
+"Heap.ml" 98 3024 3030 "Heap.ml" 98 3024 3043
+type(
+  key ref
+)
+ident(
+  def current_index "Heap.ml" 99 3052 3054 "Heap.ml" 106 3320 3323
+)
+"Heap.ml" 98 3024 3046 "Heap.ml" 98 3024 3049
+type(
+  key -> key ref
+)
+ident(
+  ext_ref Pervasives.ref
+)
+"Heap.ml" 98 3024 3050 "Heap.ml" 98 3024 3051
+type(
+  key
+)
+"Heap.ml" 98 3024 3046 "Heap.ml" 98 3024 3051
+type(
+  key ref
+)
+"Heap.ml" 99 3052 3058 "Heap.ml" 99 3052 3067
+type(
+  unit -> value
+)
+ident(
+  def gen_value "Heap.ml" 105 3268 3270 "Heap.ml" 106 3320 3323
+)
+"Heap.ml" 99 3052 3068 "Heap.ml" 99 3052 3070
+type(
+  unit
+)
+"Heap.ml" 100 3073 3081 "Heap.ml" 100 3073 3086
+type(
+  key
+)
+ident(
+  def index "Heap.ml" 101 3107 3111 "Heap.ml" 104 3204 3267
+)
+"Heap.ml" 100 3073 3090 "Heap.ml" 100 3073 3103
+type(
+  key ref
+)
+ident(
+  int_ref current_index "Heap.ml" 98 3024 3030 "Heap.ml" 98 3024 3043
+)
+"Heap.ml" 100 3073 3089 "Heap.ml" 100 3073 3103
+type(
+  key
+)
+type(
+  key ref -> key
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 101 3107 3114 "Heap.ml" 101 3107 3119
+type(
+  key
+)
+ident(
+  int_ref index "Heap.ml" 100 3073 3081 "Heap.ml" 100 3073 3086
+)
+"Heap.ml" 101 3107 3120 "Heap.ml" 101 3107 3122
+type(
+  key -> key -> bool
+)
+ident(
+  ext_ref Pervasives.( >= )
+)
+"Heap.ml" 101 3107 3123 "Heap.ml" 101 3107 3133
+type(
+  key
+)
+ident(
+  int_ref num_values "Heap.ml" 96 2914 2920 "Heap.ml" 96 2914 2930
+)
+"Heap.ml" 101 3107 3114 "Heap.ml" 101 3107 3133
+type(
+  bool
+)
+"Heap.ml" 102 3139 3146 "Heap.ml" 102 3139 3159
+type(
+  key ref
+)
+ident(
+  int_ref current_index "Heap.ml" 98 3024 3030 "Heap.ml" 98 3024 3043
+)
+"Heap.ml" 102 3139 3163 "Heap.ml" 102 3139 3164
+type(
+  key
+)
+"Heap.ml" 102 3139 3146 "Heap.ml" 102 3139 3164
+type(
+  unit
+)
+type(
+  key ref -> key -> unit
+)
+ident(
+  ext_ref Pervasives.( := )
+)
+"Heap.ml" 102 3139 3166 "Heap.ml" 102 3139 3171
+type(
+  value list -> key -> value
+)
+ident(
+  int_ref lst_n "Heap.ml" 87 2498 2508 "Heap.ml" 87 2498 2513
+)
+"Heap.ml" 102 3139 3172 "Heap.ml" 102 3139 3187
+type(
+  value list
+)
+ident(
+  int_ref possible_values "Heap.ml" 93 2692 2698 "Heap.ml" 93 2692 2713
+)
+"Heap.ml" 102 3139 3188 "Heap.ml" 102 3139 3193
+type(
+  key
+)
+ident(
+  int_ref index "Heap.ml" 100 3073 3081 "Heap.ml" 100 3073 3086
+)
+"Heap.ml" 102 3139 3166 "Heap.ml" 102 3139 3193
+type(
+  value
+)
+"Heap.ml" 102 3139 3146 "Heap.ml" 102 3139 3193
+type(
+  value
+)
+"Heap.ml" 104 3204 3211 "Heap.ml" 104 3204 3224
+type(
+  key ref
+)
+ident(
+  int_ref current_index "Heap.ml" 98 3024 3030 "Heap.ml" 98 3024 3043
+)
+"Heap.ml" 104 3204 3228 "Heap.ml" 104 3204 3233
+type(
+  key
+)
+ident(
+  int_ref index "Heap.ml" 100 3073 3081 "Heap.ml" 100 3073 3086
+)
+"Heap.ml" 104 3204 3234 "Heap.ml" 104 3204 3235
+type(
+  key -> key -> key
+)
+ident(
+  ext_ref Pervasives.( + )
+)
+"Heap.ml" 104 3204 3236 "Heap.ml" 104 3204 3237
+type(
+  key
+)
+"Heap.ml" 104 3204 3228 "Heap.ml" 104 3204 3237
+type(
+  key
+)
+"Heap.ml" 104 3204 3211 "Heap.ml" 104 3204 3237
+type(
+  unit
+)
+type(
+  key ref -> key -> unit
+)
+ident(
+  ext_ref Pervasives.( := )
+)
+"Heap.ml" 104 3204 3239 "Heap.ml" 104 3204 3244
+type(
+  value list -> key -> value
+)
+ident(
+  int_ref lst_n "Heap.ml" 87 2498 2508 "Heap.ml" 87 2498 2513
+)
+"Heap.ml" 104 3204 3245 "Heap.ml" 104 3204 3260
+type(
+  value list
+)
+ident(
+  int_ref possible_values "Heap.ml" 93 2692 2698 "Heap.ml" 93 2692 2713
+)
+"Heap.ml" 104 3204 3261 "Heap.ml" 104 3204 3266
+type(
+  key
+)
+ident(
+  int_ref index "Heap.ml" 100 3073 3081 "Heap.ml" 100 3073 3086
+)
+"Heap.ml" 104 3204 3239 "Heap.ml" 104 3204 3266
+type(
+  value
+)
+"Heap.ml" 104 3204 3211 "Heap.ml" 104 3204 3266
+type(
+  value
+)
+"Heap.ml" 101 3107 3111 "Heap.ml" 104 3204 3267
+type(
+  value
+)
+"Heap.ml" 100 3073 3077 "Heap.ml" 104 3204 3267
+type(
+  value
+)
+"Heap.ml" 99 3052 3068 "Heap.ml" 104 3204 3267
+type(
+  unit -> value
+)
+"Heap.ml" 105 3268 3274 "Heap.ml" 105 3268 3282
+type(
+  unit -> key * value
+)
+ident(
+  def gen_pair "Heap.ml" 105 3268 3319 "Heap.ml" 106 3320 3323
+)
+"Heap.ml" 105 3268 3283 "Heap.ml" 105 3268 3285
+type(
+  unit
+)
+"Heap.ml" 105 3268 3289 "Heap.ml" 105 3268 3303
+type(
+  unit -> key
+)
+ident(
+  int_ref gen_key_random "Heap.ml" 82 2339 2345 "Heap.ml" 82 2339 2359
+)
+"Heap.ml" 105 3268 3303 "Heap.ml" 105 3268 3305
+type(
+  unit
+)
+"Heap.ml" 105 3268 3289 "Heap.ml" 105 3268 3305
+type(
+  key
+)
+"Heap.ml" 105 3268 3307 "Heap.ml" 105 3268 3316
+type(
+  unit -> value
+)
+ident(
+  int_ref gen_value "Heap.ml" 99 3052 3058 "Heap.ml" 99 3052 3067
+)
+"Heap.ml" 105 3268 3316 "Heap.ml" 105 3268 3318
+type(
+  unit
+)
+"Heap.ml" 105 3268 3307 "Heap.ml" 105 3268 3318
+type(
+  value
+)
+"Heap.ml" 105 3268 3289 "Heap.ml" 105 3268 3318
+type(
+  key * value
+)
+"Heap.ml" 105 3268 3283 "Heap.ml" 105 3268 3319
+type(
+  unit -> key * value
+)
+"Heap.ml" 126 3924 3930 "Heap.ml" 126 3924 3935
+type(
+  heap
+)
+ident(
+  def empty "Heap.ml" 128 3955 3957 "Heap.ml" 526 18921 18924
+)
+"Heap.ml" 126 3924 3945 "Heap.ml" 126 3924 3948
+type(
+  node option -> heap
+)
+ident(
+  ext_ref Pervasives.ref
+)
+"Heap.ml" 126 3924 3949 "Heap.ml" 126 3924 3953
+type(
+  node option
+)
+"Heap.ml" 126 3924 3945 "Heap.ml" 126 3924 3953
+type(
+  heap
+)
+type(
+  heap
+)
+"Heap.ml" 128 3955 3961 "Heap.ml" 128 3955 3969
+type(
+  heap -> bool
+)
+ident(
+  def is_empty "Heap.ml" 133 4044 4046 "Heap.ml" 526 18921 18924
+)
+"Heap.ml" 128 3955 3971 "Heap.ml" 128 3955 3972
+type(
+  heap
+)
+ident(
+  def h "Heap.ml" 128 3955 3980 "Heap.ml" 131 4026 4042
+)
+"Heap.ml" 129 3989 4000 "Heap.ml" 129 3989 4001
+type(
+  heap
+)
+ident(
+  int_ref h "Heap.ml" 128 3955 3971 "Heap.ml" 128 3955 3972
+)
+"Heap.ml" 129 3989 3999 "Heap.ml" 129 3989 4001
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 130 4007 4013 "Heap.ml" 130 4007 4017
+type(
+  node option
+)
+"Heap.ml" 130 4007 4021 "Heap.ml" 130 4007 4025
+type(
+  bool
+)
+"Heap.ml" 131 4026 4032 "Heap.ml" 131 4026 4033
+type(
+  node option
+)
+"Heap.ml" 131 4026 4037 "Heap.ml" 131 4026 4042
+type(
+  bool
+)
+"Heap.ml" 129 3989 3993 "Heap.ml" 131 4026 4042
+type(
+  bool
+)
+type(
+  bool
+)
+"Heap.ml" 128 3955 3970 "Heap.ml" 131 4026 4042
+type(
+  heap -> bool
+)
+"Heap.ml" 133 4044 4050 "Heap.ml" 133 4044 4056
+type(
+  key -> key -> key
+)
+ident(
+  def minkey "Heap.ml" 138 4148 4150 "Heap.ml" 526 18921 18924
+)
+"Heap.ml" 133 4044 4058 "Heap.ml" 133 4044 4060
+type(
+  key
+)
+ident(
+  def k1 "Heap.ml" 133 4044 4067 "Heap.ml" 136 4133 4146
+)
+"Heap.ml" 133 4044 4068 "Heap.ml" 133 4044 4070
+type(
+  key
+)
+ident(
+  def k2 "Heap.ml" 133 4044 4077 "Heap.ml" 136 4133 4146
+)
+"Heap.ml" 134 4085 4095 "Heap.ml" 134 4085 4104
+type(
+  key -> key -> Ordering.t
+)
+ident(
+  int_ref H.compare "Heap.ml" 48 1262 1264 "Heap.ml" 48 1262 1302
+)
+"Heap.ml" 134 4085 4105 "Heap.ml" 134 4085 4107
+type(
+  key
+)
+ident(
+  int_ref k2 "Heap.ml" 133 4044 4068 "Heap.ml" 133 4044 4070
+)
+"Heap.ml" 134 4085 4108 "Heap.ml" 134 4085 4110
+type(
+  key
+)
+ident(
+  int_ref k1 "Heap.ml" 133 4044 4058 "Heap.ml" 133 4044 4060
+)
+"Heap.ml" 134 4085 4095 "Heap.ml" 134 4085 4110
+type(
+  Ordering.t
+)
+"Heap.ml" 135 4116 4122 "Heap.ml" 135 4116 4126
+type(
+  Ordering.t
+)
+"Heap.ml" 135 4116 4130 "Heap.ml" 135 4116 4132
+type(
+  key
+)
+ident(
+  int_ref k2 "Heap.ml" 133 4044 4068 "Heap.ml" 133 4044 4070
+)
+"Heap.ml" 136 4133 4139 "Heap.ml" 136 4133 4140
+type(
+  Ordering.t
+)
+"Heap.ml" 136 4133 4144 "Heap.ml" 136 4133 4146
+type(
+  key
+)
+ident(
+  int_ref k1 "Heap.ml" 133 4044 4058 "Heap.ml" 133 4044 4060
+)
+"Heap.ml" 134 4085 4089 "Heap.ml" 136 4133 4146
+type(
+  key
+)
+type(
+  key
+)
+"Heap.ml" 133 4044 4067 "Heap.ml" 136 4133 4146
+type(
+  key -> key
+)
+"Heap.ml" 133 4044 4057 "Heap.ml" 136 4133 4146
+type(
+  key -> key -> key
+)
+"Heap.ml" 138 4148 4154 "Heap.ml" 138 4148 4166
+type(
+  heap -> (key * value) option
+)
+ident(
+  def get_top_node "Heap.ml" 145 4410 4412 "Heap.ml" 526 18921 18924
+)
+"Heap.ml" 138 4148 4168 "Heap.ml" 138 4148 4169
+type(
+  heap
+)
+ident(
+  def h "Heap.ml" 138 4148 4177 "Heap.ml" 141 4239 4269
+)
+"Heap.ml" 139 4202 4213 "Heap.ml" 139 4202 4214
+type(
+  heap
+)
+ident(
+  int_ref h "Heap.ml" 138 4148 4168 "Heap.ml" 138 4148 4169
+)
+"Heap.ml" 139 4202 4212 "Heap.ml" 139 4202 4214
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 140 4220 4226 "Heap.ml" 140 4220 4230
+type(
+  node option
+)
+"Heap.ml" 140 4220 4234 "Heap.ml" 140 4220 4238
+type(
+  (key * value) option
+)
+"Heap.ml" 141 4239 4250 "Heap.ml" 141 4239 4251
+type(
+  node
+)
+ident(
+  def n "Heap.ml" 141 4239 4255 "Heap.ml" 141 4239 4269
+)
+"Heap.ml" 141 4239 4245 "Heap.ml" 141 4239 4251
+type(
+  node option
+)
+"Heap.ml" 141 4239 4261 "Heap.ml" 141 4239 4262
+type(
+  node
+)
+ident(
+  int_ref n "Heap.ml" 141 4239 4250 "Heap.ml" 141 4239 4251
+)
+"Heap.ml" 141 4239 4261 "Heap.ml" 141 4239 4264
+type(
+  key
+)
+"Heap.ml" 141 4239 4265 "Heap.ml" 141 4239 4266
+type(
+  node
+)
+ident(
+  int_ref n "Heap.ml" 141 4239 4250 "Heap.ml" 141 4239 4251
+)
+"Heap.ml" 141 4239 4265 "Heap.ml" 141 4239 4268
+type(
+  value
+)
+"Heap.ml" 141 4239 4255 "Heap.ml" 141 4239 4269
+type(
+  key * value
+)
+type(
+  (key * value) option
+)
+"Heap.ml" 139 4202 4206 "Heap.ml" 141 4239 4269
+type(
+  (key * value) option
+)
+type(
+  (key * value) option
+)
+"Heap.ml" 138 4148 4167 "Heap.ml" 141 4239 4269
+type(
+  heap -> (key * value) option
+)
+"Heap.ml" 145 4410 4416 "Heap.ml" 145 4410 4423
+type(
+  heap -> heap -> heap
+)
+ident(
+  def minroot "Heap.ml" 154 4781 4783 "Heap.ml" 526 18921 18924
+)
+"Heap.ml" 145 4410 4425 "Heap.ml" 145 4410 4427
+type(
+  heap
+)
+ident(
+  def h1 "Heap.ml" 145 4410 4435 "Heap.ml" 150 4576 4651
+)
+"Heap.ml" 145 4410 4436 "Heap.ml" 145 4410 4438
+type(
+  heap
+)
+ident(
+  def h2 "Heap.ml" 145 4410 4446 "Heap.ml" 150 4576 4651
+)
+"Heap.ml" 146 4455 4465 "Heap.ml" 146 4455 4477
+type(
+  heap -> (key * value) option
+)
+ident(
+  int_ref get_top_node "Heap.ml" 138 4148 4154 "Heap.ml" 138 4148 4166
+)
+"Heap.ml" 146 4455 4478 "Heap.ml" 146 4455 4480
+type(
+  heap
+)
+ident(
+  int_ref h1 "Heap.ml" 145 4410 4425 "Heap.ml" 145 4410 4427
+)
+"Heap.ml" 146 4455 4465 "Heap.ml" 146 4455 4480
+type(
+  (key * value) option
+)
+"Heap.ml" 146 4455 4482 "Heap.ml" 146 4455 4494
+type(
+  heap -> (key * value) option
+)
+ident(
+  int_ref get_top_node "Heap.ml" 138 4148 4154 "Heap.ml" 138 4148 4166
+)
+"Heap.ml" 146 4455 4495 "Heap.ml" 146 4455 4497
+type(
+  heap
+)
+ident(
+  int_ref h2 "Heap.ml" 145 4410 4436 "Heap.ml" 145 4410 4438
+)
+"Heap.ml" 146 4455 4482 "Heap.ml" 146 4455 4497
+type(
+  (key * value) option
+)
+"Heap.ml" 146 4455 4465 "Heap.ml" 146 4455 4497
+type(
+  (key * value) option * (key * value) option
+)
+"Heap.ml" 147 4503 4509 "Heap.ml" 147 4503 4513
+type(
+  (key * value) option
+)
+"Heap.ml" 147 4503 4515 "Heap.ml" 147 4503 4519
+type(
+  (key * value) option
+)
+"Heap.ml" 147 4503 4509 "Heap.ml" 147 4503 4519
+type(
+  (key * value) option * (key * value) option
+)
+"Heap.ml" 147 4503 4523 "Heap.ml" 147 4503 4525
+type(
+  heap
+)
+ident(
+  int_ref h1 "Heap.ml" 145 4410 4425 "Heap.ml" 145 4410 4427
+)
+"Heap.ml" 148 4526 4537 "Heap.ml" 148 4526 4538
+type(
+  key * value
+)
+"Heap.ml" 148 4526 4532 "Heap.ml" 148 4526 4538
+type(
+  (key * value) option
+)
+"Heap.ml" 148 4526 4540 "Heap.ml" 148 4526 4544
+type(
+  (key * value) option
+)
+"Heap.ml" 148 4526 4532 "Heap.ml" 148 4526 4544
+type(
+  (key * value) option * (key * value) option
+)
+"Heap.ml" 148 4526 4548 "Heap.ml" 148 4526 4550
+type(
+  heap
+)
+ident(
+  int_ref h1 "Heap.ml" 145 4410 4425 "Heap.ml" 145 4410 4427
+)
+"Heap.ml" 149 4551 4557 "Heap.ml" 149 4551 4561
+type(
+  (key * value) option
+)
+"Heap.ml" 149 4551 4568 "Heap.ml" 149 4551 4569
+type(
+  key * value
+)
+"Heap.ml" 149 4551 4563 "Heap.ml" 149 4551 4569
+type(
+  (key * value) option
+)
+"Heap.ml" 149 4551 4557 "Heap.ml" 149 4551 4569
+type(
+  (key * value) option * (key * value) option
+)
+"Heap.ml" 149 4551 4573 "Heap.ml" 149 4551 4575
+type(
+  heap
+)
+ident(
+  int_ref h2 "Heap.ml" 145 4410 4436 "Heap.ml" 145 4410 4438
+)
+"Heap.ml" 150 4576 4588 "Heap.ml" 150 4576 4590
+type(
+  key
+)
+ident(
+  def k1 "Heap.ml" 150 4576 4610 "Heap.ml" 150 4576 4651
+)
+"Heap.ml" 150 4576 4591 "Heap.ml" 150 4576 4592
+type(
+  value
+)
+"Heap.ml" 150 4576 4582 "Heap.ml" 150 4576 4593
+type(
+  (key * value) option
+)
+type(
+  key * value
+)
+"Heap.ml" 150 4576 4601 "Heap.ml" 150 4576 4603
+type(
+  key
+)
+ident(
+  def k2 "Heap.ml" 150 4576 4610 "Heap.ml" 150 4576 4651
+)
+"Heap.ml" 150 4576 4604 "Heap.ml" 150 4576 4605
+type(
+  value
+)
+"Heap.ml" 150 4576 4595 "Heap.ml" 150 4576 4606
+type(
+  (key * value) option
+)
+type(
+  key * value
+)
+"Heap.ml" 150 4576 4582 "Heap.ml" 150 4576 4606
+type(
+  (key * value) option * (key * value) option
+)
+"Heap.ml" 150 4576 4613 "Heap.ml" 150 4576 4622
+type(
+  key -> key -> Ordering.t
+)
+ident(
+  int_ref H.compare "Heap.ml" 48 1262 1264 "Heap.ml" 48 1262 1302
+)
+"Heap.ml" 150 4576 4623 "Heap.ml" 150 4576 4625
+type(
+  key
+)
+ident(
+  int_ref k2 "Heap.ml" 150 4576 4601 "Heap.ml" 150 4576 4603
+)
+"Heap.ml" 150 4576 4626 "Heap.ml" 150 4576 4628
+type(
+  key
+)
+ident(
+  int_ref k1 "Heap.ml" 150 4576 4588 "Heap.ml" 150 4576 4590
+)
+"Heap.ml" 150 4576 4613 "Heap.ml" 150 4576 4628
+type(
+  Ordering.t
+)
+"Heap.ml" 150 4576 4629 "Heap.ml" 150 4576 4630
+type(
+  Ordering.t -> Ordering.t -> bool
+)
+ident(
+  ext_ref Pervasives.( = )
+)
+"Heap.ml" 150 4576 4631 "Heap.ml" 150 4576 4635
+type(
+  Ordering.t
+)
+"Heap.ml" 150 4576 4613 "Heap.ml" 150 4576 4635
+type(
+  bool
+)
+"Heap.ml" 150 4576 4641 "Heap.ml" 150 4576 4643
+type(
+  heap
+)
+ident(
+  int_ref h2 "Heap.ml" 145 4410 4436 "Heap.ml" 145 4410 4438
+)
+"Heap.ml" 150 4576 4649 "Heap.ml" 150 4576 4651
+type(
+  heap
+)
+ident(
+  int_ref h1 "Heap.ml" 145 4410 4425 "Heap.ml" 145 4410 4427
+)
+"Heap.ml" 150 4576 4610 "Heap.ml" 150 4576 4651
+type(
+  heap
+)
+"Heap.ml" 146 4455 4459 "Heap.ml" 150 4576 4651
+type(
+  heap
+)
+type(
+  heap
+)
+"Heap.ml" 145 4410 4435 "Heap.ml" 150 4576 4651
+type(
+  heap -> heap
+)
+"Heap.ml" 145 4410 4424 "Heap.ml" 150 4576 4651
+type(
+  heap -> heap -> heap
+)
+"Heap.ml" 154 4781 4787 "Heap.ml" 154 4781 4799
+type(
+  ('a -> heap -> 'a) -> 'a -> heap -> 'a
+)
+ident(
+  def lnk_lst_fold "Heap.ml" 175 5434 5436 "Heap.ml" 526 18921 18924
+)
+"Heap.ml" 154 4781 4801 "Heap.ml" 154 4781 4802
+type(
+  'a -> heap -> 'a
+)
+ident(
+  def f "Heap.ml" 154 4781 4822 "Heap.ml" 172 5338 5389
+)
+"Heap.ml" 154 4781 4823 "Heap.ml" 154 4781 4826
+type(
+  'a
+)
+ident(
+  def acc "Heap.ml" 154 4781 4832 "Heap.ml" 172 5338 5389
+)
+"Heap.ml" 154 4781 4833 "Heap.ml" 154 4781 4834
+type(
+  heap
+)
+ident(
+  def h "Heap.ml" 154 4781 4842 "Heap.ml" 172 5338 5389
+)
+"Heap.ml" 155 4849 4861 "Heap.ml" 155 4849 4880
+type(
+  ('a -> heap -> 'a) -> 'a -> heap -> heap -> 'a
+)
+ident(
+  def lnk_lst_fold_helper "Heap.ml" 155 4849 4853 "Heap.ml" 172 5338 5389
+)
+"Heap.ml" 155 4849 4882 "Heap.ml" 155 4849 4884
+type(
+  'a -> heap -> 'a
+)
+ident(
+  def f' "Heap.ml" 155 4849 4904 "Heap.ml" 165 5138 5197
+)
+"Heap.ml" 155 4849 4905 "Heap.ml" 155 4849 4909
+type(
+  'a
+)
+ident(
+  def acc' "Heap.ml" 156 4915 4923 "Heap.ml" 165 5138 5197
+)
+"Heap.ml" 156 4915 4924 "Heap.ml" 156 4915 4926
+type(
+  heap
+)
+ident(
+  def h' "Heap.ml" 156 4915 4934 "Heap.ml" 165 5138 5197
+)
+"Heap.ml" 156 4915 4935 "Heap.ml" 156 4915 4937
+type(
+  heap
+)
+ident(
+  def h0 "Heap.ml" 156 4915 4945 "Heap.ml" 165 5138 5197
+)
+"Heap.ml" 157 4952 4965 "Heap.ml" 157 4952 4967
+type(
+  heap
+)
+ident(
+  int_ref h' "Heap.ml" 156 4915 4924 "Heap.ml" 156 4915 4926
+)
+"Heap.ml" 157 4952 4964 "Heap.ml" 157 4952 4967
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 158 4973 4981 "Heap.ml" 158 4973 4985
+type(
+  node option
+)
+"Heap.ml" 158 4973 4989 "Heap.ml" 158 4973 4993
+type(
+  'a
+)
+ident(
+  int_ref acc' "Heap.ml" 155 4849 4905 "Heap.ml" 155 4849 4909
+)
+"Heap.ml" 159 4994 5007 "Heap.ml" 159 4994 5008
+type(
+  node
+)
+ident(
+  def n "Heap.ml" 160 5012 5020 "Heap.ml" 165 5138 5197
+)
+"Heap.ml" 159 4994 5002 "Heap.ml" 159 4994 5008
+type(
+  node option
+)
+"Heap.ml" 160 5012 5023 "Heap.ml" 160 5012 5033
+type(
+  heap -> heap -> bool
+)
+ident(
+  ext_ref Core.Std.phys_equal
+)
+"Heap.ml" 160 5012 5034 "Heap.ml" 160 5012 5035
+type(
+  node
+)
+ident(
+  int_ref n "Heap.ml" 159 4994 5007 "Heap.ml" 159 4994 5008
+)
+"Heap.ml" 160 5012 5034 "Heap.ml" 160 5012 5037
+type(
+  heap
+)
+"Heap.ml" 160 5012 5038 "Heap.ml" 160 5012 5040
+type(
+  heap
+)
+ident(
+  int_ref h0 "Heap.ml" 156 4915 4935 "Heap.ml" 156 4915 4937
+)
+"Heap.ml" 160 5012 5023 "Heap.ml" 160 5012 5040
+type(
+  bool
+)
+"Heap.ml" 161 5041 5054 "Heap.ml" 161 5041 5056
+type(
+  'a -> heap -> 'a
+)
+ident(
+  int_ref f' "Heap.ml" 155 4849 4882 "Heap.ml" 155 4849 4884
+)
+"Heap.ml" 161 5041 5057 "Heap.ml" 161 5041 5061
+type(
+  'a
+)
+ident(
+  int_ref acc' "Heap.ml" 155 4849 4905 "Heap.ml" 155 4849 4909
+)
+"Heap.ml" 161 5041 5062 "Heap.ml" 161 5041 5064
+type(
+  heap
+)
+ident(
+  int_ref h' "Heap.ml" 156 4915 4924 "Heap.ml" 156 4915 4926
+)
+"Heap.ml" 161 5041 5054 "Heap.ml" 161 5041 5064
+type(
+  'a
+)
+"Heap.ml" 163 5079 5097 "Heap.ml" 163 5079 5098
+type(
+  node
+)
+ident(
+  int_ref n "Heap.ml" 159 4994 5007 "Heap.ml" 159 4994 5008
+)
+"Heap.ml" 163 5079 5097 "Heap.ml" 163 5079 5100
+type(
+  heap
+)
+"Heap.ml" 163 5079 5095 "Heap.ml" 163 5079 5101
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 164 5107 5119 "Heap.ml" 164 5107 5123
+type(
+  node option
+)
+"Heap.ml" 164 5107 5127 "Heap.ml" 164 5107 5129
+type(
+  'a -> heap -> 'a
+)
+ident(
+  int_ref f' "Heap.ml" 155 4849 4882 "Heap.ml" 155 4849 4884
+)
+"Heap.ml" 164 5107 5130 "Heap.ml" 164 5107 5134
+type(
+  'a
+)
+ident(
+  int_ref acc' "Heap.ml" 155 4849 4905 "Heap.ml" 155 4849 4909
+)
+"Heap.ml" 164 5107 5135 "Heap.ml" 164 5107 5137
+type(
+  heap
+)
+ident(
+  int_ref h' "Heap.ml" 156 4915 4924 "Heap.ml" 156 4915 4926
+)
+"Heap.ml" 164 5107 5127 "Heap.ml" 164 5107 5137
+type(
+  'a
+)
+"Heap.ml" 165 5138 5150 "Heap.ml" 165 5138 5151
+type(
+  node option
+)
+"Heap.ml" 165 5138 5155 "Heap.ml" 165 5138 5174
+type(
+  ('a -> heap -> 'a) -> 'a -> heap -> heap -> 'a
+)
+ident(
+  int_ref lnk_lst_fold_helper "Heap.ml" 155 4849 4861 "Heap.ml" 155 4849 4880
+)
+"Heap.ml" 165 5138 5175 "Heap.ml" 165 5138 5177
+type(
+  'a -> heap -> 'a
+)
+ident(
+  int_ref f' "Heap.ml" 155 4849 4882 "Heap.ml" 155 4849 4884
+)
+"Heap.ml" 165 5138 5179 "Heap.ml" 165 5138 5181
+type(
+  'a -> heap -> 'a
+)
+ident(
+  int_ref f' "Heap.ml" 155 4849 4882 "Heap.ml" 155 4849 4884
+)
+"Heap.ml" 165 5138 5182 "Heap.ml" 165 5138 5186
+type(
+  'a
+)
+ident(
+  int_ref acc' "Heap.ml" 155 4849 4905 "Heap.ml" 155 4849 4909
+)
+"Heap.ml" 165 5138 5187 "Heap.ml" 165 5138 5189
+type(
+  heap
+)
+ident(
+  int_ref h' "Heap.ml" 156 4915 4924 "Heap.ml" 156 4915 4926
+)
+"Heap.ml" 165 5138 5179 "Heap.ml" 165 5138 5189
+type(
+  'a
+)
+"Heap.ml" 165 5138 5191 "Heap.ml" 165 5138 5192
+type(
+  node
+)
+ident(
+  int_ref n "Heap.ml" 159 4994 5007 "Heap.ml" 159 4994 5008
+)
+"Heap.ml" 165 5138 5191 "Heap.ml" 165 5138 5194
+type(
+  heap
+)
+"Heap.ml" 165 5138 5195 "Heap.ml" 165 5138 5197
+type(
+  heap
+)
+ident(
+  int_ref h0 "Heap.ml" 156 4915 4935 "Heap.ml" 156 4915 4937
+)
+"Heap.ml" 165 5138 5155 "Heap.ml" 165 5138 5197
+type(
+  'a
+)
+"Heap.ml" 163 5079 5089 "Heap.ml" 165 5138 5197
+type(
+  'a
+)
+"Heap.ml" 160 5012 5020 "Heap.ml" 165 5138 5197
+type(
+  'a
+)
+"Heap.ml" 157 4952 4958 "Heap.ml" 165 5138 5197
+type(
+  'a
+)
+type(
+  'a
+)
+"Heap.ml" 156 4915 4934 "Heap.ml" 165 5138 5197
+type(
+  heap -> 'a
+)
+"Heap.ml" 156 4915 4923 "Heap.ml" 165 5138 5197
+type(
+  heap -> heap -> 'a
+)
+"Heap.ml" 155 4849 4904 "Heap.ml" 165 5138 5197
+type(
+  'a -> heap -> heap -> 'a
+)
+"Heap.ml" 155 4849 4881 "Heap.ml" 165 5138 5197
+type(
+  ('a -> heap -> 'a) -> 'a -> heap -> heap -> 'a
+)
+"Heap.ml" 167 5205 5216 "Heap.ml" 167 5205 5217
+type(
+  heap
+)
+ident(
+  int_ref h "Heap.ml" 154 4781 4833 "Heap.ml" 154 4781 4834
+)
+"Heap.ml" 167 5205 5215 "Heap.ml" 167 5205 5217
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 168 5223 5229 "Heap.ml" 168 5223 5233
+type(
+  node option
+)
+"Heap.ml" 168 5223 5237 "Heap.ml" 168 5223 5240
+type(
+  'a
+)
+ident(
+  int_ref acc "Heap.ml" 154 4781 4823 "Heap.ml" 154 4781 4826
+)
+"Heap.ml" 169 5241 5252 "Heap.ml" 169 5241 5253
+type(
+  node
+)
+ident(
+  def n "Heap.ml" 170 5257 5263 "Heap.ml" 172 5338 5389
+)
+"Heap.ml" 169 5241 5247 "Heap.ml" 169 5241 5253
+type(
+  node option
+)
+"Heap.ml" 170 5257 5271 "Heap.ml" 170 5257 5272
+type(
+  node
+)
+ident(
+  int_ref n "Heap.ml" 169 5241 5252 "Heap.ml" 169 5241 5253
+)
+"Heap.ml" 170 5257 5271 "Heap.ml" 170 5257 5274
+type(
+  heap
+)
+"Heap.ml" 170 5257 5269 "Heap.ml" 170 5257 5275
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 171 5281 5289 "Heap.ml" 171 5281 5293
+type(
+  node option
+)
+"Heap.ml" 171 5281 5297 "Heap.ml" 171 5281 5305
+type(
+  bytes -> 'a
+)
+ident(
+  ext_ref Pervasives.failwith
+)
+"Heap.ml" 171 5281 5306 "Heap.ml" 171 5281 5337
+type(
+  bytes
+)
+"Heap.ml" 171 5281 5297 "Heap.ml" 171 5281 5337
+type(
+  'a
+)
+"Heap.ml" 172 5338 5351 "Heap.ml" 172 5338 5353
+type(
+  node
+)
+ident(
+  def rn "Heap.ml" 172 5338 5357 "Heap.ml" 172 5338 5389
+)
+"Heap.ml" 172 5338 5346 "Heap.ml" 172 5338 5353
+type(
+  node option
+)
+"Heap.ml" 172 5338 5357 "Heap.ml" 172 5338 5376
+type(
+  ('a -> heap -> 'a) -> 'a -> heap -> heap -> 'a
+)
+ident(
+  int_ref lnk_lst_fold_helper "Heap.ml" 155 4849 4861 "Heap.ml" 155 4849 4880
+)
+"Heap.ml" 172 5338 5377 "Heap.ml" 172 5338 5378
+type(
+  'a -> heap -> 'a
+)
+ident(
+  int_ref f "Heap.ml" 154 4781 4801 "Heap.ml" 154 4781 4802
+)
+"Heap.ml" 172 5338 5379 "Heap.ml" 172 5338 5382
+type(
+  'a
+)
+ident(
+  int_ref acc "Heap.ml" 154 4781 4823 "Heap.ml" 154 4781 4826
+)
+"Heap.ml" 172 5338 5383 "Heap.ml" 172 5338 5384
+type(
+  heap
+)
+ident(
+  int_ref h "Heap.ml" 154 4781 4833 "Heap.ml" 154 4781 4834
+)
+"Heap.ml" 172 5338 5385 "Heap.ml" 172 5338 5387
+type(
+  node
+)
+ident(
+  int_ref rn "Heap.ml" 172 5338 5351 "Heap.ml" 172 5338 5353
+)
+"Heap.ml" 172 5338 5385 "Heap.ml" 172 5338 5389
+type(
+  heap
+)
+"Heap.ml" 172 5338 5357 "Heap.ml" 172 5338 5389
+type(
+  'a
+)
+"Heap.ml" 170 5257 5263 "Heap.ml" 172 5338 5389
+type(
+  'a
+)
+"Heap.ml" 167 5205 5209 "Heap.ml" 172 5338 5389
+type(
+  'a
+)
+"Heap.ml" 155 4849 4853 "Heap.ml" 172 5338 5389
+type(
+  'a
+)
+type(
+  'a
+)
+"Heap.ml" 154 4781 4832 "Heap.ml" 172 5338 5389
+type(
+  heap -> 'a
+)
+"Heap.ml" 154 4781 4822 "Heap.ml" 172 5338 5389
+type(
+  'a -> heap -> 'a
+)
+"Heap.ml" 154 4781 4800 "Heap.ml" 172 5338 5389
+type(
+  ('a -> heap -> 'a) -> 'a -> heap -> 'a
+)
+"Heap.ml" 175 5434 5440 "Heap.ml" 175 5434 5449
+type(
+  heap -> heap
+)
+ident(
+  def leastroot "Heap.ml" 179 5627 5629 "Heap.ml" 526 18921 18924
+)
+"Heap.ml" 175 5434 5451 "Heap.ml" 175 5434 5452
+type(
+  heap
+)
+ident(
+  def h "Heap.ml" 175 5434 5460 "Heap.ml" 175 5434 5493
+)
+"Heap.ml" 175 5434 5469 "Heap.ml" 175 5434 5481
+type(
+  (heap -> heap -> heap) -> heap -> heap -> heap
+)
+ident(
+  int_ref lnk_lst_fold "Heap.ml" 154 4781 4787 "Heap.ml" 154 4781 4799
+)
+"Heap.ml" 175 5434 5482 "Heap.ml" 175 5434 5489
+type(
+  heap -> heap -> heap
+)
+ident(
+  int_ref minroot "Heap.ml" 145 4410 4416 "Heap.ml" 145 4410 4423
+)
+"Heap.ml" 175 5434 5490 "Heap.ml" 175 5434 5491
+type(
+  heap
+)
+ident(
+  int_ref h "Heap.ml" 175 5434 5451 "Heap.ml" 175 5434 5452
+)
+"Heap.ml" 175 5434 5492 "Heap.ml" 175 5434 5493
+type(
+  heap
+)
+ident(
+  int_ref h "Heap.ml" 175 5434 5451 "Heap.ml" 175 5434 5452
+)
+"Heap.ml" 175 5434 5469 "Heap.ml" 175 5434 5493
+type(
+  heap
+)
+type(
+  heap
+)
+"Heap.ml" 175 5434 5450 "Heap.ml" 175 5434 5493
+type(
+  heap -> heap
+)
+"Heap.ml" 179 5627 5633 "Heap.ml" 179 5627 5637
+type(
+  heap -> heap -> unit
+)
+ident(
+  def link "Heap.ml" 248 8191 8193 "Heap.ml" 526 18921 18924
+)
+"Heap.ml" 179 5627 5639 "Heap.ml" 179 5627 5641
+type(
+  heap
+)
+ident(
+  def hl "Heap.ml" 179 5627 5649 "Heap.ml" 183 5730 5777
+)
+"Heap.ml" 179 5627 5650 "Heap.ml" 179 5627 5652
+type(
+  heap
+)
+ident(
+  def hr "Heap.ml" 179 5627 5660 "Heap.ml" 183 5730 5777
+)
+"Heap.ml" 180 5669 5680 "Heap.ml" 180 5669 5682
+type(
+  heap
+)
+ident(
+  int_ref hl "Heap.ml" 179 5627 5639 "Heap.ml" 179 5627 5641
+)
+"Heap.ml" 180 5669 5679 "Heap.ml" 180 5669 5682
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 180 5669 5684 "Heap.ml" 180 5669 5686
+type(
+  heap
+)
+ident(
+  int_ref hr "Heap.ml" 179 5627 5650 "Heap.ml" 179 5627 5652
+)
+"Heap.ml" 180 5669 5683 "Heap.ml" 180 5669 5686
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 180 5669 5679 "Heap.ml" 180 5669 5686
+type(
+  node option * node option
+)
+"Heap.ml" 181 5692 5698 "Heap.ml" 181 5692 5699
+type(
+  node option
+)
+"Heap.ml" 181 5692 5700 "Heap.ml" 181 5692 5704
+type(
+  node option
+)
+"Heap.ml" 181 5692 5698 "Heap.ml" 181 5692 5704
+type(
+  node option * node option
+)
+"Heap.ml" 181 5692 5708 "Heap.ml" 181 5692 5710
+type(
+  unit
+)
+"Heap.ml" 182 5711 5717 "Heap.ml" 182 5711 5721
+type(
+  node option
+)
+"Heap.ml" 182 5711 5722 "Heap.ml" 182 5711 5723
+type(
+  node option
+)
+"Heap.ml" 182 5711 5717 "Heap.ml" 182 5711 5723
+type(
+  node option * node option
+)
+"Heap.ml" 182 5711 5727 "Heap.ml" 182 5711 5729
+type(
+  unit
+)
+"Heap.ml" 183 5730 5741 "Heap.ml" 183 5730 5743
+type(
+  node
+)
+ident(
+  def nl "Heap.ml" 183 5730 5755 "Heap.ml" 183 5730 5777
+)
+"Heap.ml" 183 5730 5736 "Heap.ml" 183 5730 5743
+type(
+  node option
+)
+"Heap.ml" 183 5730 5749 "Heap.ml" 183 5730 5751
+type(
+  node
+)
+ident(
+  def nr "Heap.ml" 183 5730 5755 "Heap.ml" 183 5730 5777
+)
+"Heap.ml" 183 5730 5744 "Heap.ml" 183 5730 5751
+type(
+  node option
+)
+"Heap.ml" 183 5730 5736 "Heap.ml" 183 5730 5751
+type(
+  node option * node option
+)
+"Heap.ml" 183 5730 5755 "Heap.ml" 183 5730 5757
+type(
+  node
+)
+ident(
+  int_ref nl "Heap.ml" 183 5730 5741 "Heap.ml" 183 5730 5743
+)
+"Heap.ml" 183 5730 5763 "Heap.ml" 183 5730 5765
+type(
+  heap
+)
+ident(
+  int_ref hr "Heap.ml" 179 5627 5650 "Heap.ml" 179 5627 5652
+)
+"Heap.ml" 183 5730 5755 "Heap.ml" 183 5730 5765
+type(
+  unit
+)
+"Heap.ml" 183 5730 5767 "Heap.ml" 183 5730 5769
+type(
+  node
+)
+ident(
+  int_ref nr "Heap.ml" 183 5730 5749 "Heap.ml" 183 5730 5751
+)
+"Heap.ml" 183 5730 5775 "Heap.ml" 183 5730 5777
+type(
+  heap
+)
+ident(
+  int_ref hl "Heap.ml" 179 5627 5639 "Heap.ml" 179 5627 5641
+)
+"Heap.ml" 183 5730 5767 "Heap.ml" 183 5730 5777
+type(
+  unit
+)
+"Heap.ml" 183 5730 5755 "Heap.ml" 183 5730 5777
+type(
+  unit
+)
+"Heap.ml" 180 5669 5673 "Heap.ml" 183 5730 5777
+type(
+  unit
+)
+type(
+  unit
+)
+"Heap.ml" 179 5627 5649 "Heap.ml" 183 5730 5777
+type(
+  heap -> unit
+)
+"Heap.ml" 179 5627 5638 "Heap.ml" 183 5730 5777
+type(
+  heap -> heap -> unit
+)
+"Heap.ml" 248 8191 8197 "Heap.ml" 248 8191 8203
+type(
+  key -> value -> heap -> heap * heap
+)
+ident(
+  def insert "Heap.ml" 269 9163 9165 "Heap.ml" 526 18921 18924
+)
+"Heap.ml" 248 8191 8205 "Heap.ml" 248 8191 8206
+type(
+  key
+)
+ident(
+  def k "Heap.ml" 248 8191 8213 "Heap.ml" 263 8829 8900
+)
+"Heap.ml" 248 8191 8214 "Heap.ml" 248 8191 8215
+type(
+  value
+)
+ident(
+  def v "Heap.ml" 248 8191 8224 "Heap.ml" 263 8829 8900
+)
+"Heap.ml" 248 8191 8225 "Heap.ml" 248 8191 8226
+type(
+  heap
+)
+ident(
+  def h "Heap.ml" 248 8191 8234 "Heap.ml" 263 8829 8900
+)
+"Heap.ml" 249 8250 8261 "Heap.ml" 249 8250 8262
+type(
+  heap
+)
+ident(
+  int_ref h "Heap.ml" 248 8191 8225 "Heap.ml" 248 8191 8226
+)
+"Heap.ml" 249 8250 8260 "Heap.ml" 249 8250 8262
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 250 8268 8274 "Heap.ml" 250 8268 8278
+type(
+  node option
+)
+"Heap.ml" 252 8357 8369 "Heap.ml" 252 8357 8376
+type(
+  heap
+)
+ident(
+  def newheap "Heap.ml" 253 8388 8396 "Heap.ml" 255 8483 8533
+)
+"Heap.ml" 252 8357 8379 "Heap.ml" 252 8357 8384
+type(
+  heap
+)
+ident(
+  int_ref empty "Heap.ml" 126 3924 3930 "Heap.ml" 126 3924 3935
+)
+"Heap.ml" 253 8388 8400 "Heap.ml" 253 8388 8407
+type(
+  node
+)
+ident(
+  def newnode "Heap.ml" 255 8483 8491 "Heap.ml" 255 8483 8532
+)
+"Heap.ml" 254 8410 8423 "Heap.ml" 254 8410 8424
+type(
+  key
+)
+ident(
+  int_ref k "Heap.ml" 248 8191 8205 "Heap.ml" 248 8191 8206
+)
+"Heap.ml" 254 8410 8427 "Heap.ml" 254 8410 8428
+type(
+  value
+)
+ident(
+  int_ref v "Heap.ml" 248 8191 8214 "Heap.ml" 248 8191 8215
+)
+"Heap.ml" 254 8410 8431 "Heap.ml" 254 8410 8436
+type(
+  heap
+)
+ident(
+  int_ref empty "Heap.ml" 126 3924 3930 "Heap.ml" 126 3924 3935
+)
+"Heap.ml" 254 8410 8439 "Heap.ml" 254 8410 8446
+type(
+  heap
+)
+ident(
+  int_ref newheap "Heap.ml" 252 8357 8369 "Heap.ml" 252 8357 8376
+)
+"Heap.ml" 254 8410 8449 "Heap.ml" 254 8410 8456
+type(
+  heap
+)
+ident(
+  int_ref newheap "Heap.ml" 252 8357 8369 "Heap.ml" 252 8357 8376
+)
+"Heap.ml" 254 8410 8459 "Heap.ml" 254 8410 8464
+type(
+  heap
+)
+ident(
+  int_ref empty "Heap.ml" 126 3924 3930 "Heap.ml" 126 3924 3935
+)
+"Heap.ml" 254 8410 8468 "Heap.ml" 254 8410 8469
+type(
+  int
+)
+"Heap.ml" 254 8410 8473 "Heap.ml" 254 8410 8478
+type(
+  bool
+)
+"Heap.ml" 254 8410 8420 "Heap.ml" 254 8410 8479
+type(
+  node
+)
+"Heap.ml" 255 8483 8491 "Heap.ml" 255 8483 8498
+type(
+  heap
+)
+ident(
+  int_ref newheap "Heap.ml" 252 8357 8369 "Heap.ml" 252 8357 8376
+)
+"Heap.ml" 255 8483 8507 "Heap.ml" 255 8483 8514
+type(
+  node
+)
+ident(
+  int_ref newnode "Heap.ml" 253 8388 8400 "Heap.ml" 253 8388 8407
+)
+"Heap.ml" 255 8483 8502 "Heap.ml" 255 8483 8514
+type(
+  node option
+)
+"Heap.ml" 255 8483 8491 "Heap.ml" 255 8483 8514
+type(
+  unit
+)
+type(
+  heap -> node option -> unit
+)
+ident(
+  ext_ref Pervasives.( := )
+)
+"Heap.ml" 255 8483 8517 "Heap.ml" 255 8483 8524
+type(
+  heap
+)
+ident(
+  int_ref newheap "Heap.ml" 252 8357 8369 "Heap.ml" 252 8357 8376
+)
+"Heap.ml" 255 8483 8525 "Heap.ml" 255 8483 8532
+type(
+  heap
+)
+ident(
+  int_ref newheap "Heap.ml" 252 8357 8369 "Heap.ml" 252 8357 8376
+)
+"Heap.ml" 255 8483 8517 "Heap.ml" 255 8483 8532
+type(
+  heap * heap
+)
+"Heap.ml" 255 8483 8491 "Heap.ml" 255 8483 8532
+type(
+  heap * heap
+)
+"Heap.ml" 253 8388 8396 "Heap.ml" 255 8483 8533
+type(
+  heap * heap
+)
+"Heap.ml" 252 8357 8365 "Heap.ml" 255 8483 8533
+type(
+  heap * heap
+)
+"Heap.ml" 256 8534 8545 "Heap.ml" 256 8534 8546
+type(
+  node
+)
+ident(
+  def n "Heap.ml" 258 8627 8635 "Heap.ml" 263 8829 8900
+)
+"Heap.ml" 256 8534 8540 "Heap.ml" 256 8534 8546
+type(
+  node option
+)
+"Heap.ml" 258 8627 8639 "Heap.ml" 258 8627 8646
+type(
+  node
+)
+ident(
+  def newnode "Heap.ml" 259 8702 8710 "Heap.ml" 263 8829 8900
+)
+"Heap.ml" 258 8627 8652 "Heap.ml" 258 8627 8653
+type(
+  key
+)
+ident(
+  int_ref k "Heap.ml" 248 8191 8205 "Heap.ml" 248 8191 8206
+)
+"Heap.ml" 258 8627 8656 "Heap.ml" 258 8627 8657
+type(
+  value
+)
+ident(
+  int_ref v "Heap.ml" 248 8191 8214 "Heap.ml" 248 8191 8215
+)
+"Heap.ml" 258 8627 8660 "Heap.ml" 258 8627 8665
+type(
+  heap
+)
+ident(
+  int_ref empty "Heap.ml" 126 3924 3930 "Heap.ml" 126 3924 3935
+)
+"Heap.ml" 258 8627 8668 "Heap.ml" 258 8627 8669
+type(
+  node
+)
+ident(
+  int_ref n "Heap.ml" 256 8534 8545 "Heap.ml" 256 8534 8546
+)
+"Heap.ml" 258 8627 8668 "Heap.ml" 258 8627 8671
+type(
+  heap
+)
+"Heap.ml" 258 8627 8674 "Heap.ml" 258 8627 8675
+type(
+  heap
+)
+ident(
+  int_ref h "Heap.ml" 248 8191 8225 "Heap.ml" 248 8191 8226
+)
+"Heap.ml" 258 8627 8678 "Heap.ml" 258 8627 8683
+type(
+  heap
+)
+ident(
+  int_ref empty "Heap.ml" 126 3924 3930 "Heap.ml" 126 3924 3935
+)
+"Heap.ml" 258 8627 8687 "Heap.ml" 258 8627 8688
+type(
+  int
+)
+"Heap.ml" 258 8627 8692 "Heap.ml" 258 8627 8697
+type(
+  bool
+)
+"Heap.ml" 258 8627 8649 "Heap.ml" 258 8627 8698
+type(
+  node
+)
+"Heap.ml" 259 8702 8714 "Heap.ml" 259 8702 8721
+type(
+  node option ref
+)
+ident(
+  def newheap "Heap.ml" 260 8746 8747 "Heap.ml" 263 8829 8900
+)
+"Heap.ml" 259 8702 8724 "Heap.ml" 259 8702 8727
+type(
+  node option -> node option ref
+)
+ident(
+  ext_ref Pervasives.ref
+)
+"Heap.ml" 259 8702 8734 "Heap.ml" 259 8702 8741
+type(
+  node
+)
+ident(
+  int_ref newnode "Heap.ml" 258 8627 8639 "Heap.ml" 258 8627 8646
+)
+"Heap.ml" 259 8702 8729 "Heap.ml" 259 8702 8741
+type(
+  node option
+)
+"Heap.ml" 259 8702 8724 "Heap.ml" 259 8702 8742
+type(
+  node option ref
+)
+"Heap.ml" 260 8746 8755 "Heap.ml" 260 8746 8756
+type(
+  node
+)
+ident(
+  int_ref n "Heap.ml" 256 8534 8545 "Heap.ml" 256 8534 8546
+)
+"Heap.ml" 260 8746 8755 "Heap.ml" 260 8746 8758
+type(
+  heap
+)
+"Heap.ml" 260 8746 8753 "Heap.ml" 260 8746 8759
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 261 8765 8768 "Heap.ml" 261 8765 8772
+type(
+  node option
+)
+"Heap.ml" 261 8765 8776 "Heap.ml" 261 8765 8784
+type(
+  bytes -> heap * heap
+)
+ident(
+  ext_ref Pervasives.failwith
+)
+"Heap.ml" 261 8765 8785 "Heap.ml" 261 8765 8815
+type(
+  bytes
+)
+"Heap.ml" 261 8765 8776 "Heap.ml" 261 8765 8815
+type(
+  heap * heap
+)
+"Heap.ml" 262 8816 8824 "Heap.ml" 262 8816 8825
+type(
+  node
+)
+ident(
+  def l "Heap.ml" 263 8829 8839 "Heap.ml" 263 8829 8899
+)
+"Heap.ml" 262 8816 8819 "Heap.ml" 262 8816 8825
+type(
+  node option
+)
+"Heap.ml" 263 8829 8839 "Heap.ml" 263 8829 8840
+type(
+  node
+)
+ident(
+  int_ref n "Heap.ml" 256 8534 8545 "Heap.ml" 256 8534 8546
+)
+"Heap.ml" 263 8829 8846 "Heap.ml" 263 8829 8853
+type(
+  heap
+)
+ident(
+  int_ref newheap "Heap.ml" 259 8702 8714 "Heap.ml" 259 8702 8721
+)
+"Heap.ml" 263 8829 8839 "Heap.ml" 263 8829 8853
+type(
+  unit
+)
+"Heap.ml" 263 8829 8855 "Heap.ml" 263 8829 8856
+type(
+  node
+)
+ident(
+  int_ref l "Heap.ml" 262 8816 8824 "Heap.ml" 262 8816 8825
+)
+"Heap.ml" 263 8829 8862 "Heap.ml" 263 8829 8869
+type(
+  heap
+)
+ident(
+  int_ref newheap "Heap.ml" 259 8702 8714 "Heap.ml" 259 8702 8721
+)
+"Heap.ml" 263 8829 8855 "Heap.ml" 263 8829 8869
+type(
+  unit
+)
+"Heap.ml" 263 8829 8873 "Heap.ml" 263 8829 8880
+type(
+  heap -> heap -> heap
+)
+ident(
+  int_ref minroot "Heap.ml" 145 4410 4416 "Heap.ml" 145 4410 4423
+)
+"Heap.ml" 263 8829 8881 "Heap.ml" 263 8829 8882
+type(
+  heap
+)
+ident(
+  int_ref h "Heap.ml" 248 8191 8225 "Heap.ml" 248 8191 8226
+)
+"Heap.ml" 263 8829 8883 "Heap.ml" 263 8829 8890
+type(
+  heap
+)
+ident(
+  int_ref newheap "Heap.ml" 259 8702 8714 "Heap.ml" 259 8702 8721
+)
+"Heap.ml" 263 8829 8873 "Heap.ml" 263 8829 8890
+type(
+  heap
+)
+"Heap.ml" 263 8829 8892 "Heap.ml" 263 8829 8899
+type(
+  heap
+)
+ident(
+  int_ref newheap "Heap.ml" 259 8702 8714 "Heap.ml" 259 8702 8721
+)
+"Heap.ml" 263 8829 8872 "Heap.ml" 263 8829 8899
+type(
+  heap * heap
+)
+"Heap.ml" 263 8829 8855 "Heap.ml" 263 8829 8899
+type(
+  heap * heap
+)
+"Heap.ml" 263 8829 8839 "Heap.ml" 263 8829 8899
+type(
+  heap * heap
+)
+"Heap.ml" 260 8746 8747 "Heap.ml" 263 8829 8900
+type(
+  heap * heap
+)
+"Heap.ml" 259 8702 8710 "Heap.ml" 263 8829 8900
+type(
+  heap * heap
+)
+"Heap.ml" 258 8627 8635 "Heap.ml" 263 8829 8900
+type(
+  heap * heap
+)
+"Heap.ml" 249 8250 8254 "Heap.ml" 263 8829 8900
+type(
+  heap * heap
+)
+type(
+  heap * heap
+)
+"Heap.ml" 248 8191 8224 "Heap.ml" 263 8829 8900
+type(
+  heap -> heap * heap
+)
+"Heap.ml" 248 8191 8213 "Heap.ml" 263 8829 8900
+type(
+  value -> heap -> heap * heap
+)
+"Heap.ml" 248 8191 8204 "Heap.ml" 263 8829 8900
+type(
+  key -> value -> heap -> heap * heap
+)
+"Heap.ml" 269 9163 9169 "Heap.ml" 269 9163 9174
+type(
+  heap -> unit
+)
+ident(
+  def clean "Heap.ml" 287 9722 9724 "Heap.ml" 526 18921 18924
+)
+"Heap.ml" 269 9163 9176 "Heap.ml" 269 9163 9177
+type(
+  heap
+)
+ident(
+  def h "Heap.ml" 269 9163 9185 "Heap.ml" 284 9621 9641
+)
+"Heap.ml" 270 9194 9205 "Heap.ml" 270 9194 9206
+type(
+  heap
+)
+ident(
+  int_ref h "Heap.ml" 269 9163 9176 "Heap.ml" 269 9163 9177
+)
+"Heap.ml" 270 9194 9204 "Heap.ml" 270 9194 9206
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 271 9212 9218 "Heap.ml" 271 9212 9222
+type(
+  node option
+)
+"Heap.ml" 271 9212 9226 "Heap.ml" 271 9212 9228
+type(
+  unit
+)
+"Heap.ml" 272 9229 9240 "Heap.ml" 272 9229 9241
+type(
+  node
+)
+ident(
+  def n "Heap.ml" 273 9245 9253 "Heap.ml" 284 9621 9641
+)
+"Heap.ml" 272 9229 9235 "Heap.ml" 272 9229 9241
+type(
+  node option
+)
+"Heap.ml" 273 9245 9257 "Heap.ml" 273 9245 9271
+type(
+  unit
+)
+ident(
+  def clean_siblings "Heap.ml" 277 9414 9422 "Heap.ml" 284 9621 9641
+)
+"Heap.ml" 274 9281 9299 "Heap.ml" 274 9281 9300
+type(
+  node
+)
+ident(
+  int_ref n "Heap.ml" 272 9229 9240 "Heap.ml" 272 9229 9241
+)
+"Heap.ml" 274 9281 9299 "Heap.ml" 274 9281 9302
+type(
+  heap
+)
+"Heap.ml" 274 9281 9297 "Heap.ml" 274 9281 9303
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 274 9281 9306 "Heap.ml" 274 9281 9307
+type(
+  node
+)
+ident(
+  int_ref n "Heap.ml" 272 9229 9240 "Heap.ml" 272 9229 9241
+)
+"Heap.ml" 274 9281 9306 "Heap.ml" 274 9281 9309
+type(
+  heap
+)
+"Heap.ml" 274 9281 9304 "Heap.ml" 274 9281 9310
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 274 9281 9297 "Heap.ml" 274 9281 9310
+type(
+  node option * node option
+)
+"Heap.ml" 275 9316 9326 "Heap.ml" 275 9316 9327
+type(
+  node
+)
+ident(
+  def l "Heap.ml" 275 9316 9339 "Heap.ml" 275 9316 9351
+)
+"Heap.ml" 275 9316 9321 "Heap.ml" 275 9316 9327
+type(
+  node option
+)
+"Heap.ml" 275 9316 9334 "Heap.ml" 275 9316 9335
+type(
+  node
+)
+ident(
+  def r "Heap.ml" 275 9316 9339 "Heap.ml" 275 9316 9351
+)
+"Heap.ml" 275 9316 9329 "Heap.ml" 275 9316 9335
+type(
+  node option
+)
+"Heap.ml" 275 9316 9321 "Heap.ml" 275 9316 9335
+type(
+  node option * node option
+)
+"Heap.ml" 275 9316 9339 "Heap.ml" 275 9316 9343
+type(
+  heap -> heap -> unit
+)
+ident(
+  int_ref link "Heap.ml" 179 5627 5633 "Heap.ml" 179 5627 5637
+)
+"Heap.ml" 275 9316 9344 "Heap.ml" 275 9316 9345
+type(
+  node
+)
+ident(
+  int_ref n "Heap.ml" 272 9229 9240 "Heap.ml" 272 9229 9241
+)
+"Heap.ml" 275 9316 9344 "Heap.ml" 275 9316 9347
+type(
+  heap
+)
+"Heap.ml" 275 9316 9348 "Heap.ml" 275 9316 9349
+type(
+  node
+)
+ident(
+  int_ref n "Heap.ml" 272 9229 9240 "Heap.ml" 272 9229 9241
+)
+"Heap.ml" 275 9316 9348 "Heap.ml" 275 9316 9351
+type(
+  heap
+)
+"Heap.ml" 275 9316 9339 "Heap.ml" 275 9316 9351
+type(
+  unit
+)
+"Heap.ml" 276 9352 9364 "Heap.ml" 276 9352 9365
+type(
+  node option
+)
+"Heap.ml" 276 9352 9366 "Heap.ml" 276 9352 9367
+type(
+  node option
+)
+"Heap.ml" 276 9352 9364 "Heap.ml" 276 9352 9367
+type(
+  node option * node option
+)
+"Heap.ml" 276 9352 9371 "Heap.ml" 276 9352 9379
+type(
+  bytes -> unit
+)
+ident(
+  ext_ref Pervasives.failwith
+)
+"Heap.ml" 276 9352 9380 "Heap.ml" 276 9352 9410
+type(
+  bytes
+)
+"Heap.ml" 276 9352 9371 "Heap.ml" 276 9352 9410
+type(
+  unit
+)
+"Heap.ml" 274 9281 9291 "Heap.ml" 276 9352 9410
+type(
+  unit
+)
+type(
+  unit
+)
+"Heap.ml" 277 9414 9426 "Heap.ml" 277 9414 9438
+type(
+  unit
+)
+ident(
+  def clean_parent "Heap.ml" 283 9597 9605 "Heap.ml" 284 9621 9641
+)
+"Heap.ml" 278 9448 9466 "Heap.ml" 278 9448 9467
+type(
+  node
+)
+ident(
+  int_ref n "Heap.ml" 272 9229 9240 "Heap.ml" 272 9229 9241
+)
+"Heap.ml" 278 9448 9466 "Heap.ml" 278 9448 9469
+type(
+  heap
+)
+"Heap.ml" 278 9448 9464 "Heap.ml" 278 9448 9470
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 279 9476 9488 "Heap.ml" 279 9476 9492
+type(
+  node option
+)
+"Heap.ml" 279 9476 9496 "Heap.ml" 279 9476 9498
+type(
+  unit
+)
+"Heap.ml" 280 9499 9516 "Heap.ml" 280 9499 9517
+type(
+  node
+)
+ident(
+  def p "Heap.ml" 281 9521 9526 "Heap.ml" 282 9574 9593
+)
+"Heap.ml" 280 9499 9511 "Heap.ml" 280 9499 9517
+type(
+  node option
+)
+"Heap.ml" 281 9521 9529 "Heap.ml" 281 9521 9530
+type(
+  node
+)
+ident(
+  int_ref p "Heap.ml" 280 9499 9516 "Heap.ml" 280 9499 9517
+)
+"Heap.ml" 281 9521 9529 "Heap.ml" 281 9521 9533
+type(
+  int
+)
+"Heap.ml" 281 9521 9534 "Heap.ml" 281 9521 9535
+type(
+  int -> int -> bool
+)
+ident(
+  ext_ref Pervasives.( = )
+)
+"Heap.ml" 281 9521 9536 "Heap.ml" 281 9521 9537
+type(
+  int
+)
+"Heap.ml" 281 9521 9529 "Heap.ml" 281 9521 9537
+type(
+  bool
+)
+"Heap.ml" 281 9521 9543 "Heap.ml" 281 9521 9544
+type(
+  node
+)
+ident(
+  int_ref p "Heap.ml" 280 9499 9516 "Heap.ml" 280 9499 9517
+)
+"Heap.ml" 281 9521 9550 "Heap.ml" 281 9521 9555
+type(
+  heap
+)
+ident(
+  int_ref empty "Heap.ml" 126 3924 3930 "Heap.ml" 126 3924 3935
+)
+"Heap.ml" 281 9521 9543 "Heap.ml" 281 9521 9555
+type(
+  unit
+)
+"Heap.ml" 281 9521 9561 "Heap.ml" 281 9521 9562
+type(
+  node
+)
+ident(
+  int_ref p "Heap.ml" 280 9499 9516 "Heap.ml" 280 9499 9517
+)
+"Heap.ml" 281 9521 9568 "Heap.ml" 281 9521 9569
+type(
+  node
+)
+ident(
+  int_ref n "Heap.ml" 272 9229 9240 "Heap.ml" 272 9229 9241
+)
+"Heap.ml" 281 9521 9568 "Heap.ml" 281 9521 9571
+type(
+  heap
+)
+"Heap.ml" 281 9521 9561 "Heap.ml" 281 9521 9571
+type(
+  unit
+)
+"Heap.ml" 281 9521 9526 "Heap.ml" 281 9521 9571
+type(
+  unit
+)
+"Heap.ml" 282 9574 9579 "Heap.ml" 282 9574 9580
+type(
+  node
+)
+ident(
+  int_ref p "Heap.ml" 280 9499 9516 "Heap.ml" 280 9499 9517
+)
+"Heap.ml" 282 9574 9587 "Heap.ml" 282 9574 9588
+type(
+  node
+)
+ident(
+  int_ref p "Heap.ml" 280 9499 9516 "Heap.ml" 280 9499 9517
+)
+"Heap.ml" 282 9574 9587 "Heap.ml" 282 9574 9591
+type(
+  int
+)
+"Heap.ml" 282 9574 9591 "Heap.ml" 282 9574 9592
+type(
+  int -> int -> int
+)
+ident(
+  ext_ref Pervasives.( - )
+)
+"Heap.ml" 282 9574 9592 "Heap.ml" 282 9574 9593
+type(
+  int
+)
+"Heap.ml" 282 9574 9587 "Heap.ml" 282 9574 9593
+type(
+  int
+)
+"Heap.ml" 282 9574 9579 "Heap.ml" 282 9574 9593
+type(
+  unit
+)
+"Heap.ml" 281 9521 9526 "Heap.ml" 282 9574 9593
+type(
+  unit
+)
+"Heap.ml" 278 9448 9458 "Heap.ml" 282 9574 9593
+type(
+  unit
+)
+type(
+  unit
+)
+"Heap.ml" 283 9597 9605 "Heap.ml" 283 9597 9619
+type(
+  unit
+)
+ident(
+  int_ref clean_siblings "Heap.ml" 273 9245 9257 "Heap.ml" 273 9245 9271
+)
+"Heap.ml" 284 9621 9629 "Heap.ml" 284 9621 9641
+type(
+  unit
+)
+ident(
+  int_ref clean_parent "Heap.ml" 277 9414 9426 "Heap.ml" 277 9414 9438
+)
+"Heap.ml" 283 9597 9605 "Heap.ml" 284 9621 9641
+type(
+  unit
+)
+"Heap.ml" 277 9414 9422 "Heap.ml" 284 9621 9641
+type(
+  unit
+)
+"Heap.ml" 273 9245 9253 "Heap.ml" 284 9621 9641
+type(
+  unit
+)
+"Heap.ml" 270 9194 9198 "Heap.ml" 284 9621 9641
+type(
+  unit
+)
+type(
+  unit
+)
+"Heap.ml" 269 9163 9175 "Heap.ml" 284 9621 9641
+type(
+  heap -> unit
+)
+"Heap.ml" 287 9722 9732 "Heap.ml" 287 9722 9737
+type(
+  heap -> heap -> unit
+)
+ident(
+  def merge "Heap.ml" 287 9722 9724 "Heap.ml" 526 18921 18924
+)
+"Heap.ml" 287 9722 9739 "Heap.ml" 287 9722 9741
+type(
+  heap
+)
+ident(
+  def h1 "Heap.ml" 287 9722 9749 "Heap.ml" 303 10231 10255
+)
+"Heap.ml" 287 9722 9750 "Heap.ml" 287 9722 9752
+type(
+  heap
+)
+ident(
+  def h2 "Heap.ml" 287 9722 9760 "Heap.ml" 303 10231 10255
+)
+"Heap.ml" 288 9769 9780 "Heap.ml" 288 9769 9782
+type(
+  heap
+)
+ident(
+  int_ref h1 "Heap.ml" 287 9722 9739 "Heap.ml" 287 9722 9741
+)
+"Heap.ml" 288 9769 9779 "Heap.ml" 288 9769 9782
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 288 9769 9784 "Heap.ml" 288 9769 9786
+type(
+  heap
+)
+ident(
+  int_ref h2 "Heap.ml" 287 9722 9750 "Heap.ml" 287 9722 9752
+)
+"Heap.ml" 288 9769 9783 "Heap.ml" 288 9769 9786
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 288 9769 9779 "Heap.ml" 288 9769 9786
+type(
+  node option * node option
+)
+"Heap.ml" 289 9792 9798 "Heap.ml" 289 9792 9799
+type(
+  node option
+)
+"Heap.ml" 289 9792 9801 "Heap.ml" 289 9792 9805
+type(
+  node option
+)
+"Heap.ml" 289 9792 9798 "Heap.ml" 289 9792 9805
+type(
+  node option * node option
+)
+"Heap.ml" 289 9792 9809 "Heap.ml" 289 9792 9811
+type(
+  unit
+)
+"Heap.ml" 290 9812 9818 "Heap.ml" 290 9812 9822
+type(
+  node option
+)
+"Heap.ml" 290 9812 9824 "Heap.ml" 290 9812 9825
+type(
+  node option
+)
+"Heap.ml" 290 9812 9818 "Heap.ml" 290 9812 9825
+type(
+  node option * node option
+)
+"Heap.ml" 290 9812 9829 "Heap.ml" 290 9812 9831
+type(
+  unit
+)
+"Heap.ml" 291 9832 9843 "Heap.ml" 291 9832 9845
+type(
+  node
+)
+ident(
+  def n1 "Heap.ml" 292 9858 9864 "Heap.ml" 303 10231 10255
+)
+"Heap.ml" 291 9832 9838 "Heap.ml" 291 9832 9845
+type(
+  node option
+)
+"Heap.ml" 291 9832 9852 "Heap.ml" 291 9832 9854
+type(
+  node
+)
+ident(
+  def n2 "Heap.ml" 292 9858 9864 "Heap.ml" 303 10231 10255
+)
+"Heap.ml" 291 9832 9847 "Heap.ml" 291 9832 9854
+type(
+  node option
+)
+"Heap.ml" 291 9832 9838 "Heap.ml" 291 9832 9854
+type(
+  node option * node option
+)
+"Heap.ml" 292 9858 9870 "Heap.ml" 292 9858 9879
+type(
+  key -> key -> Ordering.t
+)
+ident(
+  int_ref H.compare "Heap.ml" 48 1262 1264 "Heap.ml" 48 1262 1302
+)
+"Heap.ml" 292 9858 9880 "Heap.ml" 292 9858 9882
+type(
+  node
+)
+ident(
+  int_ref n1 "Heap.ml" 291 9832 9843 "Heap.ml" 291 9832 9845
+)
+"Heap.ml" 292 9858 9880 "Heap.ml" 292 9858 9884
+type(
+  key
+)
+"Heap.ml" 292 9858 9885 "Heap.ml" 292 9858 9887
+type(
+  node
+)
+ident(
+  int_ref n2 "Heap.ml" 291 9832 9852 "Heap.ml" 291 9832 9854
+)
+"Heap.ml" 292 9858 9885 "Heap.ml" 292 9858 9889
+type(
+  key
+)
+"Heap.ml" 292 9858 9870 "Heap.ml" 292 9858 9889
+type(
+  Ordering.t
+)
+"Heap.ml" 293 9895 9903 "Heap.ml" 293 9895 9907
+type(
+  Ordering.t
+)
+"Heap.ml" 293 9895 9910 "Heap.ml" 293 9895 9915
+type(
+  Ordering.t
+)
+"Heap.ml" 293 9895 9903 "Heap.ml" 293 9895 9915
+type(
+  Ordering.t
+)
+"Heap.ml" 294 9919 9920 "Heap.ml" 294 9919 9922
+type(
+  node
+)
+ident(
+  int_ref n1 "Heap.ml" 291 9832 9843 "Heap.ml" 291 9832 9845
+)
+"Heap.ml" 294 9919 9929 "Heap.ml" 294 9919 9931
+type(
+  node
+)
+ident(
+  int_ref n1 "Heap.ml" 291 9832 9843 "Heap.ml" 291 9832 9845
+)
+"Heap.ml" 294 9919 9929 "Heap.ml" 294 9919 9934
+type(
+  int
+)
+"Heap.ml" 294 9919 9935 "Heap.ml" 294 9919 9936
+type(
+  int -> int -> int
+)
+ident(
+  ext_ref Pervasives.( + )
+)
+"Heap.ml" 294 9919 9937 "Heap.ml" 294 9919 9938
+type(
+  int
+)
+"Heap.ml" 294 9919 9929 "Heap.ml" 294 9919 9938
+type(
+  int
+)
+"Heap.ml" 294 9919 9920 "Heap.ml" 294 9919 9938
+type(
+  unit
+)
+"Heap.ml" 294 9919 9940 "Heap.ml" 294 9919 9945
+type(
+  heap -> unit
+)
+ident(
+  int_ref clean "Heap.ml" 269 9163 9169 "Heap.ml" 269 9163 9174
+)
+"Heap.ml" 294 9919 9946 "Heap.ml" 294 9919 9948
+type(
+  heap
+)
+ident(
+  int_ref h2 "Heap.ml" 287 9722 9750 "Heap.ml" 287 9722 9752
+)
+"Heap.ml" 294 9919 9940 "Heap.ml" 294 9919 9948
+type(
+  unit
+)
+"Heap.ml" 295 9950 9967 "Heap.ml" 295 9950 9969
+type(
+  node
+)
+ident(
+  int_ref n1 "Heap.ml" 291 9832 9843 "Heap.ml" 291 9832 9845
+)
+"Heap.ml" 295 9950 9967 "Heap.ml" 295 9950 9971
+type(
+  heap
+)
+"Heap.ml" 295 9950 9965 "Heap.ml" 295 9950 9972
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 297 10044 10047 "Heap.ml" 297 10044 10051
+type(
+  node option
+)
+"Heap.ml" 297 10044 10055 "Heap.ml" 297 10044 10057
+type(
+  node
+)
+ident(
+  int_ref n1 "Heap.ml" 291 9832 9843 "Heap.ml" 291 9832 9845
+)
+"Heap.ml" 297 10044 10063 "Heap.ml" 297 10044 10065
+type(
+  heap
+)
+ident(
+  int_ref h2 "Heap.ml" 287 9722 9750 "Heap.ml" 287 9722 9752
+)
+"Heap.ml" 297 10044 10055 "Heap.ml" 297 10044 10065
+type(
+  unit
+)
+"Heap.ml" 300 10166 10174 "Heap.ml" 300 10166 10176
+type(
+  node
+)
+ident(
+  def cn "Heap.ml" 301 10181 10184 "Heap.ml" 302 10202 10229
+)
+"Heap.ml" 300 10166 10169 "Heap.ml" 300 10166 10176
+type(
+  node option
+)
+"Heap.ml" 301 10181 10188 "Heap.ml" 301 10181 10190
+type(
+  heap
+)
+ident(
+  def lh "Heap.ml" 302 10202 10205 "Heap.ml" 302 10202 10229
+)
+"Heap.ml" 301 10181 10193 "Heap.ml" 301 10181 10195
+type(
+  node
+)
+ident(
+  int_ref cn "Heap.ml" 300 10166 10174 "Heap.ml" 300 10166 10176
+)
+"Heap.ml" 301 10181 10193 "Heap.ml" 301 10181 10197
+type(
+  heap
+)
+"Heap.ml" 302 10202 10205 "Heap.ml" 302 10202 10209
+type(
+  heap -> heap -> unit
+)
+ident(
+  int_ref link "Heap.ml" 179 5627 5633 "Heap.ml" 179 5627 5637
+)
+"Heap.ml" 302 10202 10210 "Heap.ml" 302 10202 10212
+type(
+  heap
+)
+ident(
+  int_ref lh "Heap.ml" 301 10181 10188 "Heap.ml" 301 10181 10190
+)
+"Heap.ml" 302 10202 10213 "Heap.ml" 302 10202 10215
+type(
+  heap
+)
+ident(
+  int_ref h2 "Heap.ml" 287 9722 9750 "Heap.ml" 287 9722 9752
+)
+"Heap.ml" 302 10202 10205 "Heap.ml" 302 10202 10215
+type(
+  unit
+)
+"Heap.ml" 302 10202 10217 "Heap.ml" 302 10202 10221
+type(
+  heap -> heap -> unit
+)
+ident(
+  int_ref link "Heap.ml" 179 5627 5633 "Heap.ml" 179 5627 5637
+)
+"Heap.ml" 302 10202 10222 "Heap.ml" 302 10202 10224
+type(
+  heap
+)
+ident(
+  int_ref h2 "Heap.ml" 287 9722 9750 "Heap.ml" 287 9722 9752
+)
+"Heap.ml" 302 10202 10225 "Heap.ml" 302 10202 10227
+type(
+  node
+)
+ident(
+  int_ref n1 "Heap.ml" 291 9832 9843 "Heap.ml" 291 9832 9845
+)
+"Heap.ml" 302 10202 10225 "Heap.ml" 302 10202 10229
+type(
+  heap
+)
+"Heap.ml" 302 10202 10217 "Heap.ml" 302 10202 10229
+type(
+  unit
+)
+"Heap.ml" 302 10202 10205 "Heap.ml" 302 10202 10229
+type(
+  unit
+)
+"Heap.ml" 301 10181 10184 "Heap.ml" 302 10202 10229
+type(
+  unit
+)
+"Heap.ml" 295 9950 9959 "Heap.ml" 302 10202 10229
+type(
+  unit
+)
+"Heap.ml" 294 9919 9940 "Heap.ml" 302 10202 10229
+type(
+  unit
+)
+"Heap.ml" 294 9919 9920 "Heap.ml" 302 10202 10229
+type(
+  unit
+)
+"Heap.ml" 303 10231 10239 "Heap.ml" 303 10231 10240
+type(
+  Ordering.t
+)
+"Heap.ml" 303 10231 10244 "Heap.ml" 303 10231 10249
+type(
+  heap -> heap -> unit
+)
+ident(
+  int_ref merge "Heap.ml" 287 9722 9732 "Heap.ml" 287 9722 9737
+)
+"Heap.ml" 303 10231 10250 "Heap.ml" 303 10231 10252
+type(
+  heap
+)
+ident(
+  int_ref h2 "Heap.ml" 287 9722 9750 "Heap.ml" 287 9722 9752
+)
+"Heap.ml" 303 10231 10253 "Heap.ml" 303 10231 10255
+type(
+  heap
+)
+ident(
+  int_ref h1 "Heap.ml" 287 9722 9739 "Heap.ml" 287 9722 9741
+)
+"Heap.ml" 303 10231 10244 "Heap.ml" 303 10231 10255
+type(
+  unit
+)
+"Heap.ml" 292 9858 9864 "Heap.ml" 303 10231 10255
+type(
+  unit
+)
+"Heap.ml" 288 9769 9773 "Heap.ml" 303 10231 10255
+type(
+  unit
+)
+type(
+  unit
+)
+"Heap.ml" 287 9722 9749 "Heap.ml" 303 10231 10255
+type(
+  heap -> unit
+)
+"Heap.ml" 287 9722 9738 "Heap.ml" 303 10231 10255
+type(
+  heap -> heap -> unit
+)
+"Heap.ml" 307 10369 10375 "Heap.ml" 307 10369 10385
+type(
+  heap -> '_b
+)
+ident(
+  def delete_min "Heap.ml" 380 13303 13305 "Heap.ml" 526 18921 18924
+)
+"Heap.ml" 307 10369 10387 "Heap.ml" 307 10369 10388
+type(
+  heap
+)
+ident(
+  def h "Heap.ml" 307 10369 10396 "Heap.ml" 343 11517 11544
+)
+"Heap.ml" 308 10428 10439 "Heap.ml" 308 10428 10440
+type(
+  heap
+)
+ident(
+  int_ref h "Heap.ml" 307 10369 10387 "Heap.ml" 307 10369 10388
+)
+"Heap.ml" 308 10428 10438 "Heap.ml" 308 10428 10440
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 309 10446 10452 "Heap.ml" 309 10446 10456
+type(
+  node option
+)
+"Heap.ml" 309 10446 10461 "Heap.ml" 309 10446 10465
+type(
+  (key * value) option
+)
+"Heap.ml" 309 10446 10467 "Heap.ml" 309 10446 10468
+type(
+  heap
+)
+ident(
+  int_ref h "Heap.ml" 307 10369 10387 "Heap.ml" 307 10369 10388
+)
+"Heap.ml" 309 10446 10461 "Heap.ml" 309 10446 10468
+type(
+  (key * value) option * heap
+)
+"Heap.ml" 310 10470 10481 "Heap.ml" 310 10470 10482
+type(
+  node
+)
+ident(
+  def n "Heap.ml" 311 10486 10492 "Heap.ml" 343 11517 11544
+)
+"Heap.ml" 310 10470 10476 "Heap.ml" 310 10470 10482
+type(
+  node option
+)
+"Heap.ml" 311 10486 10496 "Heap.ml" 311 10486 10511
+type(
+  heap -> unit
+)
+ident(
+  def insert_children "Heap.ml" 322 10774 10780 "Heap.ml" 343 11517 11544
+)
+"Heap.ml" 311 10486 10513 "Heap.ml" 311 10486 10515
+type(
+  heap
+)
+ident(
+  def h' "Heap.ml" 311 10486 10523 "Heap.ml" 320 10750 10764
+)
+"Heap.ml" 312 10532 10541 "Heap.ml" 312 10532 10543
+type(
+  heap
+)
+ident(
+  int_ref h' "Heap.ml" 311 10486 10513 "Heap.ml" 311 10486 10515
+)
+"Heap.ml" 312 10532 10540 "Heap.ml" 312 10532 10543
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 313 10549 10552 "Heap.ml" 313 10549 10556
+type(
+  node option
+)
+"Heap.ml" 313 10549 10560 "Heap.ml" 313 10549 10562
+type(
+  unit
+)
+"Heap.ml" 314 10563 10571 "Heap.ml" 314 10563 10573
+type(
+  node
+)
+ident(
+  def n' "Heap.ml" 315 10578 10581 "Heap.ml" 320 10750 10763
+)
+"Heap.ml" 314 10563 10566 "Heap.ml" 314 10563 10573
+type(
+  node option
+)
+"Heap.ml" 315 10578 10581 "Heap.ml" 315 10578 10593
+type(
+  (unit -> heap -> unit) -> unit -> heap -> unit
+)
+ident(
+  int_ref lnk_lst_fold "Heap.ml" 154 4781 4787 "Heap.ml" 154 4781 4799
+)
+"Heap.ml" 316 10595 10605 "Heap.ml" 316 10595 10607
+type(
+  unit
+)
+"Heap.ml" 316 10595 10608 "Heap.ml" 316 10595 10609
+type(
+  heap
+)
+ident(
+  def c "Heap.ml" 317 10614 10621 "Heap.ml" 319 10684 10739
+)
+"Heap.ml" 317 10614 10628 "Heap.ml" 317 10614 10629
+type(
+  heap
+)
+ident(
+  int_ref c "Heap.ml" 316 10595 10608 "Heap.ml" 316 10595 10609
+)
+"Heap.ml" 317 10614 10627 "Heap.ml" 317 10614 10629
+type(
+  node option
+)
+type(
+  heap -> node option
+)
+ident(
+  ext_ref Pervasives.( ! )
+)
+"Heap.ml" 318 10635 10644 "Heap.ml" 318 10635 10648
+type(
+  node option
+)
+"Heap.ml" 318 10635 10652 "Heap.ml" 318 10635 10660
+type(
+  bytes -> unit
+)
+ident(
+  ext_ref Pervasives.failwith
+)
+"Heap.ml" 318 10635 10661 "Heap.ml" 318 10635 10683
+type(
+  bytes
+)
+"Heap.ml" 318 10635 10652 "Heap.ml" 318 10635 10683
+type(
+  unit
+)
+"Heap.ml" 319 10684 10698 "Heap.ml" 319 10684 10700
+type(
+  node
+)
+ident(
+  def cn "Heap.ml" 319 10684 10704 "Heap.ml" 319 10684 10739
+)
+"Heap.ml" 319 10684 10693 "Heap.ml" 319 10684 10700
+type(
+  node option
+)
+"Heap.ml" 319 10684 10704 "Heap.ml" 319 10684 10708
+type(
+  heap -> heap -> unit
+)
+ident(
+  int_ref link "Heap.ml" 179 5627 5633 "Heap.ml" 179 5627 5637
+)
+"Heap.ml" 319 10684 10709 "Heap.ml" 319 10684 10710
+type(
+  node
+)
+ident(
+  int_ref n "Heap.ml" 310 10470 10481 "Heap.ml" 310 10470 10482
+)
+"Heap.ml" 319 10684 10709 "Heap.ml" 319 10684 10712
+type(
+  heap
+)
+"Heap.ml" 319 10684 10713 "Heap.ml" 319 10684 10714
+type(
+  heap
+)
+ident(
+  int_ref c "Heap.ml" 316 10595 10608 "Heap.ml" 316 10595 10609
+)
+"Heap.ml" 319 10684 10704 "Heap.ml" 319 10684 10714
+type(
+  unit
+)
+"Heap.ml" 319 10684 10716 "Heap.ml" 319 10684 10720
+type(
+  heap -> heap -> unit
+)
+ident(
+  int_ref link "Heap.ml" 179 5627 5633 "Heap.ml" 179 5627 5637
+)
+"Heap.ml" 319 10684 10721 "Heap.ml" 319 10684 10722
+type(
+  heap
+)
+ident(
+  int_ref c "Heap.ml" 316 10595 10608 "Heap.ml" 316 10595 10609
+)
+"Heap.ml" 319 10684 10723 "Heap.ml" 319 10684 10724
+type(
+  heap
+)
+ident(
+  int_ref h "Heap.ml" 307 10369 10387 "Heap.ml" 307 10369 10388
+)
+"Heap.ml" 319 10684 10716 "Heap.ml" 319 10684 10724
+type(
+  unit
+)
+"Heap.ml" 319 10684 10726 "Heap.ml" 319 10684 10728
+type(
+  node
+)
+ident(
+  int_ref cn "Heap.ml" 319 10684 10698 "Heap.ml" 319 10684 10700
+)
+"Heap.ml" 319 10684 10734 "Heap.ml" 319 10684 10739
+type(
+  heap
+)
+ident(
+  int_ref empty "Heap.ml" 126 3924 3930 "Heap.ml" 126 3924 3935
+)
+"Heap.ml" 319 10684 10726 "Heap.ml" 319 10684 10739
+type(
+  unit
+)
+"Heap.ml" 319 10684 10716 "Heap.ml" 319 10684 10739
+type(
+  unit
+)
+"Heap.ml" 319 10684 10704 "Heap.ml" 319 10684 10739
+type(
+  unit
+)
+"Heap.ml" 317 10614 10621 "Heap.ml" 319 10684 10739
+type(
+  unit
+)
+"Heap.ml" 316 10595 10608 "Heap.ml" 319 10684 10739
+type(
+  heap -> unit
+)
+"Heap.ml" 316 10595 10605 "Heap.ml" 319 10684 10739
+type(
+  unit -> heap -> unit
+)
+"Heap.ml" 319 10684 10741 "Heap.ml" 319 10684 10743
+type(
+  unit
+)
+"Heap.ml" 319 10684 10744 "Heap.ml" 319 10684 10746
+type(
+  node
+)
+ident(
+  int_ref n' "Heap.ml" 314 10563 10571 "Heap.ml" 314 10563 10573
+)
+"Heap.ml" 319 10684 10744 "Heap.ml" 319 10684 10748
+type(
+  heap
+)
+"Heap.ml" 315 10578 10581 "Heap.ml" 319 10684 10748
+type(
+  unit
+)
+"Heap.ml" 320 10750 10753 "Heap.ml" 320 10750 10755
+type(
+  node
+)
+ident(
+  int_ref n' "Heap.ml" 314 10563 10571 "Heap.ml" 314 10563 10573
+)
+"Heap.ml" 320 10750 10762 "Heap.ml" 320 10750 10763
+type(
+  int
+)
+"Heap.ml" 320 10750 10753 "Heap.ml" 320 10750 10763
+type(
+  unit
+)
+"Heap.ml" 315 10578 10581 "Heap.ml" 320 10750 10763
+type(
+  unit
+)
+"Heap.ml" 312 10532 10534 "Heap.ml" 320 10750 10763
+type(
+  unit
+)
+type(
+  unit
+)
+"Heap.ml" 311 10486 10512 "Heap.ml" 320 10750 10764
+type(
+  heap -> unit
+)
+"Heap.ml" 322 10774 10780 "Heap.ml" 322 10774 10795
+type(
+  heap -> unit
+)
+ident(
+  int_ref insert_children "Heap.ml" 311 10486 10496 "Heap.ml" 311 10486 10511
+)
+"Heap.ml" 322 10774 10796 "Heap.ml" 322 10774 10797
+type(
+  heap
+)
+ident(
+  int_ref h "Heap.ml" 307 10369 10387 "Heap.ml" 307 10369 10388
+)
+"Heap.ml" 322 10774 10780 "Heap.ml" 322 10774 10797
+type(
+  unit
+)
+"Heap.ml" 323 10799 10809 "Heap.ml" 323 10799 10810
+type(
+  heap
+)
+ident(
+  def l "Heap.ml" 323 10799 10820 "Heap.ml" 343 11517 11544
+)
+"Heap.ml" 323 10799 10813 "Heap.ml" 323 10799 10814
+type(
+  node
+)
+ident(
+  int_ref n "Heap.ml" 310 10470 10481 "Heap.ml" 310 10470 10482
+)
+"Heap.ml" 323 10799 10813 "Heap.ml" 323 10799 10816
+type(
+  heap
+)
+"Heap.ml" 323 10799 10820 "Heap.ml" 323 10799 10825
+type(
+  heap -> unit
+)
+ident(
+  int_ref clean "Heap.ml" 269 9163 9169 "Heap.ml" 269 9163 9174
+)
+"Heap.ml" 323 10799 10826 "Heap.ml" 323 10799 10827
+type(
+  heap
+)
+ident(
+  int_ref h "Heap.ml" 307 10369 10387 "Heap.ml" 307 10369 10388
+)
+"Heap.ml" 323 10799 10820 "Heap.ml" 323 10799 10827
+type(
+  unit
+)
+"Heap.ml" 324 10830 10840 "Heap.ml" 324 10830 10842
+type(
+  heap
+)
+ident(
+  def nh "Heap.ml" 325 10860 10866 "Heap.ml" 343 11517 11544
+)
+"Heap.ml" 324 10830 10845 "Heap.ml" 324 10830 10854
+type(
+  heap -> heap
+)
+ident(
+  int_ref leastroot "Heap.ml" 175 5434 5440 "Heap.ml" 175 5434 5449
+)
+"Heap.ml" 324 10830 10855 "Heap.ml" 324 10830 10856
+type(
+  heap
+)
+ident(
+  int_ref l "Heap.ml" 323 10799 10809 "Heap.ml" 323 10799 10810
+)
+"Heap.ml" 324 10830 10845 "Heap.ml" 324 10830 10856
+type(
+  heap
+)
+"Heap.ml" 325 10860 10870 "Heap.ml" 325 10860 10876
+type(
+  heap list ref
+)
+ident(
+  def rk_lst "Heap.ml" 327 10961 10967 "Heap.ml" 343 11517 11544
+)
+"Heap.ml" 325 10860 10895 "Heap.ml" 325 10860 10898
+type(
+  heap list -> heap list ref
+)
+ident(
+  ext_ref Pervasives.ref
+)
+"Heap.ml" 325 10860 10899 "Heap.ml" 325 10860 10901
+type(
+  heap list
+)
+"Heap.ml" 325 10860 10895 "Heap.ml" 325 10860 10901
+type(
+  heap list ref
+)
+type(
+  heap list ref
+)
+"Heap.ml" 327 10961 10971 "Heap.ml" 327 10961 10980
+type(
+  heap -> '_c
+)
+ident(
+  def try_merge "Heap.ml" 339 11375 11381 "Heap.ml" 343 11517 11544
+)
+"Heap.ml" 327 10961 10982 "Heap.ml" 327 10961 10984
+type(
+  heap
+)
+ident(
+  def h' "Heap.ml" 327 10961 10992 "Heap.ml" 337 11231 11290
+)
+"Heap.ml" 328 11001 11006 "Heap.ml" 328 11001 11017
+type(
+  '_d
+)
+ident(
+  def merged_once "Heap.ml" 337 11231 11232 "Heap.ml" 337 11231 11290
+)
+"Heap.ml" 328 11001 11020 "Heap.ml" 328 11001 11034
+type(
+  '_e list ->
+  init:('_f -> '_g) -> f:(('_f -> '_g) -> '_e -> '_f -> '_g) -> '_f -> '_g
+)
+ident(
+  ext_ref Core.Std.List.fold_left
+)
+"Heap.ml" 328 11001 11035 "Heap.ml" 328 11001 11041
+type(
+  heap list ref
+)
+ident(
+  int_ref rk_lst "Heap.ml" 325 10860 10870 "Heap.ml" 325 10860 10876
+)
