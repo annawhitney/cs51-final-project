@@ -4,6 +4,7 @@
  ***************************************)
 open Core.Std
 open Graph
+open Links
 
 (* A module signature for an imperative priority heap. *)
 module type PRIOHEAP =
@@ -130,11 +131,13 @@ struct
     | None -> true
     | _ -> false
 
+(* unused; remove unless needed later
+
   let minkey (k1: key) (k2: key) : key =
     match H.compare k2 k1 with
     | Less -> k2
     | _ -> k1
-
+*)
   let get_top_node (h: heap) : (key * value) option =
     match !h with
     | None -> None
@@ -272,7 +275,7 @@ struct
     | Some n ->
         let clean_siblings : unit =
           match !(n.l),!(n.r) with
-	  | Some l, Some r -> link n.l n.r
+	  | Some _, Some _ -> link n.l n.r
           | _,_ -> failwith "node must have real siblings" in
         let clean_parent : unit =
           match !(n.p) with
@@ -325,22 +328,28 @@ struct
       let rk_lst : heap list ref = ref [] in
       (* try to merge a heap with any heap in rk_lst *)
       let try_merge (h': heap) : bool =
-	let merged_once = List.fold_left rk_lst ~init:false
-	  ~f(fun merged comp_h -> 
+	let merged_once = List.fold_left !rk_lst ~init:false
+	  ~f:(fun merged comp_h -> 
 	    if merged then merged else
-	      if comp_h.rk = h'.rk
-	      then 
-		let _ = merge comp_h h'; rk_lst := [] in 
-		true
-	      else 
-		false) in
-	if merged_once then true else rk_lst := h'::!rk_lst; false in
+	      match !comp_h, !h with
+	      | None,_ | _,None -> failwith "node cannot be empty"
+	      | Some comp_n, Some n' ->
+		if comp_n.rk = n'.rk
+		then 
+		  let _ = merge comp_h h'; rk_lst := [] in 
+		  true
+		else 
+		  false) in
+	if merged_once 
+	then true 
+	else (let _ = rk_lst := h'::!rk_lst in false)
+      in
       (* recurse through linked list w/ merged_once until it merges once only *)
-      let merge_more : bool =
+      let merge_more (h': heap) : bool =
 	lnk_lst_fold (fun merged h ->
-	  if merged then merged else try_merge h) in
-      while merge_more do () done;
-      (Some (h.k, h.v), nh)
+	  if merged then merged else try_merge h) false h' in
+      while merge_more h do () done;
+      (Some (n.k, n.v), nh)
       
 (* Bits of old code from delete_min; delete when done
 
@@ -391,9 +400,9 @@ struct
 	  let _ = clean h; n.p <- empty; link tn.l h; link h top in
 	  let newtop = minroot top h in
 	  if pn.mk then cut ph newtop else
-	    if pn.p = None 
+	    if !(pn.p) = None 
 	    then newtop
-	    else pn.mk <- true; newtop
+	    else let _ = pn.mk <- true in newtop
       
 (* Leftovers from updates to cut function; may be useful; delete when done
 
@@ -432,7 +441,7 @@ struct
           (* If parent key is still smaller or equal, heap ordering is
            * fine and we just update without changing anything else *)
           | Less | Equal -> t
-          | Greater -> cut n t
+          | Greater -> cut n.p t
 
   (*****************************)
   (***** Testing Functions *****)
@@ -543,14 +552,14 @@ struct
   let compare x y = if x < y then Less else if x > y then Greater else Equal
 
   (* For testing purposes *)
-  let string_of_key = string_of_float
+  let string_of_key = Float.to_string
   let string_of_value v = v
   let gen_key () = 0.
   let gen_key_gt x () = x +. 1.
   let gen_key_lt x () = x -. 1.
   let gen_key_between x y () =
     let (lower, higher) = (min x y, max x y) in
-    if higher - lower < 2. then None else Some (higher -. 1.)
+    if higher -. lower < 2. then None else Some (higher -. 1.)
   let gen_key_random =
     let _ = Random.self_init () in
     (fun () -> Random.float 10000.)
@@ -590,16 +599,21 @@ module FibHeap = FibonacciHeap(GeoHeapArg)
  * Dijkstra's algorithm has reached this node. *)
 module GeoNode : NODE =
 struct
-  type node = {name: string; mutable pt: FibHeap.heap option;
-      mutable prev: Links.link}
   type weight = float
   type tag = string
-  let tag_of_node n = n.name
+  type node = {name: tag; mutable pt: FibHeap.heap option;
+	       mutable prev: tag link}
+  let tag_of_node = (fun n -> n.name)
   let node_of_tag t = {name = t; pt = None; prev = Nil}
-  let compare n1 n2 = string_compare s1.name s2.name
+  let compare n1 n2 = 
+    let ord = String.compare n1.name n2.name in
+    if ord < 0 then Less else
+      if ord = 0 then Equal
+      else Greater
   let string_of_node n = n.name
   let gen () = {name = ""; pt = None; prev = Nil}
-  let get_weight () = 0.0
+  let gen_weight () = 0.0
+  let string_of_weight = Float.to_string
 end
 
 module GeoGraph = Graph(GeoNode)
