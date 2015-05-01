@@ -11,6 +11,6 @@ let list_of_links (ll: 'a link_node) : 'a list =
     let Node (a,lk) = ll in
     match lk with
     | Nil -> a::lst
-    | Link r -> lol_helper !lk a::lst
+    | Link r -> lol_helper !r (a::lst)
   in
   lol_helper ll []
