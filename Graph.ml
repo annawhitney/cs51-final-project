@@ -270,6 +270,6 @@ struct
     assert (G.neighbors g2 "d" = None) ;
 
     assert (let t = deopt_lst (G.neighbors g2 "a") in
-              t = [("b", 4.);("c", 2.)] || t = [("c", 2.);("b", 4.)]) ) *)
+              t = [("b", 4.);("c", 2.)] || t = [("c", 2.);("b", 4.)]) ) 
 end
 *)
