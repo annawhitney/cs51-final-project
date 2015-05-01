@@ -25,10 +25,9 @@ end
  * so we can get out edge weights and do operations on them. *)
 module type GRAPH =
 sig
-  module N : NODE
-  type node = N.node
-  type weight = N.weight
-  type tag = N.tag
+  type node
+  type weight
+  type tag
   type graph
 
   val empty : graph
@@ -53,19 +52,16 @@ sig
   (* Finds a node by its tag; returns None if node is not in graph. *)
   val get_node_by_tag : graph -> tag -> node option
 
-  (* Create a node from a given tag. *)
-  val node_of_tag : tag -> node
-
   (* Return None if the graph is empty *)
   val get_random_node : graph -> node option
 
   val string_of_graph : graph -> string
 end
 
-module Graph(NA: NODE) : (GRAPH with module N = NA) =
+module Graph(N: NODE) : (GRAPH with type node = N.node
+    with type weight = N.weight with type tag = N.tag) =
 struct
   open Order;;
-  module N = NA
   type node = N.node
   type weight = N.weight
   type tag = N.tag
@@ -194,8 +190,6 @@ struct
   (* Added this function for convenience in Dijkstra algorithm *)
   let get_node_by_tag g t : node option =
     EdgeDict.verify_key g.edges (N.node_of_tag t)
-
-  let node_of_tag = N.node_of_tag
 
   let get_random_node g =
     if g.num_nodes = 0 then None else

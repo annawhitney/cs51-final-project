@@ -254,16 +254,17 @@ struct
         (* If h is empty, then the new node's siblings should be itself *)
         let newheap = empty in
         let newnode =
-          {k=k;v=v;p=empty;l=newheap;r=newheap;c=empty;rk=0;mk=false} in
+          {k=k;v=v;p=empty;l=newheap;r=newheap;c=empty;rk=0;mk=false}
+        in
         newheap := Some newnode; (newheap,newheap)
     | Some n ->
         (* If h is not empty, then insert new node to left of current min *)
         let newnode = {k=k;v=v;p=empty;l=n.l;r=h;c=empty;rk=0;mk=false} in
         let newheap = ref (Some newnode) in
-	match !(n.l) with
-	| None -> failwith "Node must have real siblings"
-	| Some l ->
-          n.l <- newheap; l.r <- newheap; ((minroot h newheap),newheap)
+        match !(n.l) with
+        | None -> failwith "Node must have real siblings"
+        | Some l ->
+            n.l <- newheap; l.r <- newheap; ((minroot h newheap),newheap)
  
   (* clean removes a tree from the surrounding heap. 
    * clean doesn't change parent marked, but it does decrease parent rank.
@@ -275,14 +276,16 @@ struct
     | Some n ->
         let clean_siblings : unit =
           match !(n.l),!(n.r) with
-	  | Some _, Some _ -> link n.l n.r
-          | _,_ -> failwith "node must have real siblings" in
+          | Some _, Some _ -> link n.l n.r
+          | _,_ -> failwith "node must have real siblings"
+        in
         let clean_parent : unit =
           match !(n.p) with
           | None -> ()
           | Some p ->
-	    if p.rk = 1 then p.c <- empty else p.c <- n.l; 
-	    p.rk <- p.rk-1 in
+              if p.rk = 1 then p.c <- empty else p.c <- n.l; 
+              p.rk <- p.rk-1
+        in
         clean_siblings;
         clean_parent
 
@@ -292,18 +295,18 @@ struct
     | _, None -> ()
     | None, _ -> ()
     | Some n1, Some n2 ->
-      match H.compare n1.k n2.k with
-      | Less | Equal ->
-	n1.rk <- n1.rk + 1; clean h2;
-        (match !(n1.c) with
-	(* If minroot has no children, now it has other root as child *)
-	| None -> n1.c <- h2
-	(* If minroot already had children, other root
-	 * inserted to the left of the referenced child *)
-	| Some cn -> 
-	  let lh = cn.l in 
-	  link lh h2; link h2 n1.c)
-      | _ -> merge h2 h1
+        match H.compare n1.k n2.k with
+        | Less | Equal ->
+            n1.rk <- n1.rk + 1; clean h2;
+            (match !(n1.c) with
+            (* If minroot has no children, now it has other root as child *)
+            | None -> n1.c <- h2
+            (* If minroot already had children, other root
+             * inserted to the left of the referenced child *)
+            | Some cn -> 
+                let lh = cn.l in 
+                link lh h2; link h2 n1.c)
+    | _ -> merge h2 h1
 
   (* Deletes the minimum element from the heap and returns it along with an
    * updated handle to the heap. *)
@@ -312,15 +315,15 @@ struct
     | None -> (None, h)
     | Some n ->
       let insert_children (h': heap) : unit =
-	(match !h' with
-	| None -> ()
-	| Some n' -> 
-	  lnk_lst_fold 
-	    (fun () c -> 
-	      match !c with
-	      | None -> failwith "node cannot be empty"
-	      | Some cn -> link n.l c; link c h; cn.p <- empty) () n'.c;
-	  n'.rk <- 0)
+        (match !h' with
+        | None -> ()
+        | Some n' -> 
+            lnk_lst_fold 
+            (fun () c -> 
+              match !c with
+              | None -> failwith "node cannot be empty"
+              | Some cn ->
+                  link n.l c; link c h; cn.p <- empty) () n'.c; n'.rk <- 0)
       in
       insert_children h;
       let l = n.l in clean h; 
@@ -344,12 +347,12 @@ struct
 	then true 
 	else (let _ = rk_lst := h'::!rk_lst in false)
       in
-      (* recurse through linked list w/ merged_once until it merges once only *)
+      (* recurse through lnk list w/ merged_once until it merges once only *)
       let merge_more (h': heap) : bool =
-	lnk_lst_fold (fun merged h ->
-	  if merged then merged else try_merge h) false h' in
-      while merge_more h do () done;
-      (Some (n.k, n.v), nh)
+        lnk_lst_fold (fun merged h ->
+          if merged then merged else try_merge h) false h' in
+            while merge_more h do () done;
+            (Some (n.k, n.v), nh)
       
 (* Bits of old code from delete_min; delete when done
 
@@ -394,15 +397,15 @@ struct
       match !ph with
       | None -> top
       | Some pn ->
-	match !top with
-	| None -> failwith "Unable to cut an empty heap"
-	| Some tn ->
-	  let _ = clean h; n.p <- empty; link tn.l h; link h top in
-	  let newtop = minroot top h in
-	  if pn.mk then cut ph newtop else
-	    if !(pn.p) = None 
-	    then newtop
-	    else let _ = pn.mk <- true in newtop
+          match !top with
+          | None -> failwith "Unable to cut an empty heap"
+          | Some tn ->
+              let _ = clean h; n.p <- empty; link tn.l h; link h top in
+              let newtop = minroot top h in
+              if pn.mk then cut ph newtop else
+                if !(pn.p) = None 
+                then newtop
+                else let _ = pn.mk <- true in newtop
       
 (* Leftovers from updates to cut function; may be useful; delete when done
 
@@ -436,12 +439,12 @@ struct
         (* If parent is empty, this must be a root node already *)
         | None -> n.k <- small; minroot t h
         | Some (pk,_) ->
-	  n.k <- small;
-          match H.compare pk small with
-          (* If parent key is still smaller or equal, heap ordering is
-           * fine and we just update without changing anything else *)
-          | Less | Equal -> t
-          | Greater -> cut n.p t
+            n.k <- small;
+            match H.compare pk small with
+            (* If parent key is still smaller or equal, heap ordering is
+             * fine and we just update without changing anything else *)
+            | Less | Equal -> t
+            | Greater -> cut n.p t
 
   (*****************************)
   (***** Testing Functions *****)
@@ -601,12 +604,12 @@ module FibHeap = FibonacciHeap(GeoHeapArg)
  * Dijkstra's algorithm has reached this node. *)
 
 
-module GeoNode : NODE =
+module GeoNode : (NODE with type tag = string with type weight = float) =
 struct
   type weight = float
   type tag = string
   type node = {name: tag; mutable pt: FibHeap.heap option;
-	       mutable prev: tag link}
+	       mutable prev: node link}
   let tag_of_node = (fun n -> n.name)
   let node_of_tag t = {name = t; pt = None; prev = Nil}
   let compare n1 n2 = 
@@ -621,26 +624,34 @@ struct
 end
 
 
-(*module GeoGraph = Graph(GeoNode) *)
-
-module GeoGraph : GRAPH = Graph(GeoNode);;
+module GeoGraph : (GRAPH with type node = GeoNode.node
+    with type weight = GeoNode.weight with type tag = GeoNode.tag) = 
+    Graph(GeoNode);;
 
 (* code for reading in the csv file *)
 
-let rec addedges (castlist: string * (float * float) list) 
+(* NOTE: I'm pretty sure that the graph is a functional data structure (the
+ * only thing in it than can be updated are bits of individual nodes, but
+ * nodes can't be added imperatively), so we shouldn't be ignoring the result
+ * of addhelper - that's the new graph that actually contains the nodes we
+ * just added. I'm not going to focus on this just yet, but I'm fairly certain
+ * that this is a problem we need to fix before the whole thing will work. *)
+let rec addedges (castlist: (string * (float * float)) list) 
 (graph: GeoGraph.graph) (cutoff: float) : GeoGraph.graph = 
   let rec addhelper (place: string * (float * float)) 
-  (rest: string * (float * float) list) (graph: GeoGraph.graph)
+  (rest: (string * (float * float)) list) (graph: GeoGraph.graph)
   : GeoGraph.graph = 
     match rest with
-    | _ -> graph
-    | (name2, loc2)::tl -> (let (name1, loc1) = place in
-                           match distance cutoff loc1 loc2 with
-                           | None -> addhelper place tl graph
-                           | Some d -> GeoGraph.add_edge graph
-                                       (GeoNode.node_of_tag name1)
-                                       (GeoNode.node_of_tag name2) d; 
-                                       addhelper place tl graph) in
+    | [] -> graph
+    | (name2, loc2)::tl ->
+        (let (name1,loc1) = place in
+        match Distance.distance cutoff loc1 loc2 with
+        | None -> addhelper place tl graph
+        | Some d -> GeoGraph.add_edge graph
+                    (GeoNode.node_of_tag name1)
+                    (GeoNode.node_of_tag name2) d; 
+                    addhelper place tl graph)
+  in
   match castlist with
   | [] -> graph
   | hd::tl -> ignore(addhelper hd tl graph); addedges tl graph cutoff
