@@ -592,11 +592,8 @@ end
 
 (* Our actual fib heap module - not sure if this is where it should go *)
 
-module Make(H: HEAP_ARG) : 
-  (PRIOHEAP with type key = H.key and type value = H.value) =
-  FibonacciHeap (H)
-
-module FibHeap = Make(GeoHeapArg) 
+module FibHeap (H: HEAP_ARG)  : (PRIOHEAP with type value = H.value with type key = H.key)
+=FibonacciHeap(GeoHeapArg)
 
 (* Our actual node & graph representations (not sure where to put these either,
  * but it definitely needs to happen after FibHeap is defined because it
@@ -679,7 +676,7 @@ let read_csv () : GeoGraph.graph =
 
 
 
-(* beginning of heap.ml *)
+
 
 
 (* Request start and finish nodes from user *)
@@ -704,7 +701,7 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
     : (GeoNode.node list) * GeoNode.weight =
   
   (* Initialize heap containing only source node with distance of 0 *)
-  let with_source = FibHeap.insert 0. st.name FibHeap.empty in
+  let with_source = FibHeap.insert 0 st FibHeap.empty in
   (* Insert all other nodes into heap with initial distance of infinity (using
    * Float.max_value to represent infinity) and hold on to a pointer to each *)
   let insert_not_source (h: FibHeap.heap) (s: GeoNode.node) =
