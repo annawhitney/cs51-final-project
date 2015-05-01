@@ -4,13 +4,6 @@ open Read
 
 exception TODO
 
-(* Read in .csv file from user input and store in adjacency list *)
-(* NOTE: We probably want this function to return the graph the csv
- * was read into! *)
-(* We also need to look at pset 7 to figure out how to handle cmd line args *)
-(* read_csv is now done in the Read.ml file *)
-(*let read_csv () : GeoGraph.graph = TODO ;;*)
-
 (* Request start and finish nodes from user *)
 let get_nodes (g: GeoGraph.graph) : GeoNode.node * GeoNode.node =
   (* get_nodes should actually return an option GeoNode.node * GeoNode.node *) 
@@ -90,13 +83,14 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
                         (Node (nm,Link(ref prev))))))
   in next_node fib_heap ;;
 
-let graph = read_csv (* cmd line arg *) in
+let graph = read_csv () in
 let (start,finish) = get_nodes graph in
 let (nodelist, weight) = dijkstra start finish graph in
 let rec printnodes (lst: GeoNode.node list) : unit = 
   match lst with 
   | [] -> ()
-  | hd::tl -> Printf.printf ("%s -> " (tag_of_node hd)) ; printnodes tl in
-printnodes nodelist
+  | hd::tl -> Printf.printf "%s ->\n" (tag_of_node hd) ; printnodes tl
+in
+printnodes nodelist; Printf.printf "\nTotal distance: %f" weight; ()
 
 
