@@ -107,7 +107,7 @@ struct
 end
 
 module FibonacciHeap(H: HEAP_ARG) : (PRIOHEAP with type value = H.value
-    and type key = H.key) =
+    with type key = H.key) =
 struct
   type key = H.key
   type value = H.value
@@ -592,8 +592,8 @@ end
 
 (* Our actual fib heap module - not sure if this is where it should go *)
 
-module FibHeap (H: HEAP_ARG)  : (PRIOHEAP with type value = H.value with type key = H.key)
-=FibonacciHeap(GeoHeapArg)
+module FibHeap : (PRIOHEAP with type value = GeoHeapArg.value
+    with type key = GeoHeapArg.key) = FibonacciHeap(GeoHeapArg) 
 
 (* Our actual node & graph representations (not sure where to put these either,
  * but it definitely needs to happen after FibHeap is defined because it
@@ -701,7 +701,7 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
     : (GeoNode.node list) * GeoNode.weight =
   
   (* Initialize heap containing only source node with distance of 0 *)
-  let with_source = FibHeap.insert 0 st FibHeap.empty in
+  let with_source = FibHeap.insert 0. st FibHeap.empty in
   (* Insert all other nodes into heap with initial distance of infinity (using
    * Float.max_value to represent infinity) and hold on to a pointer to each *)
   let insert_not_source (h: FibHeap.heap) (s: GeoNode.node) =
