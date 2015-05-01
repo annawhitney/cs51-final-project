@@ -18,11 +18,11 @@ let get_nodes (g: GeoGraph.graph) : GeoNode.node * GeoNode.node =
   (* Should give the user a text prompt so they know what to input *)
   let () = Printf.printf "Starting Point: " in
   let st = read_line () in
-  let stnode = node_of_tag st in
+  let stnode = GeoNode.node_of_tag st in
   if !(hasnode g stnode) then None else 
     let () = Printf.printf "End Point: " in
     let fin = read_line () in
-    let finnode = node_of_tag fin in
+    let finnode = GeoNode.node_of_tag fin in
     if !(hasnode g finnode) then None else
   (* NOTE: Don't just return the strings directly - look up the strings in the
    * graph and return their node counterparts. If they're not in the graph,
@@ -93,5 +93,11 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
 
 let graph = read_csv (* cmd line arg *) in
 let (start,finish) = get_nodes graph in
-dijkstra start finish graph ;;
-(* TODO: which parts do we actually want to print out? *)
+let (nodelist, weight) = dijkstra start finish graph in
+let rec printnodes (lst: GeoNode.node list) : unit = 
+  match lst with 
+  | [] -> ()
+  | hd::tl -> Printf.printf ("%s -> " (tag_of_node hd)) ; printnodes tl in
+printnodes nodelist
+
+

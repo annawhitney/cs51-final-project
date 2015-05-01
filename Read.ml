@@ -3,6 +3,7 @@ open Graph
 open Heap
 open Distance
 
+(*
 let rec addedges (castlist: string * (float * float) list) 
 (graph: GeoGraph.graph) (cutoff: float) : GeoGraph.graph = 
   let rec addhelper (place: string * (float * float)) 
@@ -20,8 +21,6 @@ let rec addedges (castlist: string * (float * float) list)
   match castlist with
   | [] -> graph
   | hd::tl -> ignore(addhelper hd tl graph); addedges tl graph cutoff
-
-   
 
 let read_csv () : GeoGraph.graph =  
   let usage () = Printf.print "usage: %s csv cutoff " Sys.argv.(0); exit 1 in 
@@ -42,4 +41,5 @@ let read_csv () : GeoGraph.graph =
        | _ -> []) in
   let casted = cast parsed in
   addedges casted GeoGraph.empty cutoff
-  
+
+*)

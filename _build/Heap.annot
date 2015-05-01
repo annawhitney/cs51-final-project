@@ -316,9 +316,6 @@ ident(
   int_ref y "Heap.ml" 80 2212 2236 "Heap.ml" 80 2212 2237
 )
 "Heap.ml" 81 2243 2270 "Heap.ml" 81 2243 2277
-call(
-  stack
-)
 type(
   key
 )
@@ -344,9 +341,6 @@ ident(
   int_ref y "Heap.ml" 80 2212 2236 "Heap.ml" 80 2212 2237
 )
 "Heap.ml" 81 2243 2279 "Heap.ml" 81 2243 2286
-call(
-  stack
-)
 type(
   key
 )
@@ -467,9 +461,6 @@ type(
   unit
 )
 "Heap.ml" 84 2373 2385 "Heap.ml" 84 2373 2404
-call(
-  stack
-)
 type(
   unit
 )
@@ -489,9 +480,6 @@ type(
   key
 )
 "Heap.ml" 85 2408 2423 "Heap.ml" 85 2408 2439
-call(
-  tail
-)
 type(
   key
 )
@@ -623,9 +611,6 @@ type(
   key
 )
 "Heap.ml" 91 2603 2643 "Heap.ml" 91 2603 2657
-call(
-  tail
-)
 type(
   value
 )
@@ -928,9 +913,6 @@ ident(
   int_ref possible_values "Heap.ml" 94 2703 2709 "Heap.ml" 94 2703 2724
 )
 "Heap.ml" 97 2925 2944 "Heap.ml" 97 2925 2971
-call(
-  stack
-)
 type(
   key
 )
@@ -1059,9 +1041,6 @@ ident(
   int_ref index "Heap.ml" 101 3084 3092 "Heap.ml" 101 3084 3097
 )
 "Heap.ml" 103 3150 3177 "Heap.ml" 103 3150 3204
-call(
-  tail
-)
 type(
   value
 )
@@ -1130,9 +1109,6 @@ ident(
   int_ref index "Heap.ml" 101 3084 3092 "Heap.ml" 101 3084 3097
 )
 "Heap.ml" 105 3215 3250 "Heap.ml" 105 3215 3277
-call(
-  tail
-)
 type(
   value
 )
@@ -1175,9 +1151,6 @@ type(
   unit
 )
 "Heap.ml" 106 3279 3300 "Heap.ml" 106 3279 3316
-call(
-  stack
-)
 type(
   key
 )
@@ -1193,9 +1166,6 @@ type(
   unit
 )
 "Heap.ml" 106 3279 3318 "Heap.ml" 106 3279 3329
-call(
-  stack
-)
 type(
   value
 )
@@ -1416,9 +1386,6 @@ ident(
   int_ref h1 "Heap.ml" 148 4462 4477 "Heap.ml" 148 4462 4479
 )
 "Heap.ml" 149 4507 4517 "Heap.ml" 149 4507 4532
-call(
-  stack
-)
 type(
   (key * value) option
 )
@@ -1437,9 +1404,6 @@ ident(
   int_ref h2 "Heap.ml" 148 4462 4488 "Heap.ml" 148 4462 4490
 )
 "Heap.ml" 149 4507 4534 "Heap.ml" 149 4507 4549
-call(
-  stack
-)
 type(
   (key * value) option
 )
@@ -1574,9 +1538,6 @@ ident(
   int_ref k1 "Heap.ml" 153 4628 4640 "Heap.ml" 153 4628 4642
 )
 "Heap.ml" 153 4628 4665 "Heap.ml" 153 4628 4680
-call(
-  stack
-)
 type(
   Ordering.t
 )
@@ -1756,9 +1717,6 @@ ident(
   int_ref h0 "Heap.ml" 159 4967 4987 "Heap.ml" 159 4967 4989
 )
 "Heap.ml" 163 5064 5075 "Heap.ml" 163 5064 5092
-call(
-  stack
-)
 type(
   bool
 )
@@ -1784,9 +1742,6 @@ ident(
   int_ref h' "Heap.ml" 159 4967 4976 "Heap.ml" 159 4967 4978
 )
 "Heap.ml" 164 5093 5106 "Heap.ml" 164 5093 5116
-call(
-  tail
-)
 type(
   'a
 )
@@ -1837,9 +1792,6 @@ ident(
   int_ref h' "Heap.ml" 159 4967 4976 "Heap.ml" 159 4967 4978
 )
 "Heap.ml" 167 5159 5179 "Heap.ml" 167 5159 5189
-call(
-  tail
-)
 type(
   'a
 )
@@ -1883,9 +1835,6 @@ ident(
   int_ref h' "Heap.ml" 159 4967 4976 "Heap.ml" 159 4967 4978
 )
 "Heap.ml" 168 5190 5231 "Heap.ml" 168 5190 5241
-call(
-  stack
-)
 type(
   'a
 )
@@ -1908,9 +1857,6 @@ ident(
   int_ref h0 "Heap.ml" 159 4967 4987 "Heap.ml" 159 4967 4989
 )
 "Heap.ml" 168 5190 5207 "Heap.ml" 168 5190 5249
-call(
-  tail
-)
 type(
   'a
 )
@@ -2021,9 +1967,6 @@ type(
   bytes
 )
 "Heap.ml" 174 5333 5349 "Heap.ml" 174 5333 5389
-call(
-  tail
-)
 type(
   'a
 )
@@ -2078,9 +2021,6 @@ type(
   heap
 )
 "Heap.ml" 175 5390 5409 "Heap.ml" 175 5390 5441
-call(
-  tail
-)
 type(
   'a
 )
@@ -2154,9 +2094,6 @@ ident(
   int_ref h "Heap.ml" 178 5486 5503 "Heap.ml" 178 5486 5504
 )
 "Heap.ml" 178 5486 5521 "Heap.ml" 178 5486 5545
-call(
-  tail
-)
 type(
   heap
 )
@@ -2663,9 +2600,6 @@ type(
   bytes
 )
 "Heap.ml" 264 8817 8828 "Heap.ml" 264 8817 8867
-call(
-  tail
-)
 type(
   heap * heap
 )
@@ -2738,9 +2672,6 @@ ident(
   int_ref newheap "Heap.ml" 262 8754 8766 "Heap.ml" 262 8754 8773
 )
 "Heap.ml" 266 8881 8925 "Heap.ml" 266 8881 8942
-call(
-  stack
-)
 type(
   heap
 )
@@ -2947,9 +2878,6 @@ type(
   heap
 )
 "Heap.ml" 278 9368 9391 "Heap.ml" 278 9368 9403
-call(
-  stack
-)
 type(
   unit
 )
@@ -2977,9 +2905,6 @@ type(
   bytes
 )
 "Heap.ml" 279 9404 9423 "Heap.ml" 279 9404 9462
-call(
-  stack
-)
 type(
   unit
 )
@@ -3339,9 +3264,6 @@ type(
   key
 )
 "Heap.ml" 295 9910 9922 "Heap.ml" 295 9910 9941
-call(
-  stack
-)
 type(
   Ordering.t
 )
@@ -3409,9 +3331,6 @@ ident(
   int_ref h2 "Heap.ml" 290 9774 9802 "Heap.ml" 290 9774 9804
 )
 "Heap.ml" 297 9971 9992 "Heap.ml" 297 9971 10000
-call(
-  stack
-)
 type(
   unit
 )
@@ -3509,9 +3428,6 @@ ident(
   int_ref h2 "Heap.ml" 290 9774 9802 "Heap.ml" 290 9774 9804
 )
 "Heap.ml" 305 10254 10257 "Heap.ml" 305 10254 10267
-call(
-  stack
-)
 type(
   unit
 )
@@ -3541,9 +3457,6 @@ type(
   heap
 )
 "Heap.ml" 305 10254 10269 "Heap.ml" 305 10254 10281
-call(
-  tail
-)
 type(
   unit
 )
@@ -3593,9 +3506,6 @@ ident(
   int_ref h1 "Heap.ml" 290 9774 9791 "Heap.ml" 290 9774 9793
 )
 "Heap.ml" 306 10283 10296 "Heap.ml" 306 10283 10307
-call(
-  tail
-)
 type(
   unit
 )
@@ -3780,9 +3690,6 @@ type(
   bytes
 )
 "Heap.ml" 321 10687 10704 "Heap.ml" 321 10687 10735
-call(
-  tail
-)
 type(
   unit
 )
@@ -3823,9 +3730,6 @@ ident(
   int_ref c "Heap.ml" 319 10647 10660 "Heap.ml" 319 10647 10661
 )
 "Heap.ml" 322 10736 10756 "Heap.ml" 322 10736 10766
-call(
-  stack
-)
 type(
   unit
 )
@@ -3851,9 +3755,6 @@ ident(
   int_ref h "Heap.ml" 310 10421 10439 "Heap.ml" 310 10421 10440
 )
 "Heap.ml" 322 10736 10768 "Heap.ml" 322 10736 10776
-call(
-  stack
-)
 type(
   unit
 )
@@ -3911,9 +3812,6 @@ type(
   heap
 )
 "Heap.ml" 318 10630 10633 "Heap.ml" 322 10736 10800
-call(
-  stack
-)
 type(
   unit
 )
@@ -3962,9 +3860,6 @@ ident(
   int_ref h "Heap.ml" 310 10421 10439 "Heap.ml" 310 10421 10440
 )
 "Heap.ml" 325 10826 10832 "Heap.ml" 325 10826 10849
-call(
-  stack
-)
 type(
   unit
 )
@@ -4001,9 +3896,6 @@ ident(
   int_ref h "Heap.ml" 310 10421 10439 "Heap.ml" 310 10421 10440
 )
 "Heap.ml" 326 10851 10872 "Heap.ml" 326 10851 10879
-call(
-  stack
-)
 type(
   unit
 )
@@ -4029,9 +3921,6 @@ ident(
   int_ref l "Heap.ml" 326 10851 10861 "Heap.ml" 326 10851 10862
 )
 "Heap.ml" 327 10882 10897 "Heap.ml" 327 10882 10908
-call(
-  stack
-)
 type(
   heap
 )
@@ -4215,9 +4104,6 @@ type(
   bytes
 )
 "Heap.ml" 335 11198 11226 "Heap.ml" 335 11198 11257
-call(
-  tail
-)
 type(
   bool
 )
@@ -4306,9 +4192,6 @@ ident(
   int_ref h' "Heap.ml" 330 11013 11034 "Heap.ml" 330 11013 11036
 )
 "Heap.ml" 339 11322 11334 "Heap.ml" 339 11322 11349
-call(
-  stack
-)
 type(
   unit
 )
@@ -4370,9 +4253,6 @@ type(
   bool -> heap -> bool
 )
 "Heap.ml" 331 11053 11072 "Heap.ml" 342 11385 11395
-call(
-  stack
-)
 type(
   bool
 )
@@ -4523,9 +4403,6 @@ ident(
   int_ref h "Heap.ml" 349 11606 11632 "Heap.ml" 349 11606 11633
 )
 "Heap.ml" 350 11637 11667 "Heap.ml" 350 11637 11678
-call(
-  tail
-)
 type(
   bool
 )
@@ -4553,9 +4430,6 @@ ident(
   int_ref h' "Heap.ml" 348 11565 11587 "Heap.ml" 348 11565 11589
 )
 "Heap.ml" 349 11606 11607 "Heap.ml" 350 11637 11688
-call(
-  tail
-)
 type(
   bool
 )
@@ -4581,9 +4455,6 @@ ident(
   int_ref h "Heap.ml" 310 10421 10439 "Heap.ml" 310 10421 10440
 )
 "Heap.ml" 351 11692 11704 "Heap.ml" 351 11692 11716
-call(
-  stack
-)
 type(
   bool
 )
@@ -4736,9 +4607,6 @@ type(
   bytes
 )
 "Heap.ml" 391 13578 13592 "Heap.ml" 391 13578 13630
-call(
-  tail
-)
 type(
   heap
 )
@@ -4843,9 +4711,6 @@ type(
   bytes
 )
 "Heap.ml" 398 13746 13757 "Heap.ml" 398 13746 13795
-call(
-  tail
-)
 type(
   heap
 )
@@ -4879,9 +4744,6 @@ ident(
   int_ref h "Heap.ml" 389 13515 13530 "Heap.ml" 389 13515 13531
 )
 "Heap.ml" 400 13810 13821 "Heap.ml" 400 13810 13828
-call(
-  stack
-)
 type(
   unit
 )
@@ -4929,9 +4791,6 @@ ident(
   int_ref h "Heap.ml" 389 13515 13530 "Heap.ml" 389 13515 13531
 )
 "Heap.ml" 400 13810 13844 "Heap.ml" 400 13810 13855
-call(
-  stack
-)
 type(
   unit
 )
@@ -4957,9 +4816,6 @@ ident(
   int_ref top "Heap.ml" 389 13515 13540 "Heap.ml" 389 13515 13543
 )
 "Heap.ml" 400 13810 13857 "Heap.ml" 400 13810 13867
-call(
-  stack
-)
 type(
   unit
 )
@@ -5004,9 +4860,6 @@ ident(
   int_ref h "Heap.ml" 389 13515 13530 "Heap.ml" 389 13515 13531
 )
 "Heap.ml" 401 13871 13887 "Heap.ml" 401 13871 13900
-call(
-  stack
-)
 type(
   heap
 )
@@ -5043,9 +4896,6 @@ ident(
   int_ref newtop "Heap.ml" 401 13871 13878 "Heap.ml" 401 13871 13884
 )
 "Heap.ml" 402 13904 13921 "Heap.ml" 402 13904 13934
-call(
-  tail
-)
 type(
   heap
 )
@@ -5226,9 +5076,6 @@ type(
   bytes
 )
 "Heap.ml" 432 15073 15087 "Heap.ml" 432 15073 15134
-call(
-  tail
-)
 type(
   heap
 )
@@ -5269,9 +5116,6 @@ type(
   key
 )
 "Heap.ml" 434 15151 15167 "Heap.ml" 434 15151 15186
-call(
-  stack
-)
 type(
   Ordering.t
 )
@@ -5313,9 +5157,6 @@ type(
   heap
 )
 "Heap.ml" 435 15198 15212 "Heap.ml" 435 15198 15228
-call(
-  stack
-)
 type(
   (key * value) option
 )
@@ -5363,9 +5204,6 @@ ident(
   int_ref h "Heap.ml" 430 14994 15014 "Heap.ml" 430 14994 15015
 )
 "Heap.ml" 437 15301 15333 "Heap.ml" 437 15301 15344
-call(
-  tail
-)
 type(
   heap
 )
@@ -5431,9 +5269,6 @@ ident(
   int_ref small "Heap.ml" 430 14994 15024 "Heap.ml" 430 14994 15029
 )
 "Heap.ml" 440 15387 15403 "Heap.ml" 440 15387 15421
-call(
-  stack
-)
 type(
   Ordering.t
 )
@@ -5486,9 +5321,6 @@ ident(
   int_ref t "Heap.ml" 430 14994 15037 "Heap.ml" 430 14994 15038
 )
 "Heap.ml" 444 15599 15622 "Heap.ml" 444 15599 15631
-call(
-  tail
-)
 type(
   heap
 )
@@ -5652,9 +5484,6 @@ ident(
   int_ref sofar "Heap.ml" 455 16070 16081 "Heap.ml" 455 16070 16086
 )
 "Heap.ml" 456 16098 16123 "Heap.ml" 456 16098 16139
-call(
-  stack
-)
 type(
   heap * heap
 )
@@ -5742,9 +5571,6 @@ type(
   heap * heap list
 )
 "Heap.ml" 458 16168 16172 "Heap.ml" 458 16168 16225
-call(
-  tail
-)
 type(
   heap * heap list
 )
@@ -5836,9 +5662,6 @@ type(
   unit
 )
 "Heap.ml" 465 16447 16471 "Heap.ml" 465 16447 16494
-call(
-  stack
-)
 type(
   key
 )
@@ -5861,9 +5684,6 @@ type(
   unit
 )
 "Heap.ml" 466 16498 16518 "Heap.ml" 466 16498 16531
-call(
-  stack
-)
 type(
   value
 )
@@ -5908,9 +5728,6 @@ ident(
   int_ref new_current "Heap.ml" 465 16447 16457 "Heap.ml" 465 16447 16468
 )
 "Heap.ml" 466 16498 16537 "Heap.ml" 466 16498 16574
-call(
-  stack
-)
 type(
   (key * value) list
 )
@@ -5977,16 +5794,10 @@ type(
   unit
 )
 "Heap.ml" 470 16716 16741 "Heap.ml" 470 16716 16753
-call(
-  stack
-)
 type(
   key
 )
 "Heap.ml" 470 16716 16720 "Heap.ml" 470 16716 16754
-call(
-  tail
-)
 type(
   (key * value) list
 )
@@ -6049,9 +5860,6 @@ type(
   unit
 )
 "Heap.ml" 476 16920 16927 "Heap.ml" 476 16920 16945
-call(
-  stack
-)
 type(
   key
 )
@@ -6067,9 +5875,6 @@ type(
   unit
 )
 "Heap.ml" 476 16920 16947 "Heap.ml" 476 16920 16960
-call(
-  stack
-)
 type(
   value
 )
@@ -6107,9 +5912,6 @@ type(
   int
 )
 "Heap.ml" 476 16920 16966 "Heap.ml" 476 16920 16997
-call(
-  stack
-)
 type(
   (key * value) list
 )
@@ -6180,9 +5982,6 @@ type(
   unit
 )
 "Heap.ml" 482 17161 17168 "Heap.ml" 482 17161 17179
-call(
-  stack
-)
 type(
   key
 )
@@ -6198,9 +5997,6 @@ type(
   unit
 )
 "Heap.ml" 482 17161 17181 "Heap.ml" 482 17161 17194
-call(
-  stack
-)
 type(
   value
 )
@@ -6238,9 +6034,6 @@ type(
   int
 )
 "Heap.ml" 482 17161 17200 "Heap.ml" 482 17161 17234
-call(
-  stack
-)
 type(
   (key * value) list
 )
@@ -6388,9 +6181,6 @@ type(
   (key * 'b) option
 )
 "Heap.ml" 492 17548 17568 "Heap.ml" 492 17548 17594
-call(
-  tail
-)
 type(
   (key * 'b) option
 )
@@ -6437,9 +6227,6 @@ ident(
   int_ref currk "Heap.ml" 493 17595 17613 "Heap.ml" 493 17595 17618
 )
 "Heap.ml" 494 17629 17650 "Heap.ml" 494 17629 17667
-call(
-  stack
-)
 type(
   Ordering.t
 )
@@ -6483,9 +6270,6 @@ type(
   (key * 'b) option
 )
 "Heap.ml" 495 17673 17697 "Heap.ml" 495 17673 17723
-call(
-  tail
-)
 type(
   (key * 'b) option
 )
@@ -6537,9 +6321,6 @@ type(
   (key * 'b) option
 )
 "Heap.ml" 496 17724 17759 "Heap.ml" 496 17724 17793
-call(
-  tail
-)
 type(
   (key * 'b) option
 )
@@ -6582,9 +6363,6 @@ type(
   (key * value) option
 )
 "Heap.ml" 498 17803 17807 "Heap.ml" 498 17803 17826
-call(
-  tail
-)
 type(
   (key * value) option
 )
@@ -6646,9 +6424,6 @@ ident(
   int_ref pt "Heap.ml" 502 17853 17893 "Heap.ml" 502 17853 17895
 )
 "Heap.ml" 503 17912 17924 "Heap.ml" 503 17912 17939
-call(
-  stack
-)
 type(
   (key * value) option
 )
@@ -6730,9 +6505,6 @@ type(
   int
 )
 "Heap.ml" 508 18036 18056 "Heap.ml" 508 18036 18080
-call(
-  stack
-)
 type(
   (key * value) list
 )
@@ -6776,9 +6548,6 @@ ident(
   int_ref randpairs "Heap.ml" 508 18036 18044 "Heap.ml" 508 18036 18053
 )
 "Heap.ml" 509 18084 18104 "Heap.ml" 509 18084 18131
-call(
-  stack
-)
 type(
   heap * heap list
 )
@@ -6825,9 +6594,6 @@ ident(
   int_ref pt "Heap.ml" 511 18195 18224 "Heap.ml" 511 18195 18226
 )
 "Heap.ml" 511 18195 18237 "Heap.ml" 511 18195 18253
-call(
-  stack
-)
 type(
   bool
 )
@@ -6858,9 +6624,6 @@ ident(
   int_ref lst1 "Heap.ml" 509 18084 18096 "Heap.ml" 509 18084 18100
 )
 "Heap.ml" 511 18195 18199 "Heap.ml" 511 18195 18270
-call(
-  stack
-)
 type(
   unit
 )
@@ -6879,9 +6642,6 @@ ident(
   int_ref randpairs "Heap.ml" 508 18036 18044 "Heap.ml" 508 18036 18053
 )
 "Heap.ml" 513 18336 18348 "Heap.ml" 513 18336 18366
-call(
-  stack
-)
 type(
   (key * value) option
 )
@@ -6907,9 +6667,6 @@ ident(
   int_ref h1 "Heap.ml" 509 18084 18093 "Heap.ml" 509 18084 18095
 )
 "Heap.ml" 513 18336 18371 "Heap.ml" 513 18336 18386
-call(
-  stack
-)
 type(
   (key * value) option
 )
@@ -6940,9 +6697,6 @@ type(
   int
 )
 "Heap.ml" 515 18450 18469 "Heap.ml" 515 18450 18491
-call(
-  stack
-)
 type(
   (key * value) list
 )
@@ -6986,9 +6740,6 @@ ident(
   int_ref seqpairs "Heap.ml" 515 18450 18458 "Heap.ml" 515 18450 18466
 )
 "Heap.ml" 516 18495 18515 "Heap.ml" 516 18495 18541
-call(
-  stack
-)
 type(
   heap * heap list
 )
@@ -7035,9 +6786,6 @@ ident(
   int_ref pt "Heap.ml" 517 18545 18574 "Heap.ml" 517 18545 18576
 )
 "Heap.ml" 517 18545 18587 "Heap.ml" 517 18545 18603
-call(
-  stack
-)
 type(
   bool
 )
@@ -7068,9 +6816,6 @@ ident(
   int_ref lst2 "Heap.ml" 516 18495 18507 "Heap.ml" 516 18495 18511
 )
 "Heap.ml" 517 18545 18549 "Heap.ml" 517 18545 18619
-call(
-  stack
-)
 type(
   unit
 )
@@ -7089,9 +6834,6 @@ ident(
   int_ref seqpairs "Heap.ml" 515 18450 18458 "Heap.ml" 515 18450 18466
 )
 "Heap.ml" 518 18622 18634 "Heap.ml" 518 18622 18650
-call(
-  stack
-)
 type(
   (key * value) option
 )
@@ -7117,9 +6859,6 @@ ident(
   int_ref h2 "Heap.ml" 516 18495 18504 "Heap.ml" 516 18495 18506
 )
 "Heap.ml" 518 18622 18655 "Heap.ml" 518 18622 18670
-call(
-  stack
-)
 type(
   (key * value) option
 )
@@ -7153,9 +6892,6 @@ ident(
   int_ref seqpairs "Heap.ml" 515 18450 18458 "Heap.ml" 515 18450 18466
 )
 "Heap.ml" 520 18733 18752 "Heap.ml" 520 18733 18769
-call(
-  stack
-)
 type(
   (key * value) list
 )
@@ -7199,9 +6935,6 @@ ident(
   int_ref revpairs "Heap.ml" 520 18733 18741 "Heap.ml" 520 18733 18749
 )
 "Heap.ml" 521 18773 18793 "Heap.ml" 521 18773 18819
-call(
-  stack
-)
 type(
   heap * heap list
 )
@@ -7248,9 +6981,6 @@ ident(
   int_ref pt "Heap.ml" 522 18823 18852 "Heap.ml" 522 18823 18854
 )
 "Heap.ml" 522 18823 18865 "Heap.ml" 522 18823 18881
-call(
-  stack
-)
 type(
   bool
 )
@@ -7281,9 +7011,6 @@ ident(
   int_ref lst3 "Heap.ml" 521 18773 18785 "Heap.ml" 521 18773 18789
 )
 "Heap.ml" 522 18823 18827 "Heap.ml" 522 18823 18897
-call(
-  stack
-)
 type(
   unit
 )
@@ -7302,9 +7029,6 @@ ident(
   int_ref seqpairs "Heap.ml" 515 18450 18458 "Heap.ml" 515 18450 18466
 )
 "Heap.ml" 523 18900 18912 "Heap.ml" 523 18900 18928
-call(
-  stack
-)
 type(
   (key * value) option
 )
@@ -7330,9 +7054,6 @@ ident(
   int_ref h3 "Heap.ml" 521 18773 18782 "Heap.ml" 521 18773 18784
 )
 "Heap.ml" 523 18900 18933 "Heap.ml" 523 18900 18948
-call(
-  stack
-)
 type(
   (key * value) option
 )
@@ -7465,9 +7186,6 @@ type(
   unit
 )
 "Heap.ml" 530 19067 19071 "Heap.ml" 530 19067 19085
-call(
-  stack
-)
 type(
   unit
 )
@@ -7483,9 +7201,6 @@ type(
   unit
 )
 "Heap.ml" 531 19088 19092 "Heap.ml" 531 19088 19112
-call(
-  stack
-)
 type(
   unit
 )
@@ -7501,9 +7216,6 @@ type(
   unit
 )
 "Heap.ml" 532 19115 19119 "Heap.ml" 532 19115 19137
-call(
-  stack
-)
 type(
   unit
 )
@@ -7526,10 +7238,6 @@ type(
 "Heap.ml" 529 19046 19062 "Heap.ml" 533 19140 19146
 type(
   unit -> unit
-)
-"Heap.ml" 538 19214 19240 "Heap.ml" 538 19214 19271
-call(
-  stack
 )
 "Heap.ml" 552 19621 19627 "Heap.ml" 552 19621 19634
 type(
@@ -7849,9 +7557,6 @@ ident(
   int_ref y "Heap.ml" 560 19880 19904 "Heap.ml" 560 19880 19905
 )
 "Heap.ml" 561 19911 19938 "Heap.ml" 561 19911 19945
-call(
-  stack
-)
 type(
   key
 )
@@ -7877,9 +7582,6 @@ ident(
   int_ref y "Heap.ml" 560 19880 19904 "Heap.ml" 560 19880 19905
 )
 "Heap.ml" 561 19911 19947 "Heap.ml" 561 19911 19954
-call(
-  stack
-)
 type(
   key
 )
@@ -8000,9 +7702,6 @@ type(
   unit
 )
 "Heap.ml" 564 20045 20057 "Heap.ml" 564 20045 20076
-call(
-  stack
-)
 type(
   unit
 )
@@ -8022,9 +7721,6 @@ type(
   key
 )
 "Heap.ml" 565 20080 20095 "Heap.ml" 565 20080 20114
-call(
-  tail
-)
 type(
   key
 )
@@ -8156,9 +7852,6 @@ type(
   int
 )
 "Heap.ml" 571 20278 20318 "Heap.ml" 571 20278 20332
-call(
-  tail
-)
 type(
   value
 )
@@ -8461,9 +8154,6 @@ ident(
   int_ref possible_values "Heap.ml" 574 20378 20384 "Heap.ml" 574 20378 20399
 )
 "Heap.ml" 577 20600 20619 "Heap.ml" 577 20600 20646
-call(
-  stack
-)
 type(
   int
 )
@@ -8592,9 +8282,6 @@ ident(
   int_ref index "Heap.ml" 581 20759 20767 "Heap.ml" 581 20759 20772
 )
 "Heap.ml" 583 20825 20852 "Heap.ml" 583 20825 20879
-call(
-  tail
-)
 type(
   value
 )
@@ -8663,9 +8350,6 @@ ident(
   int_ref index "Heap.ml" 581 20759 20767 "Heap.ml" 581 20759 20772
 )
 "Heap.ml" 585 20890 20925 "Heap.ml" 585 20890 20952
-call(
-  tail
-)
 type(
   value
 )
@@ -8708,9 +8392,6 @@ type(
   unit
 )
 "Heap.ml" 586 20954 20975 "Heap.ml" 586 20954 20991
-call(
-  stack
-)
 type(
   key
 )
@@ -8726,9 +8407,6 @@ type(
   unit
 )
 "Heap.ml" 586 20954 20993 "Heap.ml" 586 20954 21004
-call(
-  stack
-)
 type(
   value
 )
@@ -8740,310 +8418,367 @@ type(
 type(
   unit -> key * value
 )
-"Heap.ml" 591 21086 21103 "Heap.ml" 591 21086 21128
-call(
-  stack
-)
-"Heap.ml" 606 21765 21771 "Heap.ml" 606 21765 21782
+"Heap.ml" 610 21769 21775 "Heap.ml" 610 21769 21786
 type(
   node -> tag
 )
 ident(
-  def tag_of_node "Heap.ml" 607 21803 21805 "Heap.ml" 617 22156 22159
+  def tag_of_node "Heap.ml" 611 21807 21809 "Heap.ml" 621 22160 22163
 )
-"Heap.ml" 606 21765 21790 "Heap.ml" 606 21765 21791
+"Heap.ml" 610 21769 21794 "Heap.ml" 610 21769 21795
 type(
   node
 )
 ident(
-  def n "Heap.ml" 606 21765 21795 "Heap.ml" 606 21765 21801
+  def n "Heap.ml" 610 21769 21799 "Heap.ml" 610 21769 21805
 )
-"Heap.ml" 606 21765 21795 "Heap.ml" 606 21765 21796
+"Heap.ml" 610 21769 21799 "Heap.ml" 610 21769 21800
 type(
   node
 )
 ident(
-  int_ref n "Heap.ml" 606 21765 21790 "Heap.ml" 606 21765 21791
+  int_ref n "Heap.ml" 610 21769 21794 "Heap.ml" 610 21769 21795
 )
-"Heap.ml" 606 21765 21795 "Heap.ml" 606 21765 21801
+"Heap.ml" 610 21769 21799 "Heap.ml" 610 21769 21805
 type(
   tag
 )
-"Heap.ml" 606 21765 21790 "Heap.ml" 606 21765 21801
+"Heap.ml" 610 21769 21794 "Heap.ml" 610 21769 21805
 type(
   node -> tag
 )
-"Heap.ml" 607 21803 21809 "Heap.ml" 607 21803 21820
+"Heap.ml" 611 21807 21813 "Heap.ml" 611 21807 21824
 type(
   tag -> node
 )
 ident(
-  def node_of_tag "Heap.ml" 608 21859 21861 "Heap.ml" 617 22156 22159
+  def node_of_tag "Heap.ml" 612 21863 21865 "Heap.ml" 621 22160 22163
 )
-"Heap.ml" 607 21803 21821 "Heap.ml" 607 21803 21822
+"Heap.ml" 611 21807 21825 "Heap.ml" 611 21807 21826
 type(
   tag
 )
 ident(
-  def t "Heap.ml" 607 21803 21825 "Heap.ml" 607 21803 21858
+  def t "Heap.ml" 611 21807 21829 "Heap.ml" 611 21807 21862
 )
-"Heap.ml" 607 21803 21833 "Heap.ml" 607 21803 21834
+"Heap.ml" 611 21807 21837 "Heap.ml" 611 21807 21838
 type(
   tag
 )
 ident(
-  int_ref t "Heap.ml" 607 21803 21821 "Heap.ml" 607 21803 21822
+  int_ref t "Heap.ml" 611 21807 21825 "Heap.ml" 611 21807 21826
 )
-"Heap.ml" 607 21803 21841 "Heap.ml" 607 21803 21845
+"Heap.ml" 611 21807 21845 "Heap.ml" 611 21807 21849
 type(
   FibHeap.heap option
 )
-"Heap.ml" 607 21803 21854 "Heap.ml" 607 21803 21857
+"Heap.ml" 611 21807 21858 "Heap.ml" 611 21807 21861
 type(
   tag link
 )
-"Heap.ml" 607 21803 21825 "Heap.ml" 607 21803 21858
+"Heap.ml" 611 21807 21829 "Heap.ml" 611 21807 21862
 type(
   node
 )
-"Heap.ml" 607 21803 21821 "Heap.ml" 607 21803 21858
+"Heap.ml" 611 21807 21825 "Heap.ml" 611 21807 21862
 type(
   tag -> node
 )
-"Heap.ml" 608 21859 21865 "Heap.ml" 608 21859 21872
+"Heap.ml" 612 21863 21869 "Heap.ml" 612 21863 21876
 type(
   node -> node -> Ordering.t
 )
 ident(
-  def compare "Heap.ml" 613 22007 22009 "Heap.ml" 617 22156 22159
+  def compare "Heap.ml" 617 22011 22013 "Heap.ml" 621 22160 22163
 )
-"Heap.ml" 608 21859 21873 "Heap.ml" 608 21859 21875
+"Heap.ml" 612 21863 21877 "Heap.ml" 612 21863 21879
 type(
   node
 )
 ident(
-  def n1 "Heap.ml" 608 21859 21876 "Heap.ml" 612 21988 22006
+  def n1 "Heap.ml" 612 21863 21880 "Heap.ml" 616 21992 22010
 )
-"Heap.ml" 608 21859 21876 "Heap.ml" 608 21859 21878
+"Heap.ml" 612 21863 21880 "Heap.ml" 612 21863 21882
 type(
   node
 )
 ident(
-  def n2 "Heap.ml" 609 21882 21886 "Heap.ml" 612 21988 22006
+  def n2 "Heap.ml" 613 21886 21890 "Heap.ml" 616 21992 22010
 )
-"Heap.ml" 609 21882 21890 "Heap.ml" 609 21882 21893
+"Heap.ml" 613 21886 21894 "Heap.ml" 613 21886 21897
 type(
   int
 )
 ident(
-  def ord "Heap.ml" 610 21930 21934 "Heap.ml" 612 21988 22006
+  def ord "Heap.ml" 614 21934 21938 "Heap.ml" 616 21992 22010
 )
-"Heap.ml" 609 21882 21896 "Heap.ml" 609 21882 21910
+"Heap.ml" 613 21886 21900 "Heap.ml" 613 21886 21914
 type(
   tag -> tag -> int
 )
 ident(
   ext_ref Core.Std.String.compare
 )
-"Heap.ml" 609 21882 21911 "Heap.ml" 609 21882 21913
+"Heap.ml" 613 21886 21915 "Heap.ml" 613 21886 21917
 type(
   node
 )
 ident(
-  int_ref n1 "Heap.ml" 608 21859 21873 "Heap.ml" 608 21859 21875
+  int_ref n1 "Heap.ml" 612 21863 21877 "Heap.ml" 612 21863 21879
 )
-"Heap.ml" 609 21882 21911 "Heap.ml" 609 21882 21918
+"Heap.ml" 613 21886 21915 "Heap.ml" 613 21886 21922
 type(
   tag
 )
-"Heap.ml" 609 21882 21919 "Heap.ml" 609 21882 21921
+"Heap.ml" 613 21886 21923 "Heap.ml" 613 21886 21925
 type(
   node
 )
 ident(
-  int_ref n2 "Heap.ml" 608 21859 21876 "Heap.ml" 608 21859 21878
+  int_ref n2 "Heap.ml" 612 21863 21880 "Heap.ml" 612 21863 21882
 )
-"Heap.ml" 609 21882 21919 "Heap.ml" 609 21882 21926
+"Heap.ml" 613 21886 21923 "Heap.ml" 613 21886 21930
 type(
   tag
 )
-"Heap.ml" 609 21882 21896 "Heap.ml" 609 21882 21926
-call(
-  stack
-)
+"Heap.ml" 613 21886 21900 "Heap.ml" 613 21886 21930
 type(
   int
 )
-"Heap.ml" 610 21930 21937 "Heap.ml" 610 21930 21940
+"Heap.ml" 614 21934 21941 "Heap.ml" 614 21934 21944
 type(
   int
 )
 ident(
-  int_ref ord "Heap.ml" 609 21882 21890 "Heap.ml" 609 21882 21893
+  int_ref ord "Heap.ml" 613 21886 21894 "Heap.ml" 613 21886 21897
 )
-"Heap.ml" 610 21930 21941 "Heap.ml" 610 21930 21942
+"Heap.ml" 614 21934 21945 "Heap.ml" 614 21934 21946
 type(
   int -> int -> bool
 )
 ident(
   ext_ref Pervasives.( < )
 )
-"Heap.ml" 610 21930 21943 "Heap.ml" 610 21930 21944
+"Heap.ml" 614 21934 21947 "Heap.ml" 614 21934 21948
 type(
   int
 )
-"Heap.ml" 610 21930 21937 "Heap.ml" 610 21930 21944
+"Heap.ml" 614 21934 21941 "Heap.ml" 614 21934 21948
 type(
   bool
 )
-"Heap.ml" 610 21930 21950 "Heap.ml" 610 21930 21954
+"Heap.ml" 614 21934 21954 "Heap.ml" 614 21934 21958
 type(
   Ordering.t
 )
-"Heap.ml" 611 21960 21969 "Heap.ml" 611 21960 21972
+"Heap.ml" 615 21964 21973 "Heap.ml" 615 21964 21976
 type(
   int
 )
 ident(
-  int_ref ord "Heap.ml" 609 21882 21890 "Heap.ml" 609 21882 21893
+  int_ref ord "Heap.ml" 613 21886 21894 "Heap.ml" 613 21886 21897
 )
-"Heap.ml" 611 21960 21973 "Heap.ml" 611 21960 21974
+"Heap.ml" 615 21964 21977 "Heap.ml" 615 21964 21978
 type(
   int -> int -> bool
 )
 ident(
   ext_ref Pervasives.( = )
 )
-"Heap.ml" 611 21960 21975 "Heap.ml" 611 21960 21976
+"Heap.ml" 615 21964 21979 "Heap.ml" 615 21964 21980
 type(
   int
 )
-"Heap.ml" 611 21960 21969 "Heap.ml" 611 21960 21976
+"Heap.ml" 615 21964 21973 "Heap.ml" 615 21964 21980
 type(
   bool
 )
-"Heap.ml" 611 21960 21982 "Heap.ml" 611 21960 21987
+"Heap.ml" 615 21964 21986 "Heap.ml" 615 21964 21991
 type(
   Ordering.t
 )
-"Heap.ml" 612 21988 21999 "Heap.ml" 612 21988 22006
+"Heap.ml" 616 21992 22003 "Heap.ml" 616 21992 22010
 type(
   Ordering.t
 )
-"Heap.ml" 611 21960 21966 "Heap.ml" 612 21988 22006
+"Heap.ml" 615 21964 21970 "Heap.ml" 616 21992 22010
 type(
   Ordering.t
 )
-"Heap.ml" 610 21930 21934 "Heap.ml" 612 21988 22006
+"Heap.ml" 614 21934 21938 "Heap.ml" 616 21992 22010
 type(
   Ordering.t
 )
-"Heap.ml" 609 21882 21886 "Heap.ml" 612 21988 22006
+"Heap.ml" 613 21886 21890 "Heap.ml" 616 21992 22010
 type(
   Ordering.t
 )
-"Heap.ml" 608 21859 21876 "Heap.ml" 612 21988 22006
+"Heap.ml" 612 21863 21880 "Heap.ml" 616 21992 22010
 type(
   node -> Ordering.t
 )
-"Heap.ml" 608 21859 21873 "Heap.ml" 612 21988 22006
+"Heap.ml" 612 21863 21877 "Heap.ml" 616 21992 22010
 type(
   node -> node -> Ordering.t
 )
-"Heap.ml" 613 22007 22013 "Heap.ml" 613 22007 22027
+"Heap.ml" 617 22011 22017 "Heap.ml" 617 22011 22031
 type(
   node -> tag
 )
 ident(
-  def string_of_node "Heap.ml" 614 22039 22041 "Heap.ml" 617 22156 22159
+  def string_of_node "Heap.ml" 618 22043 22045 "Heap.ml" 621 22160 22163
 )
-"Heap.ml" 613 22007 22028 "Heap.ml" 613 22007 22029
+"Heap.ml" 617 22011 22032 "Heap.ml" 617 22011 22033
 type(
   node
 )
 ident(
-  def n "Heap.ml" 613 22007 22032 "Heap.ml" 613 22007 22038
+  def n "Heap.ml" 617 22011 22036 "Heap.ml" 617 22011 22042
 )
-"Heap.ml" 613 22007 22032 "Heap.ml" 613 22007 22033
+"Heap.ml" 617 22011 22036 "Heap.ml" 617 22011 22037
 type(
   node
 )
 ident(
-  int_ref n "Heap.ml" 613 22007 22028 "Heap.ml" 613 22007 22029
+  int_ref n "Heap.ml" 617 22011 22032 "Heap.ml" 617 22011 22033
 )
-"Heap.ml" 613 22007 22032 "Heap.ml" 613 22007 22038
+"Heap.ml" 617 22011 22036 "Heap.ml" 617 22011 22042
 type(
   tag
 )
-"Heap.ml" 613 22007 22028 "Heap.ml" 613 22007 22038
+"Heap.ml" 617 22011 22032 "Heap.ml" 617 22011 22042
 type(
   node -> tag
 )
-"Heap.ml" 614 22039 22045 "Heap.ml" 614 22039 22048
+"Heap.ml" 618 22043 22049 "Heap.ml" 618 22043 22052
 type(
   unit -> node
 )
 ident(
-  def gen "Heap.ml" 615 22089 22091 "Heap.ml" 617 22156 22159
+  def gen "Heap.ml" 619 22093 22095 "Heap.ml" 621 22160 22163
 )
-"Heap.ml" 614 22039 22049 "Heap.ml" 614 22039 22051
+"Heap.ml" 618 22043 22053 "Heap.ml" 618 22043 22055
 type(
   unit
 )
-"Heap.ml" 614 22039 22062 "Heap.ml" 614 22039 22064
+"Heap.ml" 618 22043 22066 "Heap.ml" 618 22043 22068
 type(
   tag
 )
-"Heap.ml" 614 22039 22071 "Heap.ml" 614 22039 22075
+"Heap.ml" 618 22043 22075 "Heap.ml" 618 22043 22079
 type(
   FibHeap.heap option
 )
-"Heap.ml" 614 22039 22084 "Heap.ml" 614 22039 22087
+"Heap.ml" 618 22043 22088 "Heap.ml" 618 22043 22091
 type(
   tag link
 )
-"Heap.ml" 614 22039 22054 "Heap.ml" 614 22039 22088
+"Heap.ml" 618 22043 22058 "Heap.ml" 618 22043 22092
 type(
   node
 )
-"Heap.ml" 614 22039 22049 "Heap.ml" 614 22039 22088
+"Heap.ml" 618 22043 22053 "Heap.ml" 618 22043 22092
 type(
   unit -> node
 )
-"Heap.ml" 615 22089 22095 "Heap.ml" 615 22089 22105
+"Heap.ml" 619 22093 22099 "Heap.ml" 619 22093 22109
 type(
   unit -> weight
 )
 ident(
-  def gen_weight "Heap.ml" 616 22115 22117 "Heap.ml" 617 22156 22159
+  def gen_weight "Heap.ml" 620 22119 22121 "Heap.ml" 621 22160 22163
 )
-"Heap.ml" 615 22089 22106 "Heap.ml" 615 22089 22108
+"Heap.ml" 619 22093 22110 "Heap.ml" 619 22093 22112
 type(
   unit
 )
-"Heap.ml" 615 22089 22111 "Heap.ml" 615 22089 22114
+"Heap.ml" 619 22093 22115 "Heap.ml" 619 22093 22118
 type(
   weight
 )
-"Heap.ml" 615 22089 22106 "Heap.ml" 615 22089 22114
+"Heap.ml" 619 22093 22110 "Heap.ml" 619 22093 22118
 type(
   unit -> weight
 )
-"Heap.ml" 616 22115 22121 "Heap.ml" 616 22115 22137
+"Heap.ml" 620 22119 22125 "Heap.ml" 620 22119 22141
 type(
   weight -> tag
 )
 ident(
-  def string_of_weight "Heap.ml" 616 22115 22155 "Heap.ml" 617 22156 22159
+  def string_of_weight "Heap.ml" 620 22119 22159 "Heap.ml" 621 22160 22163
 )
-"Heap.ml" 616 22115 22140 "Heap.ml" 616 22115 22155
+"Heap.ml" 620 22119 22144 "Heap.ml" 620 22119 22159
 type(
   weight -> tag
 )
 ident(
   ext_ref Core.Std.Float.to_string
 )
-"Heap.ml" 619 22161 22179 "Heap.ml" 619 22161 22193
-call(
-  stack
+"Heap.ml" 628 22240 22248 "Heap.ml" 628 22240 22256
+type(
+  bytes * (float * float) list -> GeoGraph.graph -> float -> GeoGraph.graph
+)
+ident(
+  def addedges "Heap.ml" 628 22240 22240 "Heap.ml" 1 0 -1
+)
+"Heap.ml" 628 22240 22258 "Heap.ml" 628 22240 22266
+type(
+  bytes * (float * float) list
+)
+ident(
+  def castlist "Heap.ml" 629 22300 22300 "Heap.ml" 644 23028 23097
+)
+"Heap.ml" 629 22300 22301 "Heap.ml" 629 22300 22306
+type(
+  GeoGraph.graph
+)
+ident(
+  def graph "Heap.ml" 629 22300 22324 "Heap.ml" 644 23028 23097
+)
+"Heap.ml" 629 22300 22325 "Heap.ml" 629 22300 22331
+type(
+  float
+)
+ident(
+  def cutoff "Heap.ml" 629 22300 22340 "Heap.ml" 644 23028 23097
+)
+"Heap.ml" 630 22360 22370 "Heap.ml" 630 22360 22379
+type(
+  bytes * (float * float) ->
+  bytes * (float * float) list -> GeoGraph.graph -> GeoGraph.graph
+)
+ident(
+  def addhelper "Heap.ml" 630 22360 22362 "Heap.ml" 644 23028 23097
+)
+"Heap.ml" 630 22360 22381 "Heap.ml" 630 22360 22386
+type(
+  bytes * (float * float)
+)
+ident(
+  def place "Heap.ml" 631 22415 22417 "Heap.ml" 641 22922 22986
+)
+"Heap.ml" 631 22415 22418 "Heap.ml" 631 22415 22422
+type(
+  bytes * (float * float) list
+)
+ident(
+  def rest "Heap.ml" 631 22415 22455 "Heap.ml" 641 22922 22986
+)
+"Heap.ml" 631 22415 22456 "Heap.ml" 631 22415 22461
+type(
+  GeoGraph.graph
+)
+ident(
+  def graph "Heap.ml" 632 22479 22481 "Heap.ml" 641 22922 22986
+)
+"Heap.ml" 633 22501 22511 "Heap.ml" 633 22501 22515
+type(
+  bytes * (float * float) list
+)
+ident(
+  int_ref rest "Heap.ml" 631 22415 22418 "Heap.ml" 631 22415 22422
+)
+"Heap.ml" 634 22521 22527 "Heap.ml" 634 22521 22528
+type(
+  bytes * (float * float) list
 )
