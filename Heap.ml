@@ -20,6 +20,7 @@ sig
 
   (* Returns an empty heap. *)
   val empty: heap 
+
   (* Checks if heap is empty. *)
   val is_empty: heap -> bool
 
@@ -133,13 +134,6 @@ struct
     | None -> true
     | _ -> false
 
-(* unused; remove unless needed later
-
-  let minkey (k1: key) (k2: key) : key =
-    match H.compare k2 k1 with
-    | Less -> k2
-    | _ -> k1
-*)
   let get_top_node (h: heap) : (key * value) option =
     match !h with
     | None -> None
@@ -155,7 +149,7 @@ struct
     | Some (k1,_), Some (k2,_) -> if H.compare k2 k1 = Less then h2 else h1
 
   (* A fold function across a double linked list of heaps. The function
-   * folds left and stops when it's made a full loop *)
+   * folds right and stops when it's made a full loop *)
   let lnk_lst_fold (f: 'a -> heap -> 'a) (acc: 'a) (h: heap) : 'a =
     let rec lnk_lst_fold_helper (f: 'a -> heap -> 'a) (acc: 'a)
         (h: heap) (h0: heap) : 'a =
@@ -332,28 +326,30 @@ struct
       let rk_lst : heap list ref = ref [] in
       (* try to merge a heap with any heap in rk_lst *)
       let try_merge (h': heap) : bool =
-	let merged_once = List.fold_left !rk_lst ~init:false
-	  ~f:(fun merged comp_h -> 
-	    if merged then merged else
-	      match !comp_h, !h with
-	      | None,_ | _,None -> failwith "node cannot be empty"
-	      | Some comp_n, Some n' ->
-		if comp_n.rk = n'.rk
-		then 
-		  let _ = merge comp_h h'; rk_lst := [] in 
-		  true
-		else 
-		  false) in
-	if merged_once 
-	then true 
-	else (let _ = rk_lst := h'::!rk_lst in false)
+        let merged_once = List.fold_left !rk_lst ~init:false
+          ~f:(fun merged comp_h -> 
+            if merged then merged else
+              match !comp_h, !h with
+              | None,_ | _,None -> failwith "node cannot be empty"
+              | Some comp_n, Some n' ->
+          if comp_n.rk = n'.rk
+          then 
+            let _ = merge comp_h h'; rk_lst := [] in 
+            true
+          else 
+            false)
+        in
+        if merged_once 
+        then true 
+        else (let _ = rk_lst := h'::!rk_lst in false)
       in
       (* recurse through lnk list w/ merged_once until it merges once only *)
       let merge_more (h': heap) : bool =
         lnk_lst_fold (fun merged h ->
-          if merged then merged else try_merge h) false h' in
-            while merge_more h do () done;
-            (Some (n.k, n.v), nh)
+          if merged then merged else try_merge h) false h'
+      in
+      while merge_more h do () done;
+      (Some (n.k, n.v), nh)
       
 (* Bits of old code from delete_min; delete when done
 
@@ -458,7 +454,6 @@ struct
         (match !h' with
         | None -> 0
         | Some n ->
-          let _ = Printf.printf "current acc value: %i\n" a in
           (match get_top_node n.c with
           | None -> let _ = Printf.printf "No child\n" in (a + 1)
           | Some (_,name) -> 
@@ -590,12 +585,9 @@ struct
     let (k,v) = match onepair with
       | [] -> failwith "list is not empty"
       | (a,b)::_ -> (a,b) in
-    let (oneheap, onelst) = insert_list empty [(H.gen_key(),H.gen_value())] in
+    let (oneheap, onelst) = insert_list empty [(k,v)] in
     assert(not (is_empty oneheap)) ;
     assert(not ((List.hd onelst) = None)) ;
-    Printf.printf "starting oneheap test \n";
-    let (oneheap, _) = insert k v empty in
-    Printf.printf "oneheap and onelst created \n";
     let (k1,v1),emptyheap = match delete_min oneheap with
       | None,_ -> failwith "heap is not empty"
       | (Some kv),h -> kv,h in
@@ -614,9 +606,9 @@ struct
     ()
 
   let run_tests () =
-    (*test_insert () ;*)
+    test_insert () ;
     (*test_decrease_key () ;*)
-    test_delete_min () ;
+    (*test_delete_min () ;*)
     ()
 
 end
