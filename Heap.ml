@@ -734,33 +734,26 @@ let addedges (castlist: (string * (float * float)) list)
 let read_csv () : GeoGraph.graph =  
   let usage () = Printf.printf "usage: %s csv cutoff\n" Sys.argv.(0); exit 1 in 
   if Array.length Sys.argv <> 3 then usage () ;
-  (* file pointer - just like in CS50! *)
   let cutoff = Float.of_string (Sys.argv.(2)) in
   let delimiter = Regex.create_exn ";" in
   let parse_line line = Regex.split delimiter line in
+  (* Read in and parse the file into a string list list. *)
   let parsed = In_channel.with_file Sys.argv.(1)
                ~f:(fun file -> In_channel.fold_lines file ~init:[]
                ~f:(fun lst ln -> (parse_line ln)::lst))
   in
-  (*let file = In_channel.create Sys.argv.(1) in
-  let lines = In_channel.input_lines file in*)
-  match parsed with
-  | [] -> failwith "CSV file empty or could not be read"
-  | []::_ -> failwith "CSV file should not start with empty line"
-  | (hd::_)::_ ->
-      let _ = Printf.printf "%s\n" hd in
-      let rec cast (parselist: string list list) :
-          (string * (float * float)) list =
-         match parselist with
-         | [] -> []  
-         | hd::tl ->
-             (match hd with 
-             | [name;lat;lng] ->
-               (name,((Float.of_string lat),(Float.of_string lng)))::(cast tl)
-             | _ -> [])
-      in
-      let casted = cast parsed in
-      addedges casted GeoGraph.empty cutoff
+  let rec cast (parselist: string list list) :
+    (string * (float * float)) list =
+     match parselist with
+     | [] -> []  
+     | hd::tl ->
+         (match hd with 
+         | [name;lat;lng] ->
+           (name,((Float.of_string lat),(Float.of_string lng)))::(cast tl)
+         | _ -> [])
+  in
+  let casted = cast parsed in
+  addedges casted GeoGraph.empty cutoff
 
 
 
