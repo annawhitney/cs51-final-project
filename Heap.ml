@@ -807,19 +807,20 @@ let read_csv () : GeoGraph.graph =
 let rec get_nodes (g: GeoGraph.graph) : GeoNode.node * GeoNode.node =
   (* get_nodes should actually return an option GeoNode.node * GeoNode.node *) 
   (* Should give the user a text prompt so they know what to input *)
-  let () = Printf.printf "Starting Point: " in
+  let () = Printf.printf "Origin City: " in
   let st = read_line () in
+  let try_again = Printf.print ("City not in database. \n
+  Please make sure that you type in the city comma state abbreviation \n
+  For example: Boston, MA") in
   let stnode = GeoNode.node_of_tag st in
   if (not (GeoGraph.has_node g stnode)) then
-    let () = Printf.printf "Node is not in graph. Try again.\n" in
-    get_nodes g
+    try_again;get_nodes g
   else 
-    let () = Printf.printf "End Point: " in
+    let () = Printf.printf "Destination City: " in
     let fin = read_line () in
     let finnode = GeoNode.node_of_tag fin in
     if (not (GeoGraph.has_node g finnode)) then
-      let () = Printf.printf "Node is not in graph. Try again.\n" in
-      get_nodes g
+      try_again; get_nodes g
     else (stnode, finnode) ;;
 
 (* Run dijkstra's algorithm to find shortest path between start and finish *)
@@ -895,7 +896,7 @@ let (nodelist, weight) = dijkstra start finish graph in
 let rec printnodes (lst: GeoNode.node list) : unit = 
   match lst with 
   | [] -> ()
-  | hd::tl -> Printf.printf "%s ->\n" (GeoNode.tag_of_node hd) ; printnodes tl
+  | hd::tl -> Printf.printf "%s -> " (GeoNode.tag_of_node hd) ; printnodes tl
 in
 printnodes nodelist; Printf.printf "\nTotal distance: %f km\n" weight; ()
 
