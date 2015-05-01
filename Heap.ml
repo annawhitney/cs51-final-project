@@ -107,7 +107,7 @@ struct
 end
 
 module FibonacciHeap(H: HEAP_ARG) : (PRIOHEAP with type value = H.value
-    and type key = H.key) =
+    with type key = H.key) =
 struct
   type key = H.key
   type value = H.value
@@ -591,12 +591,8 @@ end
 
 
 (* Our actual fib heap module - not sure if this is where it should go *)
-
-module Make(H: HEAP_ARG) : 
-  (PRIOHEAP with type key = H.key and type value = H.value) =
-  FibonacciHeap (H)
-
-module FibHeap = Make(GeoHeapArg) 
+module FibHeap : (PRIOHEAP with type value GeoHeapArg.value
+    with type key = GeoHeapArg.key) = FibonacciHeap(GeoHeapArg) 
 
 (* Our actual node & graph representations (not sure where to put these either,
  * but it definitely needs to happen after FibHeap is defined because it
