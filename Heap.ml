@@ -574,7 +574,28 @@ struct
     assert((num_nodes seqheap'') = (num_nodes seqheap')) ;
     ()
     
-  let test_delete_min () = () (* TODO *)
+  let test_delete_min () =
+    let onepair = generate_pair_list 1 in
+    let oneelt = match onepair with
+      | [] -> failwith "list is not empty"
+      | hd::_ -> hd in
+    let (oneheap, onelst) = insert_list empty onepair in
+    let (k1,v1),emptyheap = match delete_min oneheap with
+      | None,_ -> failwith "heap is not empty"
+      | (Some kv),h -> kv,h in
+    assert(is_empty emptyheap) ;
+    assert((k1,v1) = oneelt) ;
+    let seqpairs = generate_pair_list 100 in
+    let (seqheap, seqlst) = insert_list empty seqpairs in
+    let emptyheap = List.fold_left ~f:(fun h t ->
+      let (kv_op, nh) = delete_min t in
+      let (k,v) = match kv_op with
+	| None -> failwith "all nodes are real"
+	| Some (k,v) -> k,v in
+      assert(Some (k,v) = get_top_node h) ;
+      assert((num_nodes nh) + 1 = num_nodes t) ; nh) ~init:seqheap seqlst in
+    assert(is_empty emptyheap) ;
+    ()
 
   let run_tests () =
     test_insert () ;

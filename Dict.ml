@@ -826,7 +826,7 @@ struct
 
   let test_lookup () =
     (* Lookup of anything in the empty dict returns None *)
-    let pairs1 = generate_random_list 26 in
+    let pairs1 = generate_pair_list 26 in
     List.iter pairs1 ~f:(fun (k,_) -> assert(lookup empty k = None)) ;
     (* Lookup of things we didn't insert returns None *)
     let d1 = insert_list empty pairs1 in
@@ -840,7 +840,7 @@ struct
 
   let test_member () =
     (* Nothing is a member of the empty dict *)
-    let pairs1 = generate_random_list 26 in
+    let pairs1 = generate_pair_list 26 in
     List.iter pairs1 ~f:(fun (k,_) -> assert(not (member empty k))) ;
     (* Pairs we didn't insert are not members of the dict *)
     let d1 = insert_list empty pairs1 in
