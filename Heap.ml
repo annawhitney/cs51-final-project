@@ -678,6 +678,7 @@ let read_csv () : GeoGraph.graph =
   let lines = In_channel.input_lines file in*)
   match parsed with
   | [] -> failwith "CSV file empty or could not be read"
+  | []::_ -> failwith "CSV file should not start with empty line"
   | (hd::_)::_ ->
       let _ = Printf.printf "%s\n" hd in
       let rec cast (parselist: string list list) :
