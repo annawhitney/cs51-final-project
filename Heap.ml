@@ -366,50 +366,64 @@ struct
     | Some n -> Some (n.k,n.v)
 
   (* Cut detaches a node from its parent & siblings and adds it to the root
-   * list, returning an updated handle to the heap. *)
-  let rec cut (n: heap) (top: heap) : heap =
-    match !n with
-    | None -> failwith "shouldn't be trying to cut an empty heap"
+   * list, then recursively cuts node parents that are marked until it 
+   * reaches an unmarked node, returning an updated handle to the heap. *)
+  let rec cut (h: heap) (top: heap) : heap =
+    match !h with
+    | None -> failwith "Unable to cut an empty heap"
     | Some n ->
+      let ph = n.p in
+      match !ph with
+      | None -> top
+      | Some pn ->
+	match !top with
+	| None -> failwith "Unable to cut an empty heap"
+	| Some tn ->
+	  let _ = clean h; n.p <- empty; link tn.l h; link h top in
+	  let newtop = minroot top h in
+	  if pn.mk then cut ph newtop else 
+	    if pn.p = None 
+	    then newtop
+	    else pn.mk <- true; newtop
+      
+(* Leftovers from updates to cut function; may be useful; delete when done
+
         (match !(n.p) with
         (* If node is already a root, we don't have to do anything *)
         | None -> top
-        | Some par ->
-            (match !(n.l) with
-            | None -> failwith "siblings should never be empty"
-            | Some left ->
-                (match !(n.r) with
-                | None -> failwith "siblings should never be empty"
-                | Some right ->
-                    (match !top with
-                    | None -> failwith "can't cut from empty heap"
-                    | Some t ->
-                        let _ = left.r <- n.r ; right.l <- n.l ;
-                            n.p <- (ref None) in
-                        (* If node's siblings are the same as itself, it has no
-                         * real siblings -  after cut parent has no children *)
-                        let _ = if (phys_equal n.l nd) then par.ch <- None
-                        else par.ch <- n.l in
-                        let _ = n.l <- t.l ; n.r <- top ; t.l <- nd in
-                        if par.mk then cut n.p (minroot top nd)
-                        else minroot top nd))))
+        | Some pn ->
+            (match !(n.l),!(n.r) with
+            | None,_ | _,None -> failwith "siblings should never be empty"
+            | Some ln, Some rn ->
+	      
+                let _ = ln.r <- n.r ; rn.l <- n.l ;
+                  n.p <- (ref None) in
+                (* If node's siblings are the same as itself, it has no
+                 * real siblings -  after cut parent has no children *)
+                let _ = if (phys_equal n.l nd) then par.ch <- None
+                  else par.ch <- n.l in
+                let _ = n.l <- t.l ; n.r <- top ; t.l <- nd in
+                if par.mk then cut n.p (minroot top nd)
+                else minroot top nd)))
+*)
 
   (* Decreases key of existing node; cuts the node if heap ordering is
    * violated. *)
-  let decrease_key (nd: heap) (small: key) (h: heap) : heap =
-    match !nd with
-    | None -> failwith "shouldn't be trying to decrease key of an empty heap"
+  let decrease_key (h: heap) (small: key) (t: heap) : heap =
+    match !h with
+    | None -> failwith "Cannot decrease key of an empty heap"
     | Some n ->
         assert((H.compare small n.k) = Less) ;
-        (match get_top_node n.p with
-        (* If parent is a Leaf, this must be a root node already *)
-        | None -> let _ = n.k <- small in (minroot h nd)
-        | Some (k,_) ->
-            (match H.compare k small with
-            (* If parent key is still smaller or equal, heap ordering is fine 
-             * and we just update without changing anything else *)
-            | Less | Equal -> let _ = n.k <- small in h
-            | Greater -> let _ = n.k <- small in cut nd h
+        match get_top_node n.p with
+        (* If parent is empty, this must be a root node already *)
+        | None -> n.k <- small; minroot t h
+        | Some (pk,_) ->
+	  n.k <- small;
+          match H.compare pk small with
+          (* If parent key is still smaller or equal, heap ordering is
+           * fine and we just update without changing anything else *)
+          | Less | Equal -> t
+          | Greater -> cut nd t
 
   (*****************************)
   (***** Testing Functions *****)
@@ -572,7 +586,7 @@ struct
   type weight = float
   type tag = string
   let tag_of_node n = n.name
-  let node_of_tag t = {name: t; pt = None; prev = Nil}
+  let node_of_tag t = {name = t; pt = None; prev = Nil}
   let compare n1 n2 = string_compare s1.name s2.name
   let string_of_node n = n.name
   let gen () = {name = ""; pt = None; prev = Nil}

@@ -2,14 +2,11 @@
 "Rule: ocaml dependencies ml (%=Main )": "\026\182Z\205bwp\198t\209\240\156\153\2171\166"
 "Rule: ocaml dependencies ml (%=Order )": "a\190\154~\179\226\235|F\175^\226>~\212\201"
 "Rule: ocaml: ml -> cmo & cmi (%=Dict )": "\239\020C\208Ad\192y\208l\140\191WVN\238"
-"Rule: ocaml dependencies ml (%=Graph )": "\001?[zn\166\154\172\170\000\203\131R\216\b\140"
+"Rule: ocaml dependencies ml (%=Graph )": "\159\238\136u\021\253\208\132T\246I\012\b{\023\142"
+"Rule: ocaml dependencies ml (%=Heap )": "\015\n\203Q\1527\179k\242d\239\n\234\002\144\235"
 "Resource: /home/jharvard/cs51-final-project/Main.ml": "(\017\219&\024q\134\141\195\227\202\183\003\164uH"
 "Rule: ocaml dependencies ml (%=Dict )": "$,1\214en#@u\1631\204\251\2230\024"
-<<<<<<< HEAD
-"Resource: /home/jharvard/cs51-final-project/Heap.ml": "\002\164\218+\178\190'\1287\001\203\143\173ah\158"
-=======
-"Resource: /home/jharvard/cs51-final-project/Heap.ml": "G\193\163P\203\169`?Y\224\156^\005\155\\j"
->>>>>>> dfbde2fc76ceac9bc81124d9b6ef73c049391499
+"Resource: /home/jharvard/cs51-final-project/Heap.ml": "\200\250\175J\233\254\253T\005\241l \134.\011*"
 "Resource: /home/jharvard/cs51-final-project/Dict.ml": "O\207#\179?HN\2554=\128\137\247\141\181\188"
 "Rule: ocaml: ml -> cmo & cmi (%=Order )": "4\168\149\156'\175\214e\194*]E^[/\190"
-"Resource: /home/jharvard/cs51-final-project/Graph.ml": "\234i\222FPx16\019~1\165F\172u\146"
+"Resource: /home/jharvard/cs51-final-project/Graph.ml": "FB:>\221\007|0a\186\186FP\225uE"

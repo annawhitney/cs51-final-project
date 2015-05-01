@@ -15,6 +15,7 @@ sig
   val gen : unit -> node
   val gen_weight : unit -> weight
   val tag_of_node : node -> tag
+  val node_of_tag : tag -> node
 end
 
 (* A signature for directed graphs with unweighted edges *)
@@ -52,6 +53,9 @@ sig
   (* Finds a node by its tag; returns None if node is not in graph. *)
   val get_node_by_tag : graph -> tag -> node option
 
+  (* Create a node from a given tag. *)
+  val node_of_tag : tag -> node
+
   (* Return None if the graph is empty *)
   val get_random_node : graph -> node option
 
@@ -79,12 +83,12 @@ struct
         type value = weight
         let compare = N.compare
         let string_of_t = N.string_of_node
-        let gen_key = N.gen ()
-        let gen_key_random = N.gen ()
+        let gen_key = N.gen
+        let gen_key_random = N.gen
         let gen_key_gt _ () = N.gen ()
         let gen_key_lt _ () = N.gen ()
         let gen_key_between _ _ () = None
-        let gen_value () = N.gen_weight
+        let gen_value = N.gen_weight
         let gen_pair () = (gen_key (), gen_value ())
         let string_of_value = N.string_of_weight
         let string_of_key = N.string_of_node
@@ -95,7 +99,9 @@ struct
   module EdgeDict = Dict.Make(
     struct
       type key = node
-      type value = NeighborDict.set
+
+      (* neighbordict.dict or neighbordict.set ?? *)
+      type value = NeighborDict.dict
       let compare = N.compare
       let string_of_key = N.string_of_node
       let string_of_value ns = NeighborDict.string_of_dict ns
@@ -188,6 +194,8 @@ struct
   (* Added this function for convenience in Dijkstra algorithm *)
   let get_node_by_tag g t : node option =
     EdgeDict.verify_key g.edges (N.node_of_tag t)
+
+  let node_of_tag = N.node_of_tag
 
   let get_random_node g =
     if g.num_nodes = 0 then None else

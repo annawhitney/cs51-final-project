@@ -83,12 +83,12 @@ struct
         type value = weight
         let compare = N.compare
         let string_of_t = N.string_of_node
-        let gen_key = N.gen ()
-        let gen_key_random = N.gen ()
+        let gen_key = N.gen
+        let gen_key_random = N.gen
         let gen_key_gt _ () = N.gen ()
         let gen_key_lt _ () = N.gen ()
         let gen_key_between _ _ () = None
-        let gen_value () = N.gen_weight
+        let gen_value = N.gen_weight
         let gen_pair () = (gen_key (), gen_value ())
         let string_of_value = N.string_of_weight
         let string_of_key = N.string_of_node
