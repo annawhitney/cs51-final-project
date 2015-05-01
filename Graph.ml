@@ -159,19 +159,18 @@ struct
   (* Adds the nodes if they aren't already present. *)
   (* val would be the weight *)
   let add_edge g orig dest v =
-    (let half_add g src dst v = 
-      (let new_neighbors = (match EdgeDict.lookup g.edges src with
+    let half_add g src dst v = 
+      let new_neighbors = (match EdgeDict.lookup g.edges src with
         | None -> NeighborDict.insert NeighborDict.empty dst v
         | Some s -> NeighborDict.insert s dst v)
       in
-        (* ensure both src and dst in the graph before adding edge *)
+      (* ensure both src and dst in the graph before adding edge *)
       let g' = (add_node (add_node g src) dst) in
-        {edges = EdgeDict.insert g'.edges src new_neighbors;
-         num_nodes = g'.num_nodes;
-         index_to_node_map = g'.index_to_node_map})
+      {edges = EdgeDict.insert g'.edges src new_neighbors;
+       num_nodes = g'.num_nodes;
+       index_to_node_map = g'.index_to_node_map}
     in
-      (half_add g orig dest v;
-      half_add g dest orig v))
+    ignore (half_add g orig dest v); half_add g dest orig v
 
   (* TODO: Modify to take edge weight into account *)
   let neighbors g n : (node * weight) list option =

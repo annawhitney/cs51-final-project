@@ -16,8 +16,10 @@ ocamlfind ocamldep -syntax camlp4o -package bin_prot.syntax -package sexplib.syn
 # Target: Graph.cmo, tags: { annot, bin_annot, byte, compile, debug, extension:cmo, extension:ml, file:Graph.cmo, file:Graph.ml, implem, ocaml, package(bin_prot.syntax), package(core), package(sexplib.syntax,comparelib.syntax,fieldslib.syntax,variantslib.syntax), quiet, short_paths, syntax(camlp4o), thread }
 ocamlfind ocamlc -c -w A-4-33-40-41-42-43-34-44 -strict-sequence -g -annot -bin-annot -short-paths -thread -syntax camlp4o -package bin_prot.syntax -package sexplib.syntax,comparelib.syntax,fieldslib.syntax,variantslib.syntax -package core -o Graph.cmo Graph.ml
 + ocamlfind ocamlc -c -w A-4-33-40-41-42-43-34-44 -strict-sequence -g -annot -bin-annot -short-paths -thread -syntax camlp4o -package bin_prot.syntax -package sexplib.syntax,comparelib.syntax,fieldslib.syntax,variantslib.syntax -package core -o Graph.cmo Graph.ml
-File "Graph.ml", line 173, characters 7-29:
-Error: This expression has type graph but an expression was expected of type
-         unit
+File "Graph.ml", line 66, characters 0-4832:
+Error: Signature mismatch:
+       ...
+       The type `tag' is required but not provided
+       File "Graph.ml", line 31, characters 7-18: Expected declaration
 Command exited with code 2.
 # Compilation unsuccessful.
