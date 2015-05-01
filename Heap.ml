@@ -621,7 +621,9 @@ struct
 end
 
 
-module GeoGraph = Graph(GeoNode)
+(*module GeoGraph = Graph(GeoNode) *)
+
+module GeoGraph : GRAPH = Graph(GeoNode);;
 
 (* code for reading in the csv file *)
 
