@@ -326,7 +326,7 @@ struct
       in
       insert_children h;
       let l = n.l in clean h; 
-      let nh = leastroot l in
+      let nh = (if phys_equal l h then empty else leastroot l) in
       let rk_lst : heap list ref = ref [] in
       (* try to merge a heap with any heap in rk_lst *)
       let try_merge (h': heap) : bool =
@@ -350,7 +350,7 @@ struct
       let merge_more (h': heap) : bool =
         lnk_lst_fold (fun merged h ->
           if merged then merged else try_merge h) false h' in
-            while merge_more h do () done;
+            while merge_more h do (merge_more h) done;
             (Some (n.k, n.v), nh)
       
 (* Bits of old code from delete_min; delete when done
@@ -597,16 +597,18 @@ struct
     Printf.printf "starting oneheap test \n";
     let (oneheap, _) = insert k v empty in
     Printf.printf "oneheap and onelst created \n";
-    let (k1,v1),emptyheap = match delete_min oneheap with
+    (* let (k1,v1),emptyheap = match delete_min oneheap with
       | None,_ -> failwith "heap is not empty"
       | (Some kv),h -> kv,h in
     assert(num_nodes oneheap = 1) ;
-    assert(is_empty emptyheap) ;
     assert((k1,v1) = (k,v)) ;
+    assert(is_empty emptyheap) ; *)
     let seqpairs = generate_pair_list 100 in
     let (seqheap, seqlst) = insert_list empty seqpairs in
+        (* ok to here *)
     let emptyheap = List.fold_left ~f:(fun h t ->
       let (kv_op, nh) = delete_min t in
+      (* not ok *)
       let (k,v) = match kv_op with
 	| None -> failwith "all nodes are real"
 	| Some (k,v) -> k,v in
@@ -617,7 +619,7 @@ struct
 
   let run_tests () =
     (*test_insert () ;*)
-    test_decrease_key () ;
+    (*test_decrease_key () ; *)
     test_delete_min () ;
     ()
 
