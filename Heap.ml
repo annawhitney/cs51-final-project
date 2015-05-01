@@ -599,8 +599,8 @@ struct
       | None,_ -> failwith "heap is not empty"
       | (Some kv),h -> kv,h in
     assert(num_nodes oneheap = 1) ;
-    assert(is_empty emptyheap) ;
     assert((k1,v1) = (k,v)) ;
+    assert(is_empty emptyheap) ;
     let seqpairs = generate_pair_list 100 in
     let (seqheap, seqlst) = insert_list empty seqpairs in
     let emptyheap = List.fold_left ~f:(fun h t ->
@@ -614,8 +614,8 @@ struct
     ()
 
   let run_tests () =
-    (*test_insert () ;*)
-    (*test_decrease_key () ;*)
+    test_insert () ;
+    test_decrease_key () ;
     test_delete_min () ;
     ()
 
