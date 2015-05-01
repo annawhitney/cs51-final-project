@@ -544,7 +544,7 @@ module IntStringFibHeap = FibonacciHeap(IntStringHeapArg)
 
 (* HEAP_ARG for our the Fibonacci Heap representation we will use for our
  * actual algorithm *)
-module GeoHeapArg : HEAP_ARG =
+module GeoHeapArg : (HEAP_ARG with type key = float with type value = string) =
 struct
   open Order
   (* Keys are distances *)
@@ -701,13 +701,16 @@ let dijkstra (st: GeoNode.node) (fin: GeoNode.node) (g: GeoGraph.graph)
     : (GeoNode.node list) * GeoNode.weight =
   
   (* Initialize heap containing only source node with distance of 0 *)
-  let with_source = FibHeap.insert 0. st FibHeap.empty in
+
+  let with_source = FibHeap.insert 0. (GeoNode.tag_of_node st) FibHeap.empty in
   (* Insert all other nodes into heap with initial distance of infinity (using
    * Float.max_value to represent infinity) and hold on to a pointer to each *)
   let insert_not_source (h: FibHeap.heap) (s: GeoNode.node) =
     match (GeoNode.compare s st) with
     | Less | Greater -> 
-        let (hp,nd) = FibHeap.insert Float.max_value s h in
+        let (hp,nd) =
+          FibHeap.insert Float.max_value (GeoNode.tag_of_node s) h
+        in
         s.pt <- Some nd ; hp
     | Equal -> h
   in
