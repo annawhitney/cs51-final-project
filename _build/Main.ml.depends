@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 Main.ml: Core FibHeap Float GeoGraph GeoNode Heap Links List Printf Read
+=======
+Main.ml: Core FibHeap Float GeoGraph GeoNode Graph Heap Links List Printf Read
+>>>>>>> 29ecaf7908227a3757d81d2618ccf734bd58581d

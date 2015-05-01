@@ -9043,7 +9043,11 @@ type(
 ident(
   ext_ref Core.Std.Float.to_string
 )
+<<<<<<< HEAD
 "Heap.ml" 619 22161 22187 "Heap.ml" 619 22161 22201
+=======
+"Heap.ml" 619 22161 22179 "Heap.ml" 619 22161 22193
+>>>>>>> 29ecaf7908227a3757d81d2618ccf734bd58581d
 call(
   stack
 )
