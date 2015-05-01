@@ -734,7 +734,7 @@ let addedges (castlist: (string * (float * float)) list)
   (rest: (string * (float * float)) list) (graph: GeoGraph.graph)
   : GeoGraph.graph = 
     match rest with
-    | [] -> let _ = Printf.printf "rest of location list is empty\n" in graph
+    | [] -> graph
     | (name2, loc2)::tl ->
         (let (name1,loc1) = place in
         match (Distance.distance cutoff loc1 loc2) with
@@ -744,7 +744,6 @@ let addedges (castlist: (string * (float * float)) list)
                           (GeoNode.node_of_tag name1)
                           (GeoNode.node_of_tag name2) d 
             in
-            let _ = Printf.printf "Added edge between %s and %s with distance %f to graph.\n" name1 name2 d in
             addhelper place tl newgraph)
   in
   match castlist with
@@ -754,27 +753,50 @@ let addedges (castlist: (string * (float * float)) list)
 let read_csv () : GeoGraph.graph =  
   let usage () = Printf.printf "usage: %s csv cutoff\n" Sys.argv.(0); exit 1 in 
   if Array.length Sys.argv <> 3 then usage () ;
-  let cutoff = Float.of_string (Sys.argv.(2)) in
+  let cutoff = (try (Float.of_string (Sys.argv.(2))) with
+                | _ -> Printf.printf 
+                  "'%s' is an invalid cutoff value\n
+                  cutoff value must be numerical\n"
+                  Sys.argv.(2); exit 1)
+  in
+  let csv = (match Sys.file_exists (Sys.argv.(1)) with
+             | `Yes -> Sys.argv.(1)
+             | _ -> Printf.printf 
+                  "file '%s' not found\n"
+                  Sys.argv.(1); exit 1) in 
   let delimiter = Regex.create_exn ";" in
   let parse_line line = Regex.split delimiter line in
-  let rec cast (parseline: string list) : (string * (float * float)) =
+  let rec cast (parseline: string list) : (string * (float * float)) option =
      match parseline with
      | [name;lat;lng] ->
-         let _ = Printf.printf "%s %s %s\n" name lat lng in
-         (name,((Float.of_string lat),(Float.of_string lng)))
-     | _ -> ("dummy",(0.0,0.0))
+         Some (name,((Float.of_string lat),(Float.of_string lng)))
+     | _ -> None
   in
-  let lines = In_channel.read_lines Sys.argv.(1) in
+  let file = In_channel.create csv in
+  let get_lines f : string list =
+    let rec lines_helper f lst =
+      match In_channel.input_line ~fix_win_eol:true f with
+      | None -> lst
+      | Some l -> lines_helper f (l::lst)
+    in
+    lines_helper f []
+  in
+  let lines = get_lines file in
   let parse_and_cast line = cast (parse_line line) in
-  let casted = List.map lines ~f:parse_and_cast in
+  let casted =
+    List.fold_left lines ~f:(fun lst ln -> match parse_and_cast ln with
+                            | Some p -> p::lst
+                            | None -> lst)
+                         ~init:[]
+  in
+  let _ = In_channel.close file in
   (* Read in and parse the file into a string list list. *)
-  (*let casted = In_channel.with_file Sys.argv.(1)
+  (*let casted = In_channel.with_file csv
                ~f:(fun file -> In_channel.fold_lines file ~init:[]
                ~f:(fun lst ln -> match parse_and_cast ln with
                                  | Some p -> p::lst
                                  | None -> lst))
   in*)
-  let _ = List.iter casted ~f:(fun (nm,(lat,lng)) -> Printf.printf "%s %f %f\n" nm lat lng) in
   addedges casted GeoGraph.empty cutoff
 
 
@@ -876,6 +898,6 @@ let rec printnodes (lst: GeoNode.node list) : unit =
   | [] -> ()
   | hd::tl -> Printf.printf "%s ->\n" (GeoNode.tag_of_node hd) ; printnodes tl
 in
-printnodes nodelist; Printf.printf "\nTotal distance: %f" weight; ()
+printnodes nodelist; Printf.printf "\nTotal distance: %f km\n" weight; ()
 
 
