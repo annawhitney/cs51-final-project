@@ -68,6 +68,7 @@ struct
   module N = NA
   type node = N.node
   type weight = N.weight
+  type tag = N.tag
 
   (* We'll represent a graph as an edge dictionary:
      dictionary: node -> neighbor dict (TODO!)
