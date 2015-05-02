@@ -299,7 +299,7 @@ struct
             | Some cn -> 
                 let lh = cn.l in 
                 link lh h2; link h2 n1.c)
-    | _ -> merge h2 h1
+    | _ -> Printf.printf "hello"; merge h2 h1
 
   (* Deletes the minimum element from the heap and returns it along with an
    * updated handle to the heap. *)
