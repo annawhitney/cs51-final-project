@@ -342,8 +342,22 @@ struct
                     merge_if_necessary h0 h0)
           in
           merge_if_necessary finalmin finalmin ; (Some (n.k,n.v),finalmin)
-
-      (*let l = n.l in clean h; 
+        
+      
+      (*
+      let insert_children (h': heap) : unit =
+        (match !h' with
+        | None -> ()
+        | Some n' -> 
+            lnk_lst_fold 
+            (fun () c -> 
+              match !c with
+              | None -> failwith "node cannot be empty"
+              | Some cn ->
+                  link n.l c; link c h; cn.p <- empty) () n'.c; n'.rk <- 0)
+      in
+      insert_children h;
+      let l = n.l in clean h; 
       let nh = (if phys_equal l h then empty else leastroot l) in
       let rk_lst : heap list ref = ref [] in
       (* try to merge a heap with any heap in rk_lst *)
@@ -374,7 +388,8 @@ struct
       	then merge_finish h'
       	else () in
       merge_finish nh;
-    (Some (n.k, n.v), nh)*)
+    (Some (n.k, n.v), nh)
+  *)
       
 (* Bits of old code from delete_min; delete when done
 
@@ -477,6 +492,7 @@ struct
   let rec num_nodes (h: heap) : int =
     Printf.printf "num_nodes starting \n";
     lnk_lst_fold (fun a h' ->
+      Printf.printf " %i " a; 
       match !h' with
       | None -> failwith "empty heap never reached"
       | Some n ->
@@ -675,8 +691,8 @@ struct
     ()
 
   let run_tests () =
-    (*test_insert () ;*)
-    (*test_decrease_key () ; *)
+    test_insert () ;
+    test_decrease_key () ;
     test_delete_min () ;
     ()
 
