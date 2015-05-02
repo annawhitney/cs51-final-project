@@ -276,8 +276,8 @@ struct
           match !(n.p) with
           | None -> ()
           | Some p ->
-              if p.rk = 1 then p.c <- empty else p.c <- n.l; 
-              p.rk <- p.rk-1
+	    p.rk <- p.rk-1;
+            if p.rk = 0 then p.c <- empty else p.c <- n.l; 
         in
         clean_siblings;
         clean_parent
@@ -308,7 +308,7 @@ struct
     match !h with
     | None -> (None, h)
     | Some n ->
-       (* let l = n.l in
+        let l = n.l in
         if phys_equal l h then (Some (n.k,n.v),empty)
         else
           let _ = link l n.r in
@@ -343,7 +343,22 @@ struct
                     merge_if_necessary h0 h0)
           in
           merge_if_necessary finalmin finalmin ; (Some (n.k,n.v),finalmin)
-	    *)
+	    
+        
+      
+ (*     
+      let insert_children (h': heap) : unit =
+        (match !h' with
+        | None -> ()
+        | Some n' -> 
+          lnk_lst_fold 
+            (fun () c -> 
+              match !c with
+              | None -> failwith "node cannot be empty"
+              | Some cn ->
+                link n.l c; link c h; cn.p <- empty) () n'.c; n'.rk <- 0)
+      in
+      insert_children h;
       let l = n.l in clean h; 
       let nh = (if phys_equal l h then empty else leastroot l) in
       let rk_lst : heap list ref = ref [] in
@@ -375,12 +390,12 @@ struct
       	then merge_finish h'
       	else () in
       merge_finish nh;
-    (Some (n.k, n.v), nh)
-      
-(* Bits of old code from delete_min; delete when done
-
-        let rk_lst : (int * heap) list ref = ref [] in
-        let comb_more : bool =
+      (Some (n.k, n.v), nh)
+ *)	
+  (* Bits of old code from delete_min; delete when done
+     
+     let rk_lst : (int * heap) list ref = ref [] in
+     let comb_more : bool =
           lnk_lst_fold (fun finished root ->
             if finished then true else
                 (match !root with
@@ -476,15 +491,13 @@ struct
   let test_list = ref [];;
 
   let rec num_nodes (h: heap) : int =
-    Printf.printf "beginning num_nodes \n";
     lnk_lst_fold (fun a h' ->
-      Printf.printf " %i " a;
       match !h' with
       | None -> failwith "empty heap never reached"
       | Some n ->
-	match n.rk with
-	| 0 -> a + 1
-	| _ -> a + 1 + (num_nodes n.c) ) 0 h
+          match n.rk with
+          | 0 -> a + 1
+          | _ -> a + 1 + (num_nodes n.c) ) 0 h
 
 (*
   (* Finds number of nodes inside a Fibonacci heap *)
@@ -642,9 +655,12 @@ struct
 	| None -> let nh = decrease_key h (H.gen_key_lt (n.k) ()) t in
 		  assert(!(n.p) = None) ; nh
 	| Some p -> let nh = decrease_key h (H.gen_key_lt (p.k) ()) t in
-		    assert(!(n.p) = None) ; nh) ~init:seqheap' seqlst'
+		    (*assert(!(n.p) = None) ;*) nh) ~init:seqheap' seqlst'
     in
+    assert((let n = lnk_lst_fold (fun a _ -> a+1) 0 seqheap'' in 
+    Printf.printf " %i \n" n; n) = (num_nodes seqheap')) ;
     assert((num_nodes seqheap'') = (num_nodes seqheap')) ;
+
     ()
     
   let test_delete_min () =
@@ -679,8 +695,8 @@ struct
     ()
 
   let run_tests () =
-    (*test_insert () ;*)
-    (*test_decrease_key () ; *)
+    test_insert () ;
+    test_decrease_key () ;
     test_delete_min () ;
     ()
 
