@@ -696,14 +696,16 @@ struct
     test_delete_min () ;
     ()
 
+
 end
 
 (* Create a fib heap with (int, string) pairs for testing *)
 module IntStringFibHeap : (PRIOHEAP with type value = IntStringHeapArg.value
     with type key = IntStringHeapArg.key) = FibonacciHeap(IntStringHeapArg) ;;
 (* Uncomment the following when ready to run tests on fib heap *)
+(*
 IntStringFibHeap.run_tests()
-
+*)
 (* HEAP_ARG for our the Fibonacci Heap representation we will use for our
  * actual algorithm *)
 module GeoHeapArg : (HEAP_ARG with type key = float with type value = string) =
@@ -885,9 +887,8 @@ let rec get_nodes (g: GeoGraph.graph) : GeoNode.node * GeoNode.node =
   (* Should give the user a text prompt so they know what to input *)
   let () = Printf.printf "Origin City: " in
   let st = read_line () in
-  let try_again () = Printf.printf ("City not in database. \n
-  Please make sure that you type in the city_name comma state_abbreviation \n
-  For example: New York City, NY\n") in
+  let try_again () = Printf.printf ("City not in database. \nPlease make sure
+ that you type in the city_name comma state_abbreviation \n For example: New York City, NY\n") in
   let stnode = GeoNode.node_of_tag st in
   if (not (GeoGraph.has_node g stnode)) then
     let _ = try_again () in get_nodes g
@@ -972,6 +973,7 @@ let (nodelist, weight) = dijkstra start finish graph in
 let rec printnodes (lst: GeoNode.node list) : unit = 
   match lst with 
   | [] -> ()
+  | [tl] -> Printf.printf "%s" (GeoNode.tag_of_node tl)
   | hd::tl -> Printf.printf "%s -> " (GeoNode.tag_of_node hd) ; printnodes tl
 in
 printnodes nodelist; Printf.printf "\nTotal distance: %f km\n" weight; ()

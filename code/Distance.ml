@@ -1,9 +1,5 @@
 open Core.Std
 
-(* I'm testing a few of my functions here 
- * thanks,
- * Jacques *)
-
 (*radius of the earth - needed in the distance formula *)
 (* note: we are using km *)
 let earthrad = 6371.0 

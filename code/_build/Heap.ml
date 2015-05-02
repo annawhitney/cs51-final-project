@@ -288,18 +288,18 @@ struct
     | _, None -> ()
     | None, _ -> ()
     | Some n1, Some n2 ->
-        match H.compare n1.k n2.k with
+        (match H.compare n1.k n2.k with
         | Less | Equal ->
-            n1.rk <- n1.rk + 1; clean h2;
+            n1.rk <- n1.rk + 1 ; clean h2 ; n2.p <- h1 ;
             (match !(n1.c) with
             (* If minroot has no children, now it has other root as child *)
-            | None -> n1.c <- h2
+            | None -> n1.c <- h2 ; link h2 h2 ;
             (* If minroot already had children, other root
              * inserted to the left of the referenced child *)
             | Some cn -> 
                 let lh = cn.l in 
                 link lh h2; link h2 n1.c)
-    | _ -> Printf.printf "hello"; merge h2 h1
+        | _ -> merge h2 h1)
 
   (* Deletes the minimum element from the heap and returns it along with an
    * updated handle to the heap. *)
@@ -324,7 +324,7 @@ struct
           in
           (* The rank is O(log n) for a heap of size n, so throwing out a
            * random reasonable (overly high for safety) value... *)
-          let max_rank = 100 in
+          let max_rank = 200 in
           let ranks : heap option array = Array.create ~len:max_rank None in
           (* Merge pairs of heaps of same rank; keep doing so until no more
            * pairs of same rank exist (i.e., we get all the way around the
@@ -333,6 +333,8 @@ struct
             match !h with
             | None -> ()
             | Some n -> if phys_equal n.r h0 then () else
+                (*let rt_lst_sz = lnk_lst_fold (fun a _ -> a + 1) 0 h in
+                let _ = Printf.printf "rank of %i; root list size of %i\n" n.rk rt_lst_sz in*)
                 (match ranks.(n.rk) with
                 | None -> ranks.(n.rk) <- Some h ; merge_if_necessary n.r h0
                 | Some hr -> merge h hr ;
@@ -340,8 +342,22 @@ struct
                     merge_if_necessary h0 h0)
           in
           merge_if_necessary finalmin finalmin ; (Some (n.k,n.v),finalmin)
-
-      (*let l = n.l in clean h; 
+        
+      
+      (*
+      let insert_children (h': heap) : unit =
+        (match !h' with
+        | None -> ()
+        | Some n' -> 
+            lnk_lst_fold 
+            (fun () c -> 
+              match !c with
+              | None -> failwith "node cannot be empty"
+              | Some cn ->
+                  link n.l c; link c h; cn.p <- empty) () n'.c; n'.rk <- 0)
+      in
+      insert_children h;
+      let l = n.l in clean h; 
       let nh = (if phys_equal l h then empty else leastroot l) in
       let rk_lst : heap list ref = ref [] in
       (* try to merge a heap with any heap in rk_lst *)
@@ -372,7 +388,8 @@ struct
       	then merge_finish h'
       	else () in
       merge_finish nh;
-    (Some (n.k, n.v), nh)*)
+    (Some (n.k, n.v), nh)
+  *)
       
 (* Bits of old code from delete_min; delete when done
 
@@ -475,12 +492,13 @@ struct
   let rec num_nodes (h: heap) : int =
     Printf.printf "num_nodes starting \n";
     lnk_lst_fold (fun a h' ->
+      Printf.printf " %i " a; 
       match !h' with
       | None -> failwith "empty heap never reached"
       | Some n ->
-	match n.rk with
-	| 0 -> a + 1
-	| _ -> a + 1 + (num_nodes n.c) ) 0 h
+          match n.rk with
+          | 0 -> a + 1
+          | _ -> a + 1 + (num_nodes n.c) ) 0 h
 
 (*
   (* Finds number of nodes inside a Fibonacci heap *)
@@ -673,10 +691,11 @@ struct
     ()
 
   let run_tests () =
-    (*test_insert () ;*)
-    (*test_decrease_key () ; *)
+    test_insert () ;
+    test_decrease_key () ;
     test_delete_min () ;
     ()
+
 
 end
 
@@ -684,8 +703,9 @@ end
 module IntStringFibHeap : (PRIOHEAP with type value = IntStringHeapArg.value
     with type key = IntStringHeapArg.key) = FibonacciHeap(IntStringHeapArg) ;;
 (* Uncomment the following when ready to run tests on fib heap *)
+(*
 IntStringFibHeap.run_tests()
-
+*)
 (* HEAP_ARG for our the Fibonacci Heap representation we will use for our
  * actual algorithm *)
 module GeoHeapArg : (HEAP_ARG with type key = float with type value = string) =
@@ -867,9 +887,8 @@ let rec get_nodes (g: GeoGraph.graph) : GeoNode.node * GeoNode.node =
   (* Should give the user a text prompt so they know what to input *)
   let () = Printf.printf "Origin City: " in
   let st = read_line () in
-  let try_again () = Printf.printf ("City not in database. \n
-  Please make sure that you type in the city_name comma state_abbreviation \n
-  For example: New York City, NY\n") in
+  let try_again () = Printf.printf ("City not in database. \nPlease make sure
+ that you type in the city_name comma state_abbreviation \n For example: New York City, NY\n") in
   let stnode = GeoNode.node_of_tag st in
   if (not (GeoGraph.has_node g stnode)) then
     let _ = try_again () in get_nodes g
@@ -954,6 +973,7 @@ let (nodelist, weight) = dijkstra start finish graph in
 let rec printnodes (lst: GeoNode.node list) : unit = 
   match lst with 
   | [] -> ()
+  | [tl] -> Printf.printf "%s" (GeoNode.tag_of_node tl)
   | hd::tl -> Printf.printf "%s -> " (GeoNode.tag_of_node hd) ; printnodes tl
 in
 printnodes nodelist; Printf.printf "\nTotal distance: %f km\n" weight; ()
