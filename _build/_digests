@@ -3,18 +3,32 @@
 "Rule: ocaml: ml -> cmo & cmi (%=Links )": "x\031k\206\022v\003\255\195\231\153\2142'\215\139"
 "Rule: ocaml dependencies ml (%=Order )": "\130\176\011G\244\007%\246*\254\210\174\218\022\159\164"
 "Rule: ocaml: ml -> cmo & cmi (%=Dict )": "\164-\"\023\253);\219\255\188e\019J\18048"
+<<<<<<< HEAD
 "Rule: ocaml: cmx* & o* -> native (%=Heap )": "\203\014\165/q\239\230\183\184W\019\017^\166\148<"
 "Rule: ocaml: ml & cmi -> cmx & o (%=Heap )": "\137o\198\229\182Rm\169\163\235r\238\145\246\199~"
+=======
+"Rule: ocaml: cmx* & o* -> native (%=Heap )": "\156\031B{Y\132\168\186\141\130?\175)\025\255\248"
+"Rule: ocaml: ml & cmi -> cmx & o (%=Heap )": "\144}\128\186y?4\212*\127\249y\163\151\002,"
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
 "Rule: ocaml dependencies ml (%=Graph )": "\197\003\225\228y\239\250D\024}\024\234\2017XY"
 "Rule: ocaml: ml & cmi -> cmx & o (%=Links )": "&M\173t\004C1Byj1%\1631\164\245"
 "Rule: ocaml dependencies ml (%=Distance )": "\163m\218\207\003DjG\243\217\133z\191\156\233\204"
 "Rule: ocaml: ml -> cmo & cmi (%=Distance )": "zZ\178\240\178\168y\018\199XNDU\151\030\244"
+<<<<<<< HEAD
 "Rule: ocaml dependencies ml (%=Heap )": "\128\159\b\225#W\213ZO\216\182\136\134\166\249C"
 "Resource: /home/jharvard/cs51-final-project/Links.ml": "gB\024\163\205\145\007\b5\221\b\003\029]\135\004"
 "Rule: ocaml dependencies ml (%=Dict )": "F\029\231\236rv\234\b\n\182-F\t\012\189F"
 "Resource: /home/jharvard/cs51-final-project/Heap.ml": "\133\228d\021\158U\221D\024\240\128\159e\140M\137"
 "Rule: ocaml: ml -> cmo & cmi (%=Graph )": "\172\255\147\249\166\189O\244\185!\158\030\0172\233\243"
 "Rule: ocaml: ml -> cmo & cmi (%=Heap )": "\134\164\185iR\199\160\237\242\253\189\241\211\ni\218"
+=======
+"Rule: ocaml dependencies ml (%=Heap )": "\169e\184\171\193\183\163\t\222h\146\134\020\210\025o"
+"Resource: /home/jharvard/cs51-final-project/Links.ml": "gB\024\163\205\145\007\b5\221\b\003\029]\135\004"
+"Rule: ocaml dependencies ml (%=Dict )": "F\029\231\236rv\234\b\n\182-F\t\012\189F"
+"Resource: /home/jharvard/cs51-final-project/Heap.ml": "\164\006\014-\170ekO}\16502\1348\187\176"
+"Rule: ocaml: ml -> cmo & cmi (%=Graph )": "\172\255\147\249\166\189O\244\185!\158\030\0172\233\243"
+"Rule: ocaml: ml -> cmo & cmi (%=Heap )": "\171\001;hC\196\245\202\174\n\212\232\014Cpl"
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
 "Resource: /home/jharvard/cs51-final-project/Dict.ml": "\174\185B\228\026\154\005\031\246\002\194:\133\021Q\174"
 "Rule: ocaml: ml & cmi -> cmx & o (%=Order )": "\235\002\234\207\197\166{\006\006,\134\136\011\254\1920"
 "Rule: ocaml dependencies ml (%=Links )": "|\131\203\171!\226F\146[)C\179m|zG"

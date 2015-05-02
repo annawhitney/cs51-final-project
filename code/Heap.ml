@@ -342,21 +342,6 @@ struct
           merge_if_necessary finalmin finalmin ; (Some (n.k,n.v),finalmin)
 
       (*let l = n.l in clean h; 
-=======
-      let insert_children (h': heap) : unit =
-        (match !h' with
-        | None -> ()
-        | Some n' -> 
-            lnk_lst_fold 
-            (fun () c -> 
-              match !c with
-              | None -> failwith "node cannot be empty"
-              | Some cn ->
-                  link n.l c; link c h; cn.p <- empty) () n'.c; n'.rk <- 0)
-      in
-      insert_children h;
-      let l = n.l in clean h; n.c <- empty; n.l <- empty; n.r <- empty;
->>>>>>> a5650002ad1d1eb0433e5457039557b72a0759fc
       let nh = (if phys_equal l h then empty else leastroot l) in
       let rk_lst : heap list ref = ref [] in
       (* try to merge a heap with any heap in rk_lst *)
@@ -386,13 +371,8 @@ struct
       	if merge_more h'
       	then merge_finish h'
       	else () in
-<<<<<<< HEAD
-      merge_finish ();
-    (Some (n.k, n.v), nh)
-=======
       merge_finish nh;
     (Some (n.k, n.v), nh)
->>>>>>> 52e69a642cf27d8d47304415edbdf70bc76d8734*)
       
 (* Bits of old code from delete_min; delete when done
 
@@ -888,9 +868,15 @@ let rec get_nodes (g: GeoGraph.graph) : GeoNode.node * GeoNode.node =
   (* Should give the user a text prompt so they know what to input *)
   let () = Printf.printf "Origin City: " in
   let st = read_line () in
+<<<<<<< HEAD:code/Heap.ml
+  let try_again = Printf.print ("City not in database. \n
+  Please make sure that you type in the city_name comma state_abbreviation \n
+  For example: New York City, NY") in
+=======
   let try_again () = Printf.printf ("City not in database. \n
   Please make sure that you type in the city comma state abbreviation \n
   For example: Boston, MA") in
+>>>>>>> 8de54536608ae215d28eb8b04b0d09aa8ce12797:Heap.ml
   let stnode = GeoNode.node_of_tag st in
   if (not (GeoGraph.has_node g stnode)) then
     let _ = try_again () in get_nodes g

@@ -20,7 +20,10 @@ sig
 
   (* Returns an empty heap. *)
   val empty: heap 
+<<<<<<< HEAD
 
+=======
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
   (* Checks if heap is empty. *)
   val is_empty: heap -> bool
 
@@ -68,8 +71,12 @@ end
 
 (* Borrowed wholesale from Moogle (since a HEAP_ARG and a DICT_ARG are
  * identical) for testing purposes *)
+<<<<<<< HEAD
 module IntStringHeapArg : (HEAP_ARG with type key = int
     with type value = string) =
+=======
+module IntStringHeapArg : HEAP_ARG =
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
 struct
   open Order
   type key = int
@@ -134,6 +141,16 @@ struct
     | None -> true
     | _ -> false
 
+<<<<<<< HEAD
+=======
+(* unused; remove unless needed later
+
+  let minkey (k1: key) (k2: key) : key =
+    match H.compare k2 k1 with
+    | Less -> k2
+    | _ -> k1
+*)
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
   let get_top_node (h: heap) : (key * value) option =
     match !h with
     | None -> None
@@ -149,6 +166,7 @@ struct
     | Some (k1,_), Some (k2,_) -> if H.compare k2 k1 = Less then h2 else h1
 
   (* A fold function across a double linked list of heaps. The function
+<<<<<<< HEAD
    * folds right and stops when it's made a full loop *)
   let lnk_lst_fold (f: 'a -> heap -> 'a) (acc: 'a) (h: heap) : 'a =
     let rec lnk_lst_fold_helper (f: 'a -> heap -> 'a) (acc: 'a)
@@ -165,6 +183,32 @@ struct
   (* Returns smallest root node in heap *)
   let leastroot (h: heap) : heap = lnk_lst_fold minroot h h
     
+=======
+   * folds left and stops when it's made a full loop *)
+  let lnk_lst_fold (f: 'a -> heap -> 'a) (acc: 'a) (h: heap) : 'a =
+    let rec lnk_lst_fold_helper (f': 'a -> heap -> 'a) (acc': 'a)
+        (h': heap) (h0: heap) : 'a =
+      match !h' with
+      | None -> acc'
+      | Some n' -> 
+        if phys_equal n'.l h0
+        then (Printf.printf "hallo" ; f' acc' h')
+        else 
+          match !(n'.l) with
+          | None -> f' acc' h'
+          | _ -> lnk_lst_fold_helper f' (f' acc' h') n'.l h0
+    in
+    match !h with
+    | None -> acc
+    | Some n ->
+      match !(n.r) with
+      | None -> failwith "nodes must have real siblings"
+      | Some rn -> lnk_lst_fold_helper f acc h rn.l
+
+  (* Returns smallest root node in heap *)
+  let leastroot (h: heap) : heap = lnk_lst_fold minroot h h
+
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
   (* reassigns sibling fields to make h1 & h2 left/right siblings. If
    * either arg is None, the other arg is return by itself *)
   let link (hl: heap) (hr: heap) : unit =
@@ -237,17 +281,32 @@ struct
    * of the heap with the containing the key value pair and returns the
    * updated pointer to the min as well as a pointer to the new node *)
   let insert (k: key) (v: value) (h: heap) : heap * heap =
+<<<<<<< HEAD
     match !h with
     | None ->
         (* If h is empty, then the new node's siblings should be itself *)
         let newheap = ref None in
+=======
+    Printf.printf "starting insert \n";
+    match !h with
+    | None ->
+        (* If h is empty, then the new node's siblings should be itself *)
+        let newheap = empty in
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
         let newnode =
           {k=k;v=v;p=empty;l=newheap;r=newheap;c=empty;rk=0;mk=false}
         in
         newheap := Some newnode;
+<<<<<<< HEAD
 	(* Printf.printf "inserted into empty heap \n"; *)
 	(newheap,newheap)
     | Some n ->
+=======
+	Printf.printf "inserted into empty heap \n";
+	(newheap,newheap)
+    | Some n ->
+      Printf.printf "starting insert on real heap \n";
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
         (* If h is not empty, then insert new node to left of current min *)
         let newnode = {k=k;v=v;p=empty;l=n.l;r=h;c=empty;rk=0;mk=false} in
         let newheap = ref (Some newnode) in
@@ -256,7 +315,11 @@ struct
         | Some l ->
           n.l <- newheap; 
 	  l.r <- newheap; 
+<<<<<<< HEAD
 	  (* Printf.printf "inserted into real heap \n"; *)
+=======
+	  Printf.printf "inserted into real heap \n";
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
 	  ((minroot h newheap),newheap)
  
   (* clean removes a tree from the surrounding heap. 
@@ -307,6 +370,7 @@ struct
     match !h with
     | None -> (None, h)
     | Some n ->
+<<<<<<< HEAD
         let l = n.l in
         if phys_equal l h then (Some (n.k,n.v),empty)
         else
@@ -343,6 +407,8 @@ struct
 
       (*let l = n.l in clean h; 
 =======
+=======
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
       let insert_children (h': heap) : unit =
         (match !h' with
         | None -> ()
@@ -355,6 +421,7 @@ struct
                   link n.l c; link c h; cn.p <- empty) () n'.c; n'.rk <- 0)
       in
       insert_children h;
+<<<<<<< HEAD
       let l = n.l in clean h; n.c <- empty; n.l <- empty; n.r <- empty;
 >>>>>>> a5650002ad1d1eb0433e5457039557b72a0759fc
       let nh = (if phys_equal l h then empty else leastroot l) in
@@ -367,21 +434,42 @@ struct
               match !comp_h, !h with
               | None,_ | _,None -> failwith "node cannot be empty"
               | Some comp_n, Some n' ->
+=======
+      let l = n.l in clean h; 
+      let nh = leastroot l in
+      let rk_lst : heap list ref = ref [] in
+      (* try to merge a heap with any heap in rk_lst *)
+      let try_merge (h': heap) : bool =
+	let merged_once = List.fold_left !rk_lst ~init:false
+	  ~f:(fun merged comp_h -> 
+	    if merged then merged else
+	      match !comp_h, !h with
+	      | None,_ | _,None -> failwith "node cannot be empty"
+	      | Some comp_n, Some n' ->
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
 		if comp_n.rk = n'.rk
 		then 
 		  let _ = merge comp_h h'; rk_lst := [] in 
 		  true
 		else 
+<<<<<<< HEAD
 		  false)
         in
         if merged_once 
         then true 
         else (let _ = rk_lst := h'::!rk_lst in false)
+=======
+		  false) in
+	if merged_once 
+	then true 
+	else (let _ = rk_lst := h'::!rk_lst in false)
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
       in
       (* recurse through lnk list w/ merged_once until it merges once only *)
       let merge_more (h': heap) : bool =
         lnk_lst_fold (fun merged h ->
           if merged then merged else try_merge h) false h' in
+<<<<<<< HEAD
       let rec merge_finish (h': heap) : unit =
       	if merge_more h'
       	then merge_finish h'
@@ -393,6 +481,10 @@ struct
       merge_finish nh;
     (Some (n.k, n.v), nh)
 >>>>>>> 52e69a642cf27d8d47304415edbdf70bc76d8734*)
+=======
+            while merge_more h do () done;
+            (Some (n.k, n.v), nh)
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
       
 (* Bits of old code from delete_min; delete when done
 
@@ -490,6 +582,7 @@ struct
   (***** Testing Functions *****)
   (*****************************)
 
+<<<<<<< HEAD
   let test_list = ref [];;
 
   let rec num_nodes (h: heap) : int =
@@ -523,11 +616,24 @@ struct
 	  );
 	  num_nodes n.c)) 0 h
 *)
+=======
+  (* Finds number of nodes inside a Fibonacci heap *)
+  let rec num_nodes (h: heap) : int =
+    let num_nodes_print (h: heap) : int =
+      let num = lnk_lst_fold (fun a h' ->
+	match !h' with
+	| None -> 0
+	| Some n ->
+	  a + 1 + (num_nodes n.c)) 0 h in
+      let _ = Printf.printf "final num: %i \n" in num in
+    num_nodes_print h
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
 
   (* Inserts a list of pairs into the given heap and returns a handle to the
    * resulting heap as well as a list of nodes corresponding to each pair,
    * in the same order as the original pair list it corresponds to. *)
   let insert_list (h: heap) (lst: (key * value) list) : heap * heap list =
+<<<<<<< HEAD
     let insert_keep_track (k,v) r =
       let (sofar,hs) = r in
       let size1 = num_nodes sofar in
@@ -542,6 +648,17 @@ struct
       (whole, mine::hs)
     in
     List.fold_right lst ~init:(h,[]) ~f:insert_keep_track 
+=======
+    let insert_keep_track r (k,v) =
+      let (sofar,hs) = r in
+      let (whole,mine) = insert k v sofar in 
+      Printf.printf "insert called and completed \n";
+      assert ((num_nodes sofar) + 1 = (num_nodes whole));
+      Printf.printf "assert statement passed \n";
+      (whole, mine::hs)
+    in
+    List.fold_left lst ~init:(h,[]) ~f:insert_keep_track 
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
 
   (* Generates a (key,value) list with n distinct keys in increasing order,
    * starting from a given key. *)
@@ -583,6 +700,7 @@ struct
     in
     min_helper lst None
 
+<<<<<<< HEAD
   let top_matches ((ka,_): (key * value)) (pt: heap) : bool =
     match get_top_node pt with
     | None -> false
@@ -597,6 +715,14 @@ struct
     let (hp,nd) = insert k v empty in
     assert(top_matches (k,v) nd);
     assert(top_matches (k,v) hp);
+=======
+  let top_matches (a: (key * value)) (pt: heap) : bool =
+    match get_top_node pt with
+    | None -> false
+    | Some b -> a = b
+    
+  let test_insert () = 
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
     (* Fill heap with random pairs *)
     let randpairs = generate_random_list 100 in
     let (h1,lst1) = insert_list empty randpairs in
@@ -611,13 +737,19 @@ struct
     let (h2,lst2) = insert_list empty seqpairs in
     List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) seqpairs lst2 ;
     assert((List.hd seqpairs) = (get_top_node h2)) ;
+<<<<<<< HEAD
     assert((num_nodes h1) = 100) ;
+=======
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
     (* Rinse and repeat with a reverse-sequential list *)
     let revpairs = List.rev seqpairs in
     let (h3,lst3) = insert_list empty revpairs in
     List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) revpairs lst3 ;
     assert((List.hd seqpairs) = (get_top_node h3)) ;
+<<<<<<< HEAD
     assert((num_nodes h1) = 100) ;
+=======
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
     ()
 
   let test_decrease_key () =
@@ -625,6 +757,7 @@ struct
     let key1 = H.gen_key() in
     let identpairs = generate_identical_list key1 100 in
     let (idheap, idlist) = insert_list empty identpairs in
+<<<<<<< HEAD
     let (id1,id2,id3) = match idlist with
       | [] -> failwith "list can't be empty"
       | id1::id2::id3::_ -> id1,id2,id3
@@ -647,6 +780,22 @@ struct
     let seqpairs = generate_pair_list 100 in
     let (seqheap, seqlst) = insert_list empty seqpairs in
     Printf.printf "2 \n";
+=======
+    let (id1,id2,ide) = match idlist with
+      | [] -> failwith "list can't be empty"
+      | id1::id2::id3::_ -> id1,id2,id3
+      | _ -> failwith "list must have 100 nodes" in
+    let key0 = (H.gen_key_lt (H.gen_key()) ()) in
+    let heap1 = decrease_key id1 key0 idheap in
+    assert(Some (key0, H.gen_value()) = get_top_node heap1) ;
+    let keymid = match H.gen_key_between key0 key1 () with
+      | None -> failwith "not possible"
+      | Some keymid -> keymid in
+    let heap2 = decrease_key id2 keymid heap1 in
+    assert(Some (key0, H.gen_value()) = get_top_node heap2) ;
+    let seqpairs = generate_pair_list 100 in
+    let (seqheap, seqlst) = insert_list empty seqpairs in
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
     let seqlst' = match seqlst with
       | [] -> failwith "list is not empty"
       | _::tl -> tl in
@@ -666,6 +815,7 @@ struct
     
   let test_delete_min () =
     let onepair = generate_pair_list 1 in
+<<<<<<< HEAD
     let (k,v) = match onepair with
       | [] -> failwith "list is not empty"
       | (a,b)::_ -> (a,b) in
@@ -681,6 +831,22 @@ struct
     assert(num_nodes oneheap = 1) ;
     assert((k1,v1) = (k,v)) ;
     assert(is_empty emptyheap) ;
+=======
+    let oneelt = match onepair with
+      | [] -> failwith "list is not empty"
+      | hd::_ -> hd in
+    (*let (oneheap, onelst) = insert_list empty [(H.gen_key(),H.gen_value())] in
+    assert(not (is_empty oneheap)) ;
+    assert(not ((List.hd onelst) = None)) ;*)
+    Printf.printf "starting oneheap test \n";
+    let (oneheap, onelst) = insert_list empty onepair in
+    Printf.printf "oneheap and onelst created \n";
+    let (k1,v1),emptyheap = match delete_min oneheap with
+      | None,_ -> failwith "heap is not empty"
+      | (Some kv),h -> kv,h in
+    assert(is_empty emptyheap) ;
+    assert((k1,v1) = oneelt) ;
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
     let seqpairs = generate_pair_list 100 in
     let (seqheap, seqlst) = insert_list empty seqpairs in
     let emptyheap = List.fold_left ~f:(fun h t ->
@@ -695,15 +861,23 @@ struct
 
   let run_tests () =
     (*test_insert () ;*)
+<<<<<<< HEAD
     (*test_decrease_key () ; *)
+=======
+    (*test_decrease_key () ;*)
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
     test_delete_min () ;
     ()
 
 end
 
 (* Create a fib heap with (int, string) pairs for testing *)
+<<<<<<< HEAD
 module IntStringFibHeap : (PRIOHEAP with type value = IntStringHeapArg.value
     with type key = IntStringHeapArg.key) = FibonacciHeap(IntStringHeapArg) ;;
+=======
+module IntStringFibHeap = FibonacciHeap(IntStringHeapArg) ;;
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
 (* Uncomment the following when ready to run tests on fib heap *)
 IntStringFibHeap.run_tests()
 
@@ -886,6 +1060,7 @@ let read_csv () : GeoGraph.graph =
 let rec get_nodes (g: GeoGraph.graph) : GeoNode.node * GeoNode.node =
   (* get_nodes should actually return an option GeoNode.node * GeoNode.node *) 
   (* Should give the user a text prompt so they know what to input *)
+<<<<<<< HEAD
   let () = Printf.printf "Origin City: " in
   let st = read_line () in
   let try_again () = Printf.printf ("City not in database. \n
@@ -900,6 +1075,21 @@ let rec get_nodes (g: GeoGraph.graph) : GeoNode.node * GeoNode.node =
     let finnode = GeoNode.node_of_tag fin in
     if (not (GeoGraph.has_node g finnode)) then
       let _ = try_again () in get_nodes g
+=======
+  let () = Printf.printf "Starting Point: " in
+  let st = read_line () in
+  let stnode = GeoNode.node_of_tag st in
+  if (not (GeoGraph.has_node g stnode)) then
+    let () = Printf.printf "Node is not in graph. Try again.\n" in
+    get_nodes g
+  else 
+    let () = Printf.printf "End Point: " in
+    let fin = read_line () in
+    let finnode = GeoNode.node_of_tag fin in
+    if (not (GeoGraph.has_node g finnode)) then
+      let () = Printf.printf "Node is not in graph. Try again.\n" in
+      get_nodes g
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
     else (stnode, finnode) ;;
 
 (* Run dijkstra's algorithm to find shortest path between start and finish *)
@@ -975,7 +1165,11 @@ let (nodelist, weight) = dijkstra start finish graph in
 let rec printnodes (lst: GeoNode.node list) : unit = 
   match lst with 
   | [] -> ()
+<<<<<<< HEAD
   | hd::tl -> Printf.printf "%s -> " (GeoNode.tag_of_node hd) ; printnodes tl
+=======
+  | hd::tl -> Printf.printf "%s ->\n" (GeoNode.tag_of_node hd) ; printnodes tl
+>>>>>>> a9602d3237759c3f95bbe67aebc3c9e1e13a0ad1
 in
 printnodes nodelist; Printf.printf "\nTotal distance: %f km\n" weight; ()
 
