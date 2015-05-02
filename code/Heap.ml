@@ -318,6 +318,7 @@ struct
   (***** Testing Functions *****)
   (*****************************)
 
+  (* Counts the total number of nodes in a heap. *)
   let rec num_nodes (h: heap) : int =
     lnk_lst_fold (fun a h' ->
       match !h' with
@@ -327,27 +328,6 @@ struct
           | 0 -> a + 1
           | _ -> a + 1 + (num_nodes n.c) ) 0 h
 
-(*
-  (* Finds number of nodes inside a Fibonacci heap *)
-  let rec num_nodes (h: heap) : int =
-    lnk_lst_fold (fun a h' ->
-      (* Printf.printf "acc value = %i \n" a; *)
-      match !h' with
-      | None -> 0
-      | Some n -> 
-	a + 1 + (
-	  (List.iter 
-	     ~f:(fun h' -> 
-	       (if phys_equal h' h
-		then Printf.printf "LOOP EXISTS \n"
-		else test_list := h::!test_list
-	       )
-	     ) 
-	     !test_list
-	  );
-	  num_nodes n.c)) 0 h
-*)
-
   (* Inserts a list of pairs into the given heap and returns a handle to the
    * resulting heap as well as a list of nodes corresponding to each pair,
    * in the same order as the original pair list it corresponds to. *)
@@ -355,14 +335,8 @@ struct
     let insert_keep_track (k,v) r =
       let (sofar,hs) = r in
       let size1 = num_nodes sofar in
-      (* Printf.printf "num_nodes works on heap of size %i \n" size1; *)
       let (whole,mine) = insert k v sofar in 
-      (* Printf.printf "insert function just finished \n"; *)
-      (*  if !whole = None 
-	  then Printf.printf "None child \n"
-	  else Printf.printf "Some child \n"); *)
       assert(size1 + 1 = num_nodes whole) ; 
-      (* Printf.printf "assert on size %i \n" size1; *)
       (whole, mine::hs)
     in
     List.fold_right lst ~init:(h,[]) ~f:insert_keep_track 
@@ -407,6 +381,7 @@ struct
     in
     min_helper lst None
 
+  (* Checks that the top node matches the expected key. *)
   let top_matches ((ka,_): (key * value)) (pt: heap) : bool =
     match get_top_node pt with
     | None -> false
@@ -416,27 +391,28 @@ struct
         | _ -> false)
     
   let test_insert () = 
-    (* Insert a single pair *)
+    (* Insert a single pair. *)
     let (k,v) = H.gen_pair () in
     let (hp,nd) = insert k v empty in
+    (* Check that insert's returned nodes are correct. *)
     assert(top_matches (k,v) nd);
     assert(top_matches (k,v) hp);
-    (* Fill heap with random pairs *)
+    (* Fill heap with random pairs. *)
     let randpairs = generate_random_list 100 in
     let (h1,lst1) = insert_list empty randpairs in
-    (* Check that every pair is where insert said it was *)
+    (* Check that every pair is where insert said it was. *)
     List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) randpairs lst1 ;
-    (* Check that are 100 nodes in the heap *)
+    (* Check that are 100 nodes in the heap. *)
     assert((num_nodes h1) = 100) ;
-    (* Check that the minimum pair ended up in the min spot *)
+    (* Check that the minimum pair ended up in the min spot. *)
     assert((min_pair randpairs) = (get_top_node h1)) ;
-    (* Rinse and repeat with a sequential list of pairs *)
+    (* Rinse and repeat with a sequential list of pairs. *)
     let seqpairs = generate_pair_list 100 in
     let (h2,lst2) = insert_list empty seqpairs in
     List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) seqpairs lst2 ;
     assert((List.hd seqpairs) = (get_top_node h2)) ;
     assert((num_nodes h1) = 100) ;
-    (* Rinse and repeat with a reverse-sequential list *)
+    (* Rinse and repeat with a reverse-sequential list. *)
     let revpairs = List.rev seqpairs in
     let (h3,lst3) = insert_list empty revpairs in
     List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) revpairs lst3 ;
@@ -445,32 +421,34 @@ struct
     ()
 
   let test_decrease_key () =
-    (* Fill heap with identical pairs *)
+    (* Fill heap with identical pairs. *)
     let key1 = H.gen_key() in
     let identpairs = generate_identical_list key1 100 in
     let (idheap, idlist) = insert_list empty identpairs in
-    let (id1,id2,id3) = match idlist with
+    let (id1,id2,id3) =
+      match idlist with
       | [] -> failwith "list can't be empty"
       | id1::id2::id3::_ -> id1,id2,id3
       | _ -> failwith "list must have 100 nodes" in
     let key0 = H.gen_key_lt (H.gen_key_lt key1 ()) () in
+    (* Decrease the key of one node. *)
     let heap1 = decrease_key id1 key0 idheap in
     match get_top_node heap1 with
     | None -> failwith "not possible 0"
     | Some (k, _) -> assert(H.compare k key0 = Equal);
-    let keymid = match H.gen_key_between key0 key1 () with
+    (* Decrease a key to an intermediate value. *)
+    let keymid =
+      match H.gen_key_between key0 key1 () with
       | None -> failwith "not possible 1"
       | Some keymid -> keymid in
     let heap2 = decrease_key id2 keymid heap1 in
-    let key2 = match get_top_node heap2 with
+    let key2 =
+      match get_top_node heap2 with
       | None -> failwith "heap cannot be empty"
       | Some (key2,_) -> key2 in
-    Printf.printf "0 \n";
     assert(key0 = key2) ;
-    Printf.printf "1 \n";
     let seqpairs = generate_pair_list 100 in
     let (seqheap, seqlst) = insert_list empty seqpairs in
-    Printf.printf "2 \n";
     let seqlst' = match seqlst with
       | [] -> failwith "list is not empty"
       | _::tl -> tl in
@@ -479,14 +457,13 @@ struct
       match !h with
       | None -> failwith "all nodes are real"
       | Some n ->
-	match !(n.p) with
-	| None -> let nh = decrease_key h (H.gen_key_lt (n.k) ()) t in
-		  assert(!(n.p) = None) ; nh
-	| Some p -> let nh = decrease_key h (H.gen_key_lt (p.k) ()) t in
-		    (*assert(!(n.p) = None) ;*) nh) ~init:seqheap' seqlst'
+          (match !(n.p) with
+          | None -> let nh = decrease_key h (H.gen_key_lt (n.k) ()) t in
+              assert(!(n.p) = None) ; nh
+          | Some p -> let nh = decrease_key h (H.gen_key_lt (p.k) ()) t in
+                nh)) ~init:seqheap' seqlst'
     in
     assert((let n = lnk_lst_fold (fun a _ -> a+1) 0 seqheap'' in 
-    Printf.printf " %i \n" n; n) = (num_nodes seqheap')) ;
     assert((num_nodes seqheap'') = (num_nodes seqheap')) ;
     ()
     
