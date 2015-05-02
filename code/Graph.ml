@@ -68,9 +68,10 @@ struct
      Every node in the graph must be a key in the dictionary.
   *)
 
-  (* TODO: replace this with an analogous NeighborDict using Dict.Make
-   * with keys that are nodes and values that are edge weights *)
-  
+
+  (* This NeighborDict will have keys which are nodes and
+     values which are the weights/distances to that node
+   *)  
   module NeighborDict = Dict.Make(
      struct
         type key = node
@@ -88,13 +89,13 @@ struct
         let string_of_key = N.string_of_node
       end)
 
-  (* TODO: Change all mentions of NeighborSet in here to NeighborDict, but
-   * otherwise this should stay pretty much the same *)
+  (* This EdgeDict connects nodes to NeighborDicts.
+     Each node will have associated with it all its neighbors
+     and the distances to them.
+  *)
   module EdgeDict = Dict.Make(
     struct
       type key = node
-
-      (* neighbordict.dict or neighbordict.set ?? *)
       type value = NeighborDict.dict
       let compare = N.compare
       let string_of_key = N.string_of_node
@@ -108,9 +109,7 @@ struct
       let gen_pair () = (gen_key(),gen_value())
     end)
 
-  (* Unclear if we need this or not - as far as I can tell, they only use it
-   * to pick a random node, which we don't need to do, but let's leave it in
-   * for now; might be useful for something *)
+  (* This IntNode is mainly used for testing *)
   module IntNode = Dict.Make(
     struct
       type key = int
@@ -134,7 +133,8 @@ struct
  let empty : graph = { edges = EdgeDict.empty;
                        num_nodes = 0;
                        index_to_node_map = IntNode.empty }
-
+ 
+ (* checks if a node is in the graph and adds it if it's not in the graph *)
  let add_node g n =
    if EdgeDict.member g.edges n then g
    else
@@ -143,15 +143,16 @@ struct
        index_to_node_map =
          IntNode.insert g.index_to_node_map g.num_nodes n }
 
+  (* converts the graph into a list of nodes *)
   let nodes g =
     EdgeDict.fold (fun k _ r -> k :: r) [] g.edges
 
   let is_empty g = (g.num_nodes = 0)
 
-  (* TODO: Modify to take edge weight into account and to be undirected
-   * (i.e., we have to add the edge to the list of BOTH nodes, not just one) *)
-  (* Adds the nodes if they aren't already present. *)
-  (* val would be the weight *)
+  (* using a helper function which adds an edge between two nodes,
+     this will add an edge of weight v from origin to destination
+     and vice versa. This makes the graph undirected.
+   *)
   let add_edge g orig dest v =
     let half_add g src dst v = 
       let new_neighbors =
@@ -167,13 +168,13 @@ struct
     in
     half_add (half_add g dest orig v) orig dest v
 
-  (* TODO: Modify to take edge weight into account *)
+  (* This converts a node's NeighborDict into a list of nodes and their weights *)
   let neighbors g n : (node * weight) list option =
     match EdgeDict.lookup g.edges n with
       | None -> None
       | Some s -> Some (NeighborDict.fold (fun neigh v r -> (neigh, v) :: r) [] s)
 
-  (* TODO: Modify to take edge weight into account *)
+  (* This does essentially the same as above but was part of the Moogle structure *)
   let outgoing_edges g src : (node * node * weight) list option =
     match EdgeDict.lookup g.edges src with
       | None -> None
@@ -185,7 +186,10 @@ struct
       | None -> false
       | _ -> true
 
-  (* Added this function for convenience in Dijkstra algorithm *)
+  (* Added this function for convenience in Dijkstra algorithm 
+     It allows us to look up a node using its "tag"--essentially its
+     name in string form
+   *)
   let get_node_by_tag g t : node option =
     EdgeDict.verify_key g.edges (N.node_of_tag t)
 
@@ -198,6 +202,7 @@ struct
     "Graph: " ^ (EdgeDict.string_of_dict g.edges)
 end
 
+(* this module is for testing purposes *)
 module NamedGraph =
 struct
   include(Graph(struct
@@ -216,8 +221,7 @@ struct
     List.fold_left es ~f:(fun g (src, dst) -> add_edge g src dst 1) ~init:empty
 end
 
-(* TODO: update tests to incorporate weights so we can make sure our weighted
- * graph implementation works. *)
+
 
 (* Wrap our tests in a module so that they don't pollute the namespace *)
 module TestGraph =
