@@ -276,8 +276,8 @@ struct
           match !(n.p) with
           | None -> ()
           | Some p ->
-              if p.rk = 1 then p.c <- empty else p.c <- n.l; 
-              p.rk <- p.rk-1
+	    p.rk <- p.rk-1;
+            if p.rk = 0 then p.c <- empty else p.c <- n.l; 
         in
         clean_siblings;
         clean_parent
@@ -290,7 +290,7 @@ struct
     | Some n1, Some n2 ->
         (match H.compare n1.k n2.k with
         | Less | Equal ->
-            n1.rk <- n1.rk + 1 ; clean h2 ; n2.p <- h1 ;
+            n1.rk <- n1.rk + 1; clean h2; n2.p <- h1;
             (match !(n1.c) with
             (* If minroot has no children, now it has other root as child *)
             | None -> n1.c <- h2 ; link h2 h2 ;
@@ -305,6 +305,7 @@ struct
    * updated handle to the heap. *)
   let delete_min (h: heap) : (key * value) option * heap =
     Printf.printf "Inside delete_min\n" ;
+
     match !h with
     | None -> (None, h)
     | Some n ->
@@ -343,19 +344,20 @@ struct
                     merge_if_necessary h0 h0)
           in
           merge_if_necessary finalmin finalmin ; (Some (n.k,n.v),finalmin)
+	    
         
       
-      (*
+ (*     
       let insert_children (h': heap) : unit =
         (match !h' with
         | None -> ()
         | Some n' -> 
-            lnk_lst_fold 
+          lnk_lst_fold 
             (fun () c -> 
               match !c with
               | None -> failwith "node cannot be empty"
               | Some cn ->
-                  link n.l c; link c h; cn.p <- empty) () n'.c; n'.rk <- 0)
+                link n.l c; link c h; cn.p <- empty) () n'.c; n'.rk <- 0)
       in
       insert_children h;
       let l = n.l in clean h; 
@@ -389,13 +391,12 @@ struct
       	then merge_finish h'
       	else () in
       merge_finish nh;
-    (Some (n.k, n.v), nh)
-  *)
-      
-(* Bits of old code from delete_min; delete when done
-
-        let rk_lst : (int * heap) list ref = ref [] in
-        let comb_more : bool =
+      (Some (n.k, n.v), nh)
+ *)	
+  (* Bits of old code from delete_min; delete when done
+     
+     let rk_lst : (int * heap) list ref = ref [] in
+     let comb_more : bool =
           lnk_lst_fold (fun finished root ->
             if finished then true else
                 (match !root with
@@ -491,9 +492,7 @@ struct
   let test_list = ref [];;
 
   let rec num_nodes (h: heap) : int =
-    (* Printf.printf "num_nodes starting \n";*)
     lnk_lst_fold (fun a h' ->
-      (*Printf.printf " %i " a; *)
       match !h' with
       | None -> failwith "empty heap never reached"
       | Some n ->
@@ -657,9 +656,12 @@ struct
 	| None -> let nh = decrease_key h (H.gen_key_lt (n.k) ()) t in
 		  assert(!(n.p) = None) ; nh
 	| Some p -> let nh = decrease_key h (H.gen_key_lt (p.k) ()) t in
-		    assert(!(n.p) = None) ; nh) ~init:seqheap' seqlst'
+		    (*assert(!(n.p) = None) ;*) nh) ~init:seqheap' seqlst'
     in
+    assert((let n = lnk_lst_fold (fun a _ -> a+1) 0 seqheap'' in 
+    Printf.printf " %i \n" n; n) = (num_nodes seqheap')) ;
     assert((num_nodes seqheap'') = (num_nodes seqheap')) ;
+
     ()
     
   let test_delete_min () =
@@ -680,18 +682,18 @@ struct
     in
     assert(num_nodes oneheap = 1) ;
     assert((k1,v1) = (k,v)) ;
-    assert(is_empty emptyheap) ;
+    assert( is_empty emptyheap) ;
     let seqpairs = generate_pair_list 100 in
     let (seqheap, seqlst) = insert_list empty seqpairs in
     let emptyheap = List.fold_left ~f:(fun h t ->
+      let beforesize = num_nodes t in
       let (kv_op, nh) = delete_min t in
       let (k,v) = match kv_op with
         | None -> failwith "all nodes are real"
         | Some (k,v) -> k,v
       in
       assert(Some (k,v) = get_top_node h) ;
-      assert((num_nodes nh) + 1 = num_nodes t) ; nh) ~init:seqheap seqlst
-    in
+      assert(beforesize = aftersize + 1) ; nh) ~init:seqheap seqlst in
     assert(is_empty emptyheap) ;
     ()
 
