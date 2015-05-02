@@ -352,12 +352,12 @@ struct
               match !comp_h, !h with
               | None,_ | _,None -> failwith "node cannot be empty"
               | Some comp_n, Some n' ->
-          if comp_n.rk = n'.rk
-          then 
-            let _ = merge comp_h h'; rk_lst := [] in 
-            true
-          else 
-            false)
+		if comp_n.rk = n'.rk
+		then 
+		  let _ = merge comp_h h'; rk_lst := [] in 
+		  true
+		else 
+		  false)
         in
         if merged_once 
         then true 
@@ -367,12 +367,17 @@ struct
       let merge_more (h': heap) : bool =
         lnk_lst_fold (fun merged h ->
           if merged then merged else try_merge h) false h' in
-      let rec merge_finish () : unit =
-      	if merge_more h
-      	then merge_finish ()
+      let rec merge_finish (h': heap) : unit =
+      	if merge_more h'
+      	then merge_finish h'
       	else () in
+<<<<<<< HEAD
       merge_finish ();
-    (Some (n.k, n.v), nh)*)
+    (Some (n.k, n.v), nh)
+=======
+      merge_finish nh;
+    (Some (n.k, n.v), nh)
+>>>>>>> 52e69a642cf27d8d47304415edbdf70bc76d8734*)
       
 (* Bits of old code from delete_min; delete when done
 
@@ -636,13 +641,12 @@ struct
     assert(is_empty emptyheap) ;
     let seqpairs = generate_pair_list 100 in
     let (seqheap, seqlst) = insert_list empty seqpairs in
-        (* ok to here *)
     let emptyheap = List.fold_left ~f:(fun h t ->
       let (kv_op, nh) = delete_min t in
-      (* not ok *)
       let (k,v) = match kv_op with
 	| None -> failwith "all nodes are real"
 	| Some (k,v) -> k,v in
+      assert(false) ;
       assert(Some (k,v) = get_top_node h) ;
       assert((num_nodes nh) + 1 = num_nodes t) ; nh) ~init:seqheap seqlst in
     assert(is_empty emptyheap) ;
@@ -843,18 +847,18 @@ let rec get_nodes (g: GeoGraph.graph) : GeoNode.node * GeoNode.node =
   (* Should give the user a text prompt so they know what to input *)
   let () = Printf.printf "Origin City: " in
   let st = read_line () in
-  let try_again = Printf.print ("City not in database. \n
+  let try_again () = Printf.printf ("City not in database. \n
   Please make sure that you type in the city comma state abbreviation \n
   For example: Boston, MA") in
   let stnode = GeoNode.node_of_tag st in
   if (not (GeoGraph.has_node g stnode)) then
-    try_again;get_nodes g
+    let _ = try_again () in get_nodes g
   else 
     let () = Printf.printf "Destination City: " in
     let fin = read_line () in
     let finnode = GeoNode.node_of_tag fin in
     if (not (GeoGraph.has_node g finnode)) then
-      try_again; get_nodes g
+      let _ = try_again () in get_nodes g
     else (stnode, finnode) ;;
 
 (* Run dijkstra's algorithm to find shortest path between start and finish *)
