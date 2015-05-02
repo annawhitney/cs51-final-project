@@ -288,18 +288,18 @@ struct
     | _, None -> ()
     | None, _ -> ()
     | Some n1, Some n2 ->
-        match H.compare n1.k n2.k with
+        (match H.compare n1.k n2.k with
         | Less | Equal ->
             n1.rk <- n1.rk + 1; clean h2; n2.p <- h1;
             (match !(n1.c) with
             (* If minroot has no children, now it has other root as child *)
-            | None -> n1.c <- h2
+            | None -> n1.c <- h2 ; link h2 h2 ;
             (* If minroot already had children, other root
              * inserted to the left of the referenced child *)
             | Some cn -> 
                 let lh = cn.l in 
                 link lh h2; link h2 n1.c)
-    | _ -> merge h2 h1
+        | _ -> merge h2 h1)
 
   (* Deletes the minimum element from the heap and returns it along with an
    * updated handle to the heap. *)
@@ -325,7 +325,7 @@ struct
           in
           (* The rank is O(log n) for a heap of size n, so throwing out a
            * random reasonable (overly high for safety) value... *)
-          let max_rank = 100 in
+          let max_rank = 200 in
           let ranks : heap option array = Array.create ~len:max_rank None in
           (* Merge pairs of heaps of same rank; keep doing so until no more
            * pairs of same rank exist (i.e., we get all the way around the
@@ -334,6 +334,8 @@ struct
             match !h with
             | None -> ()
             | Some n -> if phys_equal n.r h0 then () else
+                (*let rt_lst_sz = lnk_lst_fold (fun a _ -> a + 1) 0 h in
+                let _ = Printf.printf "rank of %i; root list size of %i\n" n.rk rt_lst_sz in*)
                 (match ranks.(n.rk) with
                 | None -> ranks.(n.rk) <- Some h ; merge_if_necessary n.r h0
                 | Some hr -> merge h hr ;
