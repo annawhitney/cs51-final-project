@@ -485,8 +485,8 @@ struct
 	| Some p -> let nh = decrease_key h (H.gen_key_lt (p.k) ()) t in
 		    (*assert(!(n.p) = None) ;*) nh) ~init:seqheap' seqlst'
     in
-    (* assert((let n = lnk_lst_fold (fun a _ -> a+1) 0 seqheap'' in 
-    Printf.printf " %i \n" n; n) = (num_nodes seqheap')) ; *)
+    assert((let n = lnk_lst_fold (fun a _ -> a+1) 0 seqheap'' in 
+    Printf.printf " %i \n" n; n) = (num_nodes seqheap')) ;
     assert((num_nodes seqheap'') = (num_nodes seqheap')) ;
     ()
     
