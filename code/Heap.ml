@@ -290,7 +290,7 @@ struct
     | Some n1, Some n2 ->
         match H.compare n1.k n2.k with
         | Less | Equal ->
-            n1.rk <- n1.rk + 1; clean h2;
+            n1.rk <- n1.rk + 1; clean h2; n2.p <- h1;
             (match !(n1.c) with
             (* If minroot has no children, now it has other root as child *)
             | None -> n1.c <- h2
@@ -304,10 +304,11 @@ struct
   (* Deletes the minimum element from the heap and returns it along with an
    * updated handle to the heap. *)
   let delete_min (h: heap) : (key * value) option * heap =
+
     match !h with
     | None -> (None, h)
     | Some n ->
-        let l = n.l in
+       (* let l = n.l in
         if phys_equal l h then (Some (n.k,n.v),empty)
         else
           let _ = link l n.r in
@@ -340,8 +341,8 @@ struct
                     merge_if_necessary h0 h0)
           in
           merge_if_necessary finalmin finalmin ; (Some (n.k,n.v),finalmin)
-
-      (*let l = n.l in clean h; 
+	    *)
+      let l = n.l in clean h; 
       let nh = (if phys_equal l h then empty else leastroot l) in
       let rk_lst : heap list ref = ref [] in
       (* try to merge a heap with any heap in rk_lst *)
@@ -372,7 +373,7 @@ struct
       	then merge_finish h'
       	else () in
       merge_finish nh;
-    (Some (n.k, n.v), nh)*)
+    (Some (n.k, n.v), nh)
       
 (* Bits of old code from delete_min; delete when done
 
@@ -473,9 +474,9 @@ struct
   let test_list = ref [];;
 
   let rec num_nodes (h: heap) : int =
-    Printf.printf "num_nodes starting \n";
+    Printf.printf "beginning num_nodes \n";
     lnk_lst_fold (fun a h' ->
-      Printf.printf "acc value %i" a;
+      Printf.printf " %i " a;
       match !h' with
       | None -> failwith "empty heap never reached"
       | Some n ->
@@ -660,16 +661,18 @@ struct
       | (Some kv),h -> kv,h in
     assert(num_nodes oneheap = 1) ;
     assert((k1,v1) = (k,v)) ;
-    assert(is_empty emptyheap) ;
+    assert( is_empty emptyheap) ;
     let seqpairs = generate_pair_list 100 in
     let (seqheap, seqlst) = insert_list empty seqpairs in
     let emptyheap = List.fold_left ~f:(fun h t ->
+      let beforesize = num_nodes t in
       let (kv_op, nh) = delete_min t in
       let (k,v) = match kv_op with
 	| None -> failwith "all nodes are real"
 	| Some (k,v) -> k,v in
       assert(Some (k,v) = get_top_node h) ;
-      assert((num_nodes nh) + 1 = num_nodes t) ; nh) ~init:seqheap seqlst in
+      let aftersize = num_nodes nh in
+      assert(beforesize = aftersize + 1) ; nh) ~init:seqheap seqlst in
     assert(is_empty emptyheap) ;
     ()
 
