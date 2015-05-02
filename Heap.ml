@@ -495,6 +495,7 @@ struct
   let rec num_nodes (h: heap) : int =
     Printf.printf "num_nodes starting \n";
     lnk_lst_fold (fun a h' ->
+      Printf.printf "acc value %i" a;
       match !h' with
       | None -> failwith "empty heap never reached"
       | Some n ->
