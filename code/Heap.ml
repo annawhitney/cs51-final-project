@@ -304,6 +304,7 @@ struct
   (* Deletes the minimum element from the heap and returns it along with an
    * updated handle to the heap. *)
   let delete_min (h: heap) : (key * value) option * heap =
+    Printf.printf "Inside delete_min\n" ;
     match !h with
     | None -> (None, h)
     | Some n ->
@@ -333,8 +334,8 @@ struct
             match !h with
             | None -> ()
             | Some n -> if phys_equal n.r h0 then () else
-                (*let rt_lst_sz = lnk_lst_fold (fun a _ -> a + 1) 0 h in
-                let _ = Printf.printf "rank of %i; root list size of %i\n" n.rk rt_lst_sz in*)
+                let rt_lst_sz = lnk_lst_fold (fun a _ -> a + 1) 0 h in
+                let _ = Printf.printf "rank of %i; root list size of %i\n" n.rk rt_lst_sz in
                 (match ranks.(n.rk) with
                 | None -> ranks.(n.rk) <- Some h ; merge_if_necessary n.r h0
                 | Some hr -> merge h hr ;
@@ -490,9 +491,9 @@ struct
   let test_list = ref [];;
 
   let rec num_nodes (h: heap) : int =
-    Printf.printf "num_nodes starting \n";
+    (* Printf.printf "num_nodes starting \n";*)
     lnk_lst_fold (fun a h' ->
-      Printf.printf " %i " a; 
+      (*Printf.printf " %i " a; *)
       match !h' with
       | None -> failwith "empty heap never reached"
       | Some n ->
@@ -665,7 +666,8 @@ struct
     let onepair = generate_pair_list 1 in
     let (k,v) = match onepair with
       | [] -> failwith "list is not empty"
-      | (a,b)::_ -> (a,b) in
+      | (a,b)::_ -> (a,b)
+    in
     let (oneheap, onelst) = insert_list empty [(k,v)] in
     assert(not (is_empty oneheap)) ;
     assert(not ((List.hd onelst) = None)) ;
@@ -674,7 +676,8 @@ struct
     (* Printf.printf "oneheap and onelst created \n"; *)
     let (k1,v1),emptyheap = match delete_min oneheap with
       | None,_ -> failwith "heap is not empty"
-      | (Some kv),h -> kv,h in
+      | (Some kv),h -> kv,h
+    in
     assert(num_nodes oneheap = 1) ;
     assert((k1,v1) = (k,v)) ;
     assert(is_empty emptyheap) ;
@@ -683,16 +686,18 @@ struct
     let emptyheap = List.fold_left ~f:(fun h t ->
       let (kv_op, nh) = delete_min t in
       let (k,v) = match kv_op with
-	| None -> failwith "all nodes are real"
-	| Some (k,v) -> k,v in
+        | None -> failwith "all nodes are real"
+        | Some (k,v) -> k,v
+      in
       assert(Some (k,v) = get_top_node h) ;
-      assert((num_nodes nh) + 1 = num_nodes t) ; nh) ~init:seqheap seqlst in
+      assert((num_nodes nh) + 1 = num_nodes t) ; nh) ~init:seqheap seqlst
+    in
     assert(is_empty emptyheap) ;
     ()
 
   let run_tests () =
-    test_insert () ;
-    test_decrease_key () ;
+    (*test_insert () ;*)
+    (*test_decrease_key () ;*)
     test_delete_min () ;
     ()
 
