@@ -1,0 +1,40 @@
+### Starting build.
+# Target: Heap.ml.depends, tags: { debug, extension:ml, file:Heap.ml, ocaml, ocamldep, package(core), package(re2), quiet, thread, traverse }
+ocamlfind ocamldep -package core -package re2 -modules Heap.ml > Heap.ml.depends # cached
+# Target: Distance.ml.depends, tags: { debug, extension:ml, file:Distance.ml, ocaml, ocamldep, package(core), package(re2), quiet, thread, traverse }
+ocamlfind ocamldep -package core -package re2 -modules Distance.ml > Distance.ml.depends # cached
+# Target: Distance.cmo, tags: { byte, compile, debug, extension:cmo, extension:ml, file:Distance.cmo, file:Distance.ml, implem, ocaml, package(core), package(re2), quiet, thread, traverse }
+ocamlfind ocamlc -c -g -thread -package core -package re2 -o Distance.cmo Distance.ml # cached
+# Target: Graph.ml.depends, tags: { debug, extension:ml, file:Graph.ml, ocaml, ocamldep, package(core), package(re2), quiet, thread, traverse }
+ocamlfind ocamldep -package core -package re2 -modules Graph.ml > Graph.ml.depends # cached
+# Target: Dict.ml.depends, tags: { debug, extension:ml, file:Dict.ml, ocaml, ocamldep, package(core), package(re2), quiet, thread, traverse }
+ocamlfind ocamldep -package core -package re2 -modules Dict.ml > Dict.ml.depends # cached
+# Target: Order.ml.depends, tags: { debug, extension:ml, file:Order.ml, ocaml, ocamldep, package(core), package(re2), quiet, thread, traverse }
+ocamlfind ocamldep -package core -package re2 -modules Order.ml > Order.ml.depends # cached
+# Target: Order.cmo, tags: { byte, compile, debug, extension:cmo, extension:ml, file:Order.cmo, file:Order.ml, implem, ocaml, package(core), package(re2), quiet, thread, traverse }
+ocamlfind ocamlc -c -g -thread -package core -package re2 -o Order.cmo Order.ml # cached
+# Target: Dict.cmo, tags: { byte, compile, debug, extension:cmo, extension:ml, file:Dict.cmo, file:Dict.ml, implem, ocaml, package(core), package(re2), quiet, thread, traverse }
+ocamlfind ocamlc -c -g -thread -package core -package re2 -o Dict.cmo Dict.ml # cached
+# Target: Graph.cmo, tags: { byte, compile, debug, extension:cmo, extension:ml, file:Graph.cmo, file:Graph.ml, implem, ocaml, package(core), package(re2), quiet, thread, traverse }
+ocamlfind ocamlc -c -g -thread -package core -package re2 -o Graph.cmo Graph.ml # cached
+# Target: Links.ml.depends, tags: { debug, extension:ml, file:Links.ml, ocaml, ocamldep, package(core), package(re2), quiet, thread, traverse }
+ocamlfind ocamldep -package core -package re2 -modules Links.ml > Links.ml.depends # cached
+# Target: Links.cmo, tags: { byte, compile, debug, extension:cmo, extension:ml, file:Links.cmo, file:Links.ml, implem, ocaml, package(core), package(re2), quiet, thread, traverse }
+ocamlfind ocamlc -c -g -thread -package core -package re2 -o Links.cmo Links.ml # cached
+# Target: Heap.cmo, tags: { byte, compile, debug, extension:cmo, extension:ml, file:Heap.cmo, file:Heap.ml, implem, ocaml, package(core), package(re2), quiet, thread, traverse }
+ocamlfind ocamlc -c -g -thread -package core -package re2 -o Heap.cmo Heap.ml # cached
+# Target: Distance.cmx, tags: { compile, debug, extension:cmx, extension:ml, file:Distance.cmx, file:Distance.ml, implem, native, ocaml, package(core), package(re2), quiet, thread, traverse }
+ocamlfind ocamlopt -c -g -thread -package core -package re2 -o Distance.cmx Distance.ml # cached
+# Target: Order.cmx, tags: { compile, debug, extension:cmx, extension:ml, file:Order.cmx, file:Order.ml, implem, native, ocaml, package(core), package(re2), quiet, thread, traverse }
+ocamlfind ocamlopt -c -g -thread -package core -package re2 -o Order.cmx Order.ml # cached
+# Target: Dict.cmx, tags: { compile, debug, extension:cmx, extension:ml, file:Dict.cmx, file:Dict.ml, implem, native, ocaml, package(core), package(re2), quiet, thread, traverse }
+ocamlfind ocamlopt -c -g -thread -package core -package re2 -o Dict.cmx Dict.ml # cached
+# Target: Graph.cmx, tags: { compile, debug, extension:cmx, extension:ml, file:Graph.cmx, file:Graph.ml, implem, native, ocaml, package(core), package(re2), quiet, thread, traverse }
+ocamlfind ocamlopt -c -g -thread -package core -package re2 -o Graph.cmx Graph.ml # cached
+# Target: Links.cmx, tags: { compile, debug, extension:cmx, extension:ml, file:Links.cmx, file:Links.ml, implem, native, ocaml, package(core), package(re2), quiet, thread, traverse }
+ocamlfind ocamlopt -c -g -thread -package core -package re2 -o Links.cmx Links.ml # cached
+# Target: Heap.cmx, tags: { compile, debug, extension:cmx, extension:ml, file:Heap.cmx, file:Heap.ml, implem, native, ocaml, package(core), package(re2), quiet, thread, traverse }
+ocamlfind ocamlopt -c -g -thread -package core -package re2 -o Heap.cmx Heap.ml # cached
+# Target: Heap.native, tags: { debug, dont_link_with, extension:native, file:Heap.native, link, native, ocaml, package(core), package(re2), program, quiet, thread, traverse }
+ocamlfind ocamlopt -linkpkg -g -thread -package core -package re2 Order.cmx Dict.cmx Distance.cmx Graph.cmx Links.cmx Heap.cmx -o Heap.native # cached
+# Compilation successful.
