@@ -372,7 +372,7 @@ struct
       	then merge_finish h'
       	else () in
       merge_finish nh;
-    (Some (n.k, n.v), nh)
+    (Some (n.k, n.v), nh)*)
       
 (* Bits of old code from delete_min; delete when done
 
@@ -868,15 +868,9 @@ let rec get_nodes (g: GeoGraph.graph) : GeoNode.node * GeoNode.node =
   (* Should give the user a text prompt so they know what to input *)
   let () = Printf.printf "Origin City: " in
   let st = read_line () in
-<<<<<<< HEAD:code/Heap.ml
-  let try_again = Printf.print ("City not in database. \n
-  Please make sure that you type in the city_name comma state_abbreviation \n
-  For example: New York City, NY") in
-=======
   let try_again () = Printf.printf ("City not in database. \n
-  Please make sure that you type in the city comma state abbreviation \n
-  For example: Boston, MA") in
->>>>>>> 8de54536608ae215d28eb8b04b0d09aa8ce12797:Heap.ml
+  Please make sure that you type in the city_name comma state_abbreviation \n
+  For example: New York City, NY\n") in
   let stnode = GeoNode.node_of_tag st in
   if (not (GeoGraph.has_node g stnode)) then
     let _ = try_again () in get_nodes g
