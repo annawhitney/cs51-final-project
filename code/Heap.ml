@@ -267,20 +267,16 @@ struct
     match !h with
     | None -> ()
     | Some n ->
-        let clean_siblings : unit =
-          match !(n.l),!(n.r) with
-          | Some _, Some _ -> link n.l n.r
-          | _,_ -> failwith "node must have real siblings"
-        in
-        let clean_parent : unit =
-          match !(n.p) with
-          | None -> ()
-          | Some p ->
-	    p.rk <- p.rk-1;
-            if p.rk = 0 then p.c <- empty else p.c <- n.l; 
-        in
-        clean_siblings;
-        clean_parent
+      let clean_siblings : unit = link n.l n.r in
+      let clean_parent : unit =
+        match !(n.p) with
+        | None -> ()
+        | Some p ->
+	  p.rk <- p.rk-1;
+          if p.rk = 0 then p.c <- empty else p.c <- n.l; 
+      in
+      clean_siblings;
+      clean_parent
 
   (* merges two heaps by making larger-key root a child of smaller-key root *)
   let rec merge (h1: heap) (h2: heap) : unit =
@@ -304,6 +300,7 @@ struct
   (* Deletes the minimum element from the heap and returns it along with an
    * updated handle to the heap. *)
   let delete_min (h: heap) : (key * value) option * heap =
+    Printf.printf "Inside delete_min\n" ;
 
     match !h with
     | None -> (None, h)
@@ -334,8 +331,8 @@ struct
             match !h with
             | None -> ()
             | Some n -> if phys_equal n.r h0 then () else
-                (*let rt_lst_sz = lnk_lst_fold (fun a _ -> a + 1) 0 h in
-                let _ = Printf.printf "rank of %i; root list size of %i\n" n.rk rt_lst_sz in*)
+                let rt_lst_sz = lnk_lst_fold (fun a _ -> a + 1) 0 h in
+                let _ = Printf.printf "rank of %i; root list size of %i\n" n.rk rt_lst_sz in
                 (match ranks.(n.rk) with
                 | None -> ranks.(n.rk) <- Some h ; merge_if_necessary n.r h0
                 | Some hr -> merge h hr ;
@@ -657,19 +654,17 @@ struct
 	| Some p -> let nh = decrease_key h (H.gen_key_lt (p.k) ()) t in
 		    (*assert(!(n.p) = None) ;*) nh) ~init:seqheap' seqlst'
     in
-    let n'' = lnk_lst_fold (fun a _ -> a+1) 0 seqheap'' in
-    let n' = num_nodes seqheap' in
-    Printf.printf " %i \n" n''; Printf.printf " %i \n" n';
-    assert(n'' = n') ;
+    assert((let n = lnk_lst_fold (fun a _ -> a+1) 0 seqheap'' in 
+    Printf.printf " %i \n" n; n) = (num_nodes seqheap')) ;
     assert((num_nodes seqheap'') = (num_nodes seqheap')) ;
-
     ()
     
   let test_delete_min () =
     let onepair = generate_pair_list 1 in
     let (k,v) = match onepair with
       | [] -> failwith "list is not empty"
-      | (a,b)::_ -> (a,b) in
+      | (a,b)::_ -> (a,b)
+    in
     let (oneheap, onelst) = insert_list empty [(k,v)] in
     assert(not (is_empty oneheap)) ;
     assert(not ((List.hd onelst) = None)) ;
@@ -678,22 +673,24 @@ struct
     (* Printf.printf "oneheap and onelst created \n"; *)
     let (k1,v1),emptyheap = match delete_min oneheap with
       | None,_ -> failwith "heap is not empty"
-      | (Some kv),h -> kv,h in
+      | (Some kv),h -> kv,h
+    in
     assert(num_nodes oneheap = 1) ;
     assert((k1,v1) = (k,v)) ;
     assert( is_empty emptyheap) ;
     let seqpairs = generate_pair_list 100 in
     let (seqheap, seqlst) = insert_list empty seqpairs in
-    let emptyheap = List.fold_left ~f:(fun h t ->
+    (*let emptyheap = List.fold_left ~f:(fun h t ->
       let beforesize = num_nodes t in
       let (kv_op, nh) = delete_min t in
       let (k,v) = match kv_op with
-	| None -> failwith "all nodes are real"
-	| Some (k,v) -> k,v in
+        | None -> failwith "all nodes are real"
+        | Some (k,v) -> k,v
+      in
       assert(Some (k,v) = get_top_node h) ;
       let aftersize = num_nodes nh in
-      assert(beforesize = aftersize + 1) ; nh) ~init:seqheap seqlst in
-    assert(is_empty emptyheap) ;
+      assert(beforesize = aftersize + 1) ; nh) ~init:seqheap seqlst in 
+    assert(is_empty emptyheap) ;*)
     ()
 
   let run_tests () =
