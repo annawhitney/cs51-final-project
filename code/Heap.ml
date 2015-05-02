@@ -241,40 +241,51 @@ struct
     match !h with
     | None -> (None, h)
     | Some n ->
-        let l = n.l in
-        if phys_equal l h then (Some (n.k,n.v),empty)
-        else
-          let _ = link l n.r in
-          let startmin = leastroot l in
-          let finalmin = lnk_lst_fold
-              (fun min c -> match !c with
-                            | None -> failwith "no empty siblings allowed"
-                            | Some nd -> nd.p <- empty ;
-                                (match !min with
-                                | None -> failwith "heap isn't empty"
-                                | Some m -> link c m.r ; link min c ;
-                                    minroot min c))
-              startmin n.c
-          in
-          (* The rank is O(log n) for a heap of size n, so throwing out a
-           * random reasonable (overly high for safety) value... *)
-          let max_rank = 200 in
-          let ranks : heap option array = Array.create ~len:max_rank None in
-          (* Merge pairs of heaps of same rank; keep doing so until no more
-           * pairs of same rank exist (i.e., we get all the way around the
-           * root list without encountering any two heaps of same rank) *)
-          let rec merge_if_necessary (h: heap) (h0: heap) : unit =
-            match !h with
-            | None -> ()
-            | Some n -> if phys_equal n.r h0 then () else
-                (match ranks.(n.rk) with
-                | None -> ranks.(n.rk) <- Some h ; merge_if_necessary n.r h0
-                | Some hr -> merge h hr ;
-                    Array.fill ranks ~pos:0 ~len:max_rank None ;
-                    merge_if_necessary h0 h0)
-          in
-          merge_if_necessary finalmin finalmin ; (Some (n.k,n.v),finalmin)
-	    
+      let insert_children (h': heap) : unit =
+        (match !h' with
+        | None -> ()
+        | Some n' -> 
+          lnk_lst_fold 
+            (fun () c -> 
+              match !c with
+              | None -> failwith "node cannot be empty"
+              | Some cn ->
+                link n'.l c; link c h; cn.p <- empty) () n'.c; n'.rk <- 0)
+      in
+      insert_children h;
+      let l = n.l in clean h; 
+      let nh = (if phys_equal l h then empty else leastroot l) in
+      let rk_lst : heap list ref = ref [] in
+      (* try to merge a heap with any heap in rk_lst *)
+      let try_merge (h': heap) : bool =
+        let merged_once = List.fold_left !rk_lst ~init:false
+          ~f:(fun merged comp_h -> 
+            if merged then merged else
+              match !comp_h, !h with
+              | None,_ | _,None -> failwith "node cannot be empty"
+              | Some comp_n, Some n' ->
+		if comp_n.rk = n'.rk
+		then 
+		  let _ = merge comp_h h'; rk_lst := [] in 
+		  true
+		else 
+		  false)
+        in
+        if merged_once 
+        then true 
+        else (let _ = rk_lst := h'::!rk_lst in false)
+      in
+      (* recurse through lnk list w/ merged_once until it merges once only *)
+      let merge_more (h': heap) : bool =
+        lnk_lst_fold (fun merged h ->
+          if merged then merged else try_merge h) false h' in
+      let rec merge_finish (h': heap) : unit =
+      	if merge_more h'
+      	then merge_finish h'
+      	else () in
+      (*merge_finish nh;*)
+      (Some (n.k, n.v), nh)
+ 	
   (* Cut detaches a node from its parent & siblings and adds it to the root
    * list, then recursively cuts node parents that are marked until it 
    * reaches an unmarked node, returning an updated handle to the heap. *)
@@ -486,9 +497,9 @@ struct
     assert(num_nodes oneheap = 1) ;
     assert((k1,v1) = (k,v)) ;
     assert( is_empty emptyheap) ;
-    let seqpairs = generate_pair_list 100 in
+    (*let seqpairs = generate_pair_list 100 in
     let (seqheap, seqlst) = insert_list empty seqpairs in
-    (*let emptyheap = List.fold_left ~f:(fun h t ->
+    let emptyheap = List.fold_left ~f:(fun h t ->
       let beforesize = num_nodes t in
       let (kv_op, nh) = delete_min t in
       let (k,v) = match kv_op with
