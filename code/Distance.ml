@@ -4,6 +4,7 @@ open Core.Std
 (* radius of the earth
    note: we are using km
  *)
+
 let earthrad = 6371.0 
 (* pi *)
 let pi = 4. *. atan 1.

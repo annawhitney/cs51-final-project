@@ -283,6 +283,8 @@ struct
       	if merge_more h'
       	then merge_finish h'
       	else () in
+      (* to avoid an infinite loop due to a bug,
+         the below line, which consolidates our heap, is commented out *)
       (*merge_finish nh;*)
       (Some (n.k, n.v), nh)
  	
@@ -329,6 +331,7 @@ struct
   (***** Testing Functions *****)
   (*****************************)
 
+  (* Counts the total number of nodes in a heap. *)
   let rec num_nodes (h: heap) : int =
     lnk_lst_fold (fun a h' ->
       match !h' with
@@ -338,27 +341,6 @@ struct
           | 0 -> a + 1
           | _ -> a + 1 + (num_nodes n.c) ) 0 h
 
-(*
-  (* Finds number of nodes inside a Fibonacci heap *)
-  let rec num_nodes (h: heap) : int =
-    lnk_lst_fold (fun a h' ->
-      (* Printf.printf "acc value = %i \n" a; *)
-      match !h' with
-      | None -> 0
-      | Some n -> 
-	a + 1 + (
-	  (List.iter 
-	     ~f:(fun h' -> 
-	       (if phys_equal h' h
-		then Printf.printf "LOOP EXISTS \n"
-		else test_list := h::!test_list
-	       )
-	     ) 
-	     !test_list
-	  );
-	  num_nodes n.c)) 0 h
-*)
-
   (* Inserts a list of pairs into the given heap and returns a handle to the
    * resulting heap as well as a list of nodes corresponding to each pair,
    * in the same order as the original pair list it corresponds to. *)
@@ -366,14 +348,8 @@ struct
     let insert_keep_track (k,v) r =
       let (sofar,hs) = r in
       let size1 = num_nodes sofar in
-      (* Printf.printf "num_nodes works on heap of size %i \n" size1; *)
       let (whole,mine) = insert k v sofar in 
-      (* Printf.printf "insert function just finished \n"; *)
-      (*  if !whole = None 
-	  then Printf.printf "None child \n"
-	  else Printf.printf "Some child \n"); *)
       assert(size1 + 1 = num_nodes whole) ; 
-      (* Printf.printf "assert on size %i \n" size1; *)
       (whole, mine::hs)
     in
     List.fold_right lst ~init:(h,[]) ~f:insert_keep_track 
@@ -418,6 +394,7 @@ struct
     in
     min_helper lst None
 
+  (* Checks that the top node matches the expected key. *)
   let top_matches ((ka,_): (key * value)) (pt: heap) : bool =
     match get_top_node pt with
     | None -> false
@@ -427,27 +404,28 @@ struct
         | _ -> false)
     
   let test_insert () = 
-    (* Insert a single pair *)
+    (* Insert a single pair. *)
     let (k,v) = H.gen_pair () in
     let (hp,nd) = insert k v empty in
+    (* Check that insert's returned nodes are correct. *)
     assert(top_matches (k,v) nd);
     assert(top_matches (k,v) hp);
-    (* Fill heap with random pairs *)
+    (* Fill heap with random pairs. *)
     let randpairs = generate_random_list 100 in
     let (h1,lst1) = insert_list empty randpairs in
-    (* Check that every pair is where insert said it was *)
+    (* Check that every pair is where insert said it was. *)
     List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) randpairs lst1 ;
-    (* Check that are 100 nodes in the heap *)
+    (* Check that are 100 nodes in the heap. *)
     assert((num_nodes h1) = 100) ;
-    (* Check that the minimum pair ended up in the min spot *)
+    (* Check that the minimum pair ended up in the min spot. *)
     assert((min_pair randpairs) = (get_top_node h1)) ;
-    (* Rinse and repeat with a sequential list of pairs *)
+    (* Rinse and repeat with a sequential list of pairs. *)
     let seqpairs = generate_pair_list 100 in
     let (h2,lst2) = insert_list empty seqpairs in
     List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) seqpairs lst2 ;
     assert((List.hd seqpairs) = (get_top_node h2)) ;
     assert((num_nodes h1) = 100) ;
-    (* Rinse and repeat with a reverse-sequential list *)
+    (* Rinse and repeat with a reverse-sequential list. *)
     let revpairs = List.rev seqpairs in
     let (h3,lst3) = insert_list empty revpairs in
     List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) revpairs lst3 ;
@@ -456,28 +434,34 @@ struct
     ()
 
   let test_decrease_key () =
-    (* Fill heap with identical pairs *)
+    (* Fill heap with identical pairs. *)
     let key1 = H.gen_key() in
     let identpairs = generate_identical_list key1 100 in
     let (idheap, idlist) = insert_list empty identpairs in
-    let (id1,id2,id3) = match idlist with
+    let (id1,id2,id3) =
+      match idlist with
       | [] -> failwith "list can't be empty"
       | id1::id2::id3::_ -> id1,id2,id3
       | _ -> failwith "list must have 100 nodes" in
     let key0 = H.gen_key_lt (H.gen_key_lt key1 ()) () in
+    (* Decrease the key of one node. *)
     let heap1 = decrease_key id1 key0 idheap in
     match get_top_node heap1 with
     | None -> failwith "not possible 0"
     | Some (k, _) -> assert(H.compare k key0 = Equal);
-    let keymid = match H.gen_key_between key0 key1 () with
+    (* Decrease a key to an intermediate value. *)
+    let keymid =
+      match H.gen_key_between key0 key1 () with
       | None -> failwith "not possible 1"
       | Some keymid -> keymid in
     let heap2 = decrease_key id2 keymid heap1 in
-    let key2 = match get_top_node heap2 with
+    let key2 =
+      match get_top_node heap2 with
       | None -> failwith "heap cannot be empty"
       | Some (key2,_) -> key2 in
     assert(key0 = key2) ;
     let seqpairs = generate_pair_list 100 in
+    (* fills heap with 100 pairs *)
     let (seqheap, seqlst) = insert_list empty seqpairs in
     let seqlst' = match seqlst with
       | [] -> failwith "list is not empty"
@@ -487,14 +471,13 @@ struct
       match !h with
       | None -> failwith "all nodes are real"
       | Some n ->
-	match !(n.p) with
-	| None -> let nh = decrease_key h (H.gen_key_lt (n.k) ()) t in
-		  assert(!(n.p) = None) ; nh
-	| Some p -> let nh = decrease_key h (H.gen_key_lt (p.k) ()) t in
-		    (*assert(!(n.p) = None) ;*) nh) ~init:seqheap' seqlst'
+          (match !(n.p) with
+          | None -> let nh = decrease_key h (H.gen_key_lt (n.k) ()) t in
+              assert(!(n.p) = None) ; nh
+          (* decrease the key of many values so that the intentinally violate invariant *)
+          | Some p -> let nh = decrease_key h (H.gen_key_lt (p.k) ()) t in
+                nh)) ~init:seqheap' seqlst'
     in
-    assert((let n = lnk_lst_fold (fun a _ -> a+1) 0 seqheap'' in 
-    Printf.printf " %i \n" n; n) = (num_nodes seqheap')) ;
     assert((num_nodes seqheap'') = (num_nodes seqheap')) ;
     ()
     
@@ -504,32 +487,21 @@ struct
       | [] -> failwith "list is not empty"
       | (a,b)::_ -> (a,b)
     in
+    (* fill heap with one pair using the list function *)
     let (oneheap, onelst) = insert_list empty [(k,v)] in
     assert(not (is_empty oneheap)) ;
     assert(not ((List.hd onelst) = None)) ;
-    (* Printf.printf "starting oneheap test \n"; *)
+    (* fill heap with one pair using insert key val *)
     let (oneheap, _) = insert k v empty in
-    (* Printf.printf "oneheap and onelst created \n"; *)
     let (k1,v1),emptyheap = match delete_min oneheap with
       | None,_ -> failwith "heap is not empty"
       | (Some kv),h -> kv,h
     in
+    (* confirm that the key removed has expected values
+       and that the heaps have the correct sizes *)
     assert(num_nodes oneheap = 1) ;
     assert((k1,v1) = (k,v)) ;
     assert( is_empty emptyheap) ;
-    (*let seqpairs = generate_pair_list 100 in
-    let (seqheap, seqlst) = insert_list empty seqpairs in
-    let emptyheap = List.fold_left ~f:(fun h t ->
-      let beforesize = num_nodes t in
-      let (kv_op, nh) = delete_min t in
-      let (k,v) = match kv_op with
-        | None -> failwith "all nodes are real"
-        | Some (k,v) -> k,v
-      in
-      assert(Some (k,v) = get_top_node h) ;
-      let aftersize = num_nodes nh in
-      assert(beforesize = aftersize + 1) ; nh) ~init:seqheap seqlst in 
-    assert(is_empty emptyheap) ;*)
     ()
 
   let run_tests () =
@@ -538,12 +510,13 @@ struct
     test_delete_min () ;*)
     ()
 
+
 end
 
 (* Create a fib heap with (int, string) pairs for testing *)
 module IntStringFibHeap : (PRIOHEAP with type value = IntStringHeapArg.value
     with type key = IntStringHeapArg.key) = FibonacciHeap(IntStringHeapArg) ;;
-(* Uncomment the following when ready to run tests on fib heap *)
+
 IntStringFibHeap.run_tests()
 
 (* HEAP_ARG for our the Fibonacci Heap representation we will use for our
@@ -594,14 +567,12 @@ struct
 end
 
 
-(* Our actual fib heap module - not sure if this is where it should go *)
+(* Our actual fib heap module *)
 
 module FibHeap : (PRIOHEAP with type value = GeoHeapArg.value
     with type key = GeoHeapArg.key) = FibonacciHeap(GeoHeapArg) 
 
-(* Our actual node & graph representations (not sure where to put these either,
- * but it definitely needs to happen after FibHeap is defined because it
- * uses FibHeap in its own definition) *)
+(* Our actual node & graph representations *)
 (* Nodes consist of a string (the name of the node), a FibHeap.heap option
  * (a pointer to the corresponding node in the Fibonacci Heap, if this node
  * exists in the heap), and a pointer to the previous node in the MST once
@@ -629,6 +600,8 @@ struct
   let string_of_weight = Float.to_string
 end
 
+(* this declares the nodes for the graph implemented in Graph.ml 
+    this will be our adjacency list *)
 module GeoNode =
 struct
   include NodeBase
@@ -640,11 +613,14 @@ struct
   let get_node_prev (n: node) : node link = n.prev
 end
 
+(* the adjacency graph *)
 module GeoGraph : (GRAPH with type node = GeoNode.node
     with type weight = GeoNode.weight with type tag = GeoNode.tag) = 
     Graph(GeoNode);;
 
-(* code for reading in the csv file *)
+(* when applied to a list of parsed csv data, a graph, and a max distance
+   this will add edges to the graph for all data points within max
+   distance of each other *)
 let addedges (castlist: (string * (float * float)) list) 
 (graph: GeoGraph.graph) (cutoff: float) : GeoGraph.graph = 
   let rec addhelper (place: string * (float * float)) 
@@ -667,6 +643,8 @@ let addedges (castlist: (string * (float * float)) list)
   | [] -> graph
   | hd::tl -> addhelper hd tl graph
 
+(* this reads in the csv and parses the lines of data to be strings and floats
+   It will also prompt for correct command line arg formatting *)
 let read_csv () : GeoGraph.graph =  
   let usage () = Printf.printf "usage: %s csv cutoff\n" Sys.argv.(0); exit 1 in 
   if Array.length Sys.argv <> 3 then usage () ;
@@ -727,9 +705,8 @@ let rec get_nodes (g: GeoGraph.graph) : GeoNode.node * GeoNode.node =
   (* Should give the user a text prompt so they know what to input *)
   let () = Printf.printf "Origin City: " in
   let st = read_line () in
-  let try_again () = Printf.printf ("City not in database. \n
-  Please make sure that you type in the city_name comma state_abbreviation \n
-  For example: New York City, NY\n") in
+  let try_again () = Printf.printf ("City not in database. \nPlease make sure
+ that you type in the city_name comma state_abbreviation \n For example: New York City, NY\n") in
   let stnode = GeoNode.node_of_tag st in
   if (not (GeoGraph.has_node g stnode)) then
     let _ = try_again () in get_nodes g
@@ -814,8 +791,7 @@ let (nodelist, weight) = dijkstra start finish graph in
 let rec printnodes (lst: GeoNode.node list) : unit = 
   match lst with 
   | [] -> ()
+  | [tl] -> Printf.printf "%s" (GeoNode.tag_of_node tl)
   | hd::tl -> Printf.printf "%s -> " (GeoNode.tag_of_node hd) ; printnodes tl
 in
 printnodes nodelist; Printf.printf "\nTotal distance: %f km\n" weight; ()
-
-
