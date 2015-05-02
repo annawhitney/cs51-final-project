@@ -283,6 +283,8 @@ struct
       	if merge_more h'
       	then merge_finish h'
       	else () in
+      (* to avoid an infinite loop due to a bug,
+         the below line, which consolidates our heap, is commented out *)
       (*merge_finish nh;*)
       (Some (n.k, n.v), nh)
  	
@@ -459,6 +461,7 @@ struct
       | Some (key2,_) -> key2 in
     assert(key0 = key2) ;
     let seqpairs = generate_pair_list 100 in
+    (* fills heap with 100 pairs *)
     let (seqheap, seqlst) = insert_list empty seqpairs in
     let seqlst' = match seqlst with
       | [] -> failwith "list is not empty"
@@ -471,6 +474,7 @@ struct
           (match !(n.p) with
           | None -> let nh = decrease_key h (H.gen_key_lt (n.k) ()) t in
               assert(!(n.p) = None) ; nh
+          (* decrease the key of many values so that the intentinally violate invariant *)
           | Some p -> let nh = decrease_key h (H.gen_key_lt (p.k) ()) t in
                 nh)) ~init:seqheap' seqlst'
     in
@@ -484,32 +488,21 @@ struct
       | [] -> failwith "list is not empty"
       | (a,b)::_ -> (a,b)
     in
+    (* fill heap with one pair using the list function *)
     let (oneheap, onelst) = insert_list empty [(k,v)] in
     assert(not (is_empty oneheap)) ;
     assert(not ((List.hd onelst) = None)) ;
-    (* Printf.printf "starting oneheap test \n"; *)
+    (* fill heap with one pair using insert key val *)
     let (oneheap, _) = insert k v empty in
-    (* Printf.printf "oneheap and onelst created \n"; *)
     let (k1,v1),emptyheap = match delete_min oneheap with
       | None,_ -> failwith "heap is not empty"
       | (Some kv),h -> kv,h
     in
+    (* confirm that the key removed has expected values
+       and that the heaps have the correct sizes *)
     assert(num_nodes oneheap = 1) ;
     assert((k1,v1) = (k,v)) ;
     assert( is_empty emptyheap) ;
-    (*let seqpairs = generate_pair_list 100 in
-    let (seqheap, seqlst) = insert_list empty seqpairs in
-    let emptyheap = List.fold_left ~f:(fun h t ->
-      let beforesize = num_nodes t in
-      let (kv_op, nh) = delete_min t in
-      let (k,v) = match kv_op with
-        | None -> failwith "all nodes are real"
-        | Some (k,v) -> k,v
-      in
-      assert(Some (k,v) = get_top_node h) ;
-      let aftersize = num_nodes nh in
-      assert(beforesize = aftersize + 1) ; nh) ~init:seqheap seqlst in 
-    assert(is_empty emptyheap) ;*)
     ()
 
   let run_tests () =
@@ -523,7 +516,6 @@ end
 (* Create a fib heap with (int, string) pairs for testing *)
 module IntStringFibHeap : (PRIOHEAP with type value = IntStringHeapArg.value
     with type key = IntStringHeapArg.key) = FibonacciHeap(IntStringHeapArg) ;;
-(* Uncomment the following when ready to run tests on fib heap *)
 IntStringFibHeap.run_tests()
 
 (* HEAP_ARG for our the Fibonacci Heap representation we will use for our
@@ -574,14 +566,12 @@ struct
 end
 
 
-(* Our actual fib heap module - not sure if this is where it should go *)
+(* Our actual fib heap module *)
 
 module FibHeap : (PRIOHEAP with type value = GeoHeapArg.value
     with type key = GeoHeapArg.key) = FibonacciHeap(GeoHeapArg) 
 
-(* Our actual node & graph representations (not sure where to put these either,
- * but it definitely needs to happen after FibHeap is defined because it
- * uses FibHeap in its own definition) *)
+(* Our actual node & graph representations *)
 (* Nodes consist of a string (the name of the node), a FibHeap.heap option
  * (a pointer to the corresponding node in the Fibonacci Heap, if this node
  * exists in the heap), and a pointer to the previous node in the MST once
@@ -609,6 +599,8 @@ struct
   let string_of_weight = Float.to_string
 end
 
+(* this declares the nodes for the graph implemented in Graph.ml 
+    this will be our adjacency list *)
 module GeoNode =
 struct
   include NodeBase
@@ -620,11 +612,14 @@ struct
   let get_node_prev (n: node) : node link = n.prev
 end
 
+(* the adjacency graph *)
 module GeoGraph : (GRAPH with type node = GeoNode.node
     with type weight = GeoNode.weight with type tag = GeoNode.tag) = 
     Graph(GeoNode);;
 
-(* code for reading in the csv file *)
+(* when applied to a list of parsed csv data, a graph, and a max distance
+   this will add edges to the graph for all data points within max
+   distance of each other *)
 let addedges (castlist: (string * (float * float)) list) 
 (graph: GeoGraph.graph) (cutoff: float) : GeoGraph.graph = 
   let rec addhelper (place: string * (float * float)) 
@@ -647,6 +642,8 @@ let addedges (castlist: (string * (float * float)) list)
   | [] -> graph
   | hd::tl -> addhelper hd tl graph
 
+(* this reads in the csv and parses the lines of data to be strings and floats
+   It will also prompt for correct command line arg formatting *)
 let read_csv () : GeoGraph.graph =  
   let usage () = Printf.printf "usage: %s csv cutoff\n" Sys.argv.(0); exit 1 in 
   if Array.length Sys.argv <> 3 then usage () ;
@@ -797,5 +794,3 @@ let rec printnodes (lst: GeoNode.node list) : unit =
   | hd::tl -> Printf.printf "%s -> " (GeoNode.tag_of_node hd) ; printnodes tl
 in
 printnodes nodelist; Printf.printf "\nTotal distance: %f km\n" weight; ()
-
-
