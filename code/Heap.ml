@@ -307,20 +307,42 @@ struct
     match !h with
     | None -> (None, h)
     | Some n ->
-      let insert_children (h': heap) : unit =
-        (match !h' with
-        | None -> ()
-        | Some n' -> 
-            lnk_lst_fold 
-            (fun () c -> 
-              match !c with
-              | None -> failwith "node cannot be empty"
-              | Some cn ->
-                  link n.l c; link c h; cn.p <- empty) () n'.c; n'.rk <- 0)
-      in
-      insert_children h;
-      let l = n.l in clean h; 
-      let nh = leastroot l in
+        let l = n.l in
+        if phys_equal l h then (Some (n.k,n.v),empty)
+        else
+          let _ = link l n.r in
+          let startmin = leastroot l in
+          let finalmin = lnk_lst_fold
+              (fun min c -> match !c with
+                            | None -> failwith "no empty siblings allowed"
+                            | Some nd -> nd.p <- empty ;
+                                (match !min with
+                                | None -> failwith "heap isn't empty"
+                                | Some m -> link c m.r ; link min c ;
+                                    minroot min c))
+              startmin n.c
+          in
+          (* The rank is O(log n) for a heap of size n, so throwing out a
+           * random reasonable (overly high for safety) value... *)
+          let max_rank = 100 in
+          let ranks : heap option array = Array.create ~len:max_rank None in
+          (* Merge pairs of heaps of same rank; keep doing so until no more
+           * pairs of same rank exist (i.e., we get all the way around the
+           * root list without encountering any two heaps of same rank) *)
+          let rec merge_if_necessary (h: heap) (h0: heap) : unit =
+            match !h with
+            | None -> ()
+            | Some n -> if phys_equal n.r h0 then () else
+                (match ranks.(n.rk) with
+                | None -> ranks.(n.rk) <- Some h ; merge_if_necessary n.r h0
+                | Some hr -> merge h hr ;
+                    Array.fill ranks ~pos:0 ~len:max_rank None ;
+                    merge_if_necessary h0 h0)
+          in
+          merge_if_necessary finalmin finalmin ; (Some (n.k,n.v),finalmin)
+
+      (*let l = n.l in clean h; 
+      let nh = (if phys_equal l h then empty else leastroot l) in
       let rk_lst : heap list ref = ref [] in
       (* try to merge a heap with any heap in rk_lst *)
       let try_merge (h': heap) : bool =
@@ -330,12 +352,12 @@ struct
               match !comp_h, !h with
               | None,_ | _,None -> failwith "node cannot be empty"
               | Some comp_n, Some n' ->
-          if comp_n.rk = n'.rk
-          then 
-            let _ = merge comp_h h'; rk_lst := [] in 
-            true
-          else 
-            false)
+		if comp_n.rk = n'.rk
+		then 
+		  let _ = merge comp_h h'; rk_lst := [] in 
+		  true
+		else 
+		  false)
         in
         if merged_once 
         then true 
@@ -345,12 +367,12 @@ struct
       let merge_more (h': heap) : bool =
         lnk_lst_fold (fun merged h ->
           if merged then merged else try_merge h) false h' in
-      let rec merge_finish () : unit =
-	if merge_more h
-	then merge_finish ()
-	else () in
-      merge_finish ();
-      (Some (n.k, n.v), nh)
+      let rec merge_finish (h': heap) : unit =
+      	if merge_more h'
+      	then merge_finish h'
+      	else () in
+      merge_finish nh;
+    (Some (n.k, n.v), nh)
       
 (* Bits of old code from delete_min; delete when done
 
@@ -448,24 +470,38 @@ struct
   (***** Testing Functions *****)
   (*****************************)
 
-  (* Finds number of nodes inside a Fibonacci heap *)
+  let test_list = ref [];;
+
   let rec num_nodes (h: heap) : int =
-<<<<<<< HEAD
-    let num_nodes_print (h: heap) : int =
-      let num = lnk_lst_fold (fun a h' ->
-	match !h' with
-	| None -> 0
-	| Some n ->
-	  a + 1 + (num_nodes n.c)) 0 h in
-      let _ = Printf.printf "final num: %i \n" in num in
-    num_nodes_print h
-=======
+    Printf.printf "num_nodes starting \n";
     lnk_lst_fold (fun a h' ->
       match !h' with
+      | None -> failwith "empty heap never reached"
+      | Some n ->
+	match n.rk with
+	| 0 -> 1
+	| _ -> 1 + (num_nodes n.c) ) 0 h
+
+(*
+  (* Finds number of nodes inside a Fibonacci heap *)
+  let rec num_nodes (h: heap) : int =
+    lnk_lst_fold (fun a h' ->
+      (* Printf.printf "acc value = %i \n" a; *)
+      match !h' with
       | None -> 0
-      | Some n -> a + 1 + (num_nodes n.c))
-    0 h
->>>>>>> cd41eed0a18503b3ad62a2b459c40d58af13fd3e
+      | Some n -> 
+	a + 1 + (
+	  (List.iter 
+	     ~f:(fun h' -> 
+	       (if phys_equal h' h
+		then Printf.printf "LOOP EXISTS \n"
+		else test_list := h::!test_list
+	       )
+	     ) 
+	     !test_list
+	  );
+	  num_nodes n.c)) 0 h
+*)
 
   (* Inserts a list of pairs into the given heap and returns a handle to the
    * resulting heap as well as a list of nodes corresponding to each pair,
@@ -554,11 +590,13 @@ struct
     let (h2,lst2) = insert_list empty seqpairs in
     List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) seqpairs lst2 ;
     assert((List.hd seqpairs) = (get_top_node h2)) ;
+    assert((num_nodes h1) = 100) ;
     (* Rinse and repeat with a reverse-sequential list *)
     let revpairs = List.rev seqpairs in
     let (h3,lst3) = insert_list empty revpairs in
     List.iter2_exn ~f:(fun a pt -> assert(top_matches a pt)) revpairs lst3 ;
     assert((List.hd seqpairs) = (get_top_node h3)) ;
+    assert((num_nodes h1) = 100) ;
     ()
 
   let test_decrease_key () =
@@ -613,6 +651,9 @@ struct
     let (oneheap, onelst) = insert_list empty [(k,v)] in
     assert(not (is_empty oneheap)) ;
     assert(not ((List.hd onelst) = None)) ;
+    Printf.printf "starting oneheap test \n";
+    let (oneheap, _) = insert k v empty in
+    Printf.printf "oneheap and onelst created \n";
     let (k1,v1),emptyheap = match delete_min oneheap with
       | None,_ -> failwith "heap is not empty"
       | (Some kv),h -> kv,h in
@@ -632,9 +673,9 @@ struct
     ()
 
   let run_tests () =
-    test_insert () ;
-    (*test_decrease_key () ;*)
-    (*test_delete_min () ;*)
+    (*test_insert () ;*)
+    (*test_decrease_key () ; *)
+    test_delete_min () ;
     ()
 
 end
@@ -826,18 +867,24 @@ let rec get_nodes (g: GeoGraph.graph) : GeoNode.node * GeoNode.node =
   (* Should give the user a text prompt so they know what to input *)
   let () = Printf.printf "Origin City: " in
   let st = read_line () in
+<<<<<<< HEAD:code/Heap.ml
   let try_again = Printf.print ("City not in database. \n
   Please make sure that you type in the city_name comma state_abbreviation \n
   For example: New York City, NY") in
+=======
+  let try_again () = Printf.printf ("City not in database. \n
+  Please make sure that you type in the city comma state abbreviation \n
+  For example: Boston, MA") in
+>>>>>>> 8de54536608ae215d28eb8b04b0d09aa8ce12797:Heap.ml
   let stnode = GeoNode.node_of_tag st in
   if (not (GeoGraph.has_node g stnode)) then
-    try_again;get_nodes g
+    let _ = try_again () in get_nodes g
   else 
     let () = Printf.printf "Destination City: " in
     let fin = read_line () in
     let finnode = GeoNode.node_of_tag fin in
     if (not (GeoGraph.has_node g finnode)) then
-      try_again; get_nodes g
+      let _ = try_again () in get_nodes g
     else (stnode, finnode) ;;
 
 (* Run dijkstra's algorithm to find shortest path between start and finish *)
