@@ -281,8 +281,7 @@ struct
   (* merges two heaps by making larger-key root a child of smaller-key root *)
   let rec merge (h1: heap) (h2: heap) : unit =
     match !h1,!h2 with
-    | _, None -> ()
-    | None, _ -> ()
+    | _, None | None, _ -> ()
     | Some n1, Some n2 ->
         (match H.compare n1.k n2.k with
         | Less | Equal ->
@@ -469,23 +468,21 @@ struct
     match !h with
     | None -> failwith "Cannot decrease key of an empty heap"
     | Some n ->
-        assert((H.compare small n.k) = Less) ;
-        match get_top_node n.p with
-        (* If parent is empty, this must be a root node already *)
-        | None -> n.k <- small; minroot t h
-        | Some (pk,_) ->
-            n.k <- small;
-            match H.compare pk small with
-            (* If parent key is still smaller or equal, heap ordering is
-             * fine and we just update without changing anything else *)
-            | Less | Equal -> t
-            | Greater -> cut n.p t
+      assert((H.compare small n.k) = Less) ;
+      n.k <- small;
+      match get_top_node n.p with
+      (* If parent is empty, this must be a root node already *)
+      | None -> minroot t h
+      | Some (pk,_) ->
+        match H.compare pk small with
+        (* If parent key is still smaller or equal, heap ordering is
+         * fine and we just update without changing anything else *)
+        | Less | Equal -> t
+        | Greater -> cut n.p t
 
   (*****************************)
   (***** Testing Functions *****)
   (*****************************)
-
-  let test_list = ref [];;
 
   let rec num_nodes (h: heap) : int =
     lnk_lst_fold (fun a h' ->
