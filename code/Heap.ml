@@ -241,44 +241,6 @@ struct
     match !h with
     | None -> (None, h)
     | Some n ->
-(*        let l = n.l in
-        if phys_equal l h then (Some (n.k,n.v),empty)
-        else
-          let _ = link l n.r in
-          let startmin = leastroot l in
-          let finalmin = lnk_lst_fold
-              (fun min c -> match !c with
-                            | None -> failwith "no empty siblings allowed"
-                            | Some nd -> nd.p <- empty ;
-                                (match !min with
-                                | None -> failwith "heap isn't empty"
-                                | Some m -> link c m.r ; link min c ;
-                                    minroot min c))
-              startmin n.c
-          in
-          (* The rank is O(log n) for a heap of size n, so throwing out a
-           * random reasonable (overly high for safety) value... *)
-          let max_rank = 200 in
-          let ranks : heap option array = Array.create ~len:max_rank None in
-          (* Merge pairs of heaps of same rank; keep doing so until no more
-           * pairs of same rank exist (i.e., we get all the way around the
-           * root list without encountering any two heaps of same rank) *)
-          let rec merge_if_necessary (h: heap) (h0: heap) : unit =
-            match !h with
-            | None -> ()
-            | Some n -> if phys_equal n.r h0 then () else
-                (match ranks.(n.rk) with
-                | None -> ranks.(n.rk) <- Some h ; merge_if_necessary n.r h0
-                | Some hr -> merge h hr ;
-                    Array.fill ranks ~pos:0 ~len:max_rank None ;
-                    merge_if_necessary h0 h0)
-          in
-          merge_if_necessary finalmin finalmin ; (Some (n.k,n.v),finalmin)
-	    
-<<<<<<< HEAD
-        
-*)     
-     
       let insert_children (h': heap) : unit =
         (match !h' with
         | None -> ()
@@ -324,40 +286,6 @@ struct
       (*merge_finish nh;*)
       (Some (n.k, n.v), nh)
  	
-  (* Bits of old code from delete_min; delete when done
-     
-     let rk_lst : (int * heap) list ref = ref [] in
-     let comb_more : bool =
-          lnk_lst_fold (fun finished root ->
-            if finished then true else
-                (match !root with
-                | Leaf -> true
-                | Node(rkv,rp,rl,rr,rc,rrk,rm) ->
-                    let member = List.fold_left !rk_lst ~init:false
-                        ~f:(fun b (n,_) -> n = !rrk || b) in
-                  (* let compare = (Some (fun (a,_) (b,_) -> a = b)) in
-                  match List.Assoc.mem !rk_lst 
-              ?equal:compare (!rrk,root) with *)
-                    match member with
-                    | true ->
-                        (match (List.fold_left !rk_lst ~init:None 
-                             ~f:(fun b (n,h) -> if n = !rrk then Some h
-                              else b)) with
-                        | None -> failwith "identical rank must exist"
-                        | Some eq_rk_heap ->
-                        (* let eq_rk_tree =
-                          List.Assoc.find_exn !rk_lst ?equal:compare (!rrk,root) in *)
-                            cut !root; merge !root !eq_rk_heap;
-                            rk_lst := []; true)
-                    | false -> 
-                        let new_elt = (!rrk,root) in
-                        rk_lst := new_elt::!rk_lst; false) false h in
-                        while comb_more do () done;
-                        (Some (k,v), new_h)
-*)                       
-
-=======
->>>>>>> 57c090b6be71b2ac6595760c8e32243b74041cba
   (* Cut detaches a node from its parent & siblings and adds it to the root
    * list, then recursively cuts node parents that are marked until it 
    * reaches an unmarked node, returning an updated handle to the heap. *)
