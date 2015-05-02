@@ -299,12 +299,10 @@ struct
   (* Deletes the minimum element from the heap and returns it along with an
    * updated handle to the heap. *)
   let delete_min (h: heap) : (key * value) option * heap =
-    Printf.printf "Inside delete_min\n" ;
-
     match !h with
     | None -> (None, h)
     | Some n ->
-        let l = n.l in
+(*        let l = n.l in
         if phys_equal l h then (Some (n.k,n.v),empty)
         else
           let _ = link l n.r in
@@ -341,8 +339,8 @@ struct
           merge_if_necessary finalmin finalmin ; (Some (n.k,n.v),finalmin)
 	    
         
-      
- (*     
+*)     
+     
       let insert_children (h': heap) : unit =
         (match !h' with
         | None -> ()
@@ -352,7 +350,7 @@ struct
               match !c with
               | None -> failwith "node cannot be empty"
               | Some cn ->
-                link n.l c; link c h; cn.p <- empty) () n'.c; n'.rk <- 0)
+                link n'.l c; link c h; cn.p <- empty) () n'.c; n'.rk <- 0)
       in
       insert_children h;
       let l = n.l in clean h; 
@@ -385,9 +383,9 @@ struct
       	if merge_more h'
       	then merge_finish h'
       	else () in
-      merge_finish nh;
+      (*merge_finish nh;*)
       (Some (n.k, n.v), nh)
- *)	
+ 	
   (* Bits of old code from delete_min; delete when done
      
      let rk_lst : (int * heap) list ref = ref [] in
@@ -418,7 +416,7 @@ struct
                         rk_lst := new_elt::!rk_lst; false) false h in
                         while comb_more do () done;
                         (Some (k,v), new_h)
-*)                         
+*)                       
 
   (* Cut detaches a node from its parent & siblings and adds it to the root
    * list, then recursively cuts node parents that are marked until it 
@@ -631,12 +629,9 @@ struct
     let key2 = match get_top_node heap2 with
       | None -> failwith "heap cannot be empty"
       | Some (key2,_) -> key2 in
-    Printf.printf "0 \n";
     assert(key0 = key2) ;
-    Printf.printf "1 \n";
     let seqpairs = generate_pair_list 100 in
     let (seqheap, seqlst) = insert_list empty seqpairs in
-    Printf.printf "2 \n";
     let seqlst' = match seqlst with
       | [] -> failwith "list is not empty"
       | _::tl -> tl in
@@ -675,9 +670,9 @@ struct
     assert(num_nodes oneheap = 1) ;
     assert((k1,v1) = (k,v)) ;
     assert( is_empty emptyheap) ;
-    let seqpairs = generate_pair_list 100 in
+    (*let seqpairs = generate_pair_list 100 in
     let (seqheap, seqlst) = insert_list empty seqpairs in
-    (*let emptyheap = List.fold_left ~f:(fun h t ->
+    let emptyheap = List.fold_left ~f:(fun h t ->
       let beforesize = num_nodes t in
       let (kv_op, nh) = delete_min t in
       let (k,v) = match kv_op with
