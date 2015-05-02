@@ -310,7 +310,7 @@ struct
         let l = n.l in
         if phys_equal l h then (Some (n.k,n.v),empty)
         else
-          link l n.r ;
+          let _ = link l n.r in
           let startmin = leastroot l in
           let finalmin = lnk_lst_fold
               (fun min c -> match !c with
@@ -325,7 +325,7 @@ struct
           (* The rank is O(log n) for a heap of size n, so throwing out a
            * random reasonable (overly high for safety) value... *)
           let max_rank = 100 in
-          let ranks = Array.create max_rank in
+          let ranks : heap option array = Array.create ~len:max_rank None in
           (* Merge pairs of heaps of same rank; keep doing so until no more
            * pairs of same rank exist (i.e., we get all the way around the
            * root list without encountering any two heaps of same rank) *)
@@ -334,12 +334,12 @@ struct
             | None -> ()
             | Some n -> if phys_equal n.r h0 then () else
                 (match ranks.(n.rk) with
-                | None -> ranks.(n.rk) <- h ; merge_if_necessary n.r h0
+                | None -> ranks.(n.rk) <- Some h ; merge_if_necessary n.r h0
                 | Some hr -> merge h hr ;
                     Array.fill ranks ~pos:0 ~len:max_rank None ;
                     merge_if_necessary h0 h0)
           in
-          merge_if_necessary h0 h0 ; (Some (n.k,n.v),finalmin)
+          merge_if_necessary finalmin finalmin ; (Some (n.k,n.v),finalmin)
 
       (*let l = n.l in clean h; 
 =======
