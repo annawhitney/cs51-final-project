@@ -342,6 +342,21 @@ struct
           merge_if_necessary h0 h0 ; (Some (n.k,n.v),finalmin)
 
       (*let l = n.l in clean h; 
+=======
+      let insert_children (h': heap) : unit =
+        (match !h' with
+        | None -> ()
+        | Some n' -> 
+            lnk_lst_fold 
+            (fun () c -> 
+              match !c with
+              | None -> failwith "node cannot be empty"
+              | Some cn ->
+                  link n.l c; link c h; cn.p <- empty) () n'.c; n'.rk <- 0)
+      in
+      insert_children h;
+      let l = n.l in clean h; n.c <- empty; n.l <- empty; n.r <- empty;
+>>>>>>> a5650002ad1d1eb0433e5457039557b72a0759fc
       let nh = (if phys_equal l h then empty else leastroot l) in
       let rk_lst : heap list ref = ref [] in
       (* try to merge a heap with any heap in rk_lst *)
@@ -475,12 +490,38 @@ struct
   (***** Testing Functions *****)
   (*****************************)
 
+  let test_list = ref [];;
+
+  let rec num_nodes (h: heap) : int =
+    Printf.printf "num_nodes starting \n";
+    lnk_lst_fold (fun a h' ->
+      match !h' with
+      | None -> failwith "empty heap never reached"
+      | Some n ->
+	match n.rk with
+	| 0 -> 1
+	| _ -> 1 + (num_nodes n.c) ) 0 h
+
+(*
   (* Finds number of nodes inside a Fibonacci heap *)
   let rec num_nodes (h: heap) : int =
     lnk_lst_fold (fun a h' ->
+      (* Printf.printf "acc value = %i \n" a; *)
       match !h' with
       | None -> 0
-      | Some n -> a + 1 + (num_nodes n.c)) 0 h
+      | Some n -> 
+	a + 1 + (
+	  (List.iter 
+	     ~f:(fun h' -> 
+	       (if phys_equal h' h
+		then Printf.printf "LOOP EXISTS \n"
+		else test_list := h::!test_list
+	       )
+	     ) 
+	     !test_list
+	  );
+	  num_nodes n.c)) 0 h
+*)
 
   (* Inserts a list of pairs into the given heap and returns a handle to the
    * resulting heap as well as a list of nodes corresponding to each pair,
@@ -646,7 +687,6 @@ struct
       let (k,v) = match kv_op with
 	| None -> failwith "all nodes are real"
 	| Some (k,v) -> k,v in
-      assert(false) ;
       assert(Some (k,v) = get_top_node h) ;
       assert((num_nodes nh) + 1 = num_nodes t) ; nh) ~init:seqheap seqlst in
     assert(is_empty emptyheap) ;
