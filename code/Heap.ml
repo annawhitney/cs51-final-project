@@ -480,9 +480,9 @@ struct
       match !h' with
       | None -> failwith "empty heap never reached"
       | Some n ->
-	match n.rk with
-	| 0 -> a + 1
-	| _ -> a + 1 + (num_nodes n.c) ) 0 h
+          match n.rk with
+          | 0 -> a + 1
+          | _ -> a + 1 + (num_nodes n.c) ) 0 h
 
 (*
   (* Finds number of nodes inside a Fibonacci heap *)
