@@ -18,11 +18,8 @@ sig
   val node_of_tag : tag -> node
 end
 
-(* A signature for directed graphs with unweighted edges *)
-(* TODO: Modify this to be an undirected graph and use weighted edges! *)
-(* This definitely involves modifying NeighborSet to be NeighborDict instead
- * (see below) but we might need to define other functions in the interface
- * so we can get out edge weights and do operations on them. *)
+(* This has been modified from Moogle to now be an
+   undirected graph with weighted edges *)
 module type GRAPH =
 sig
   type node
