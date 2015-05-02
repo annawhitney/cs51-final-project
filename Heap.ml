@@ -457,8 +457,8 @@ struct
       | None -> failwith "empty heap never reached"
       | Some n ->
 	match n.rk with
-	| 0 -> 1
-	| _ -> 1 + (num_nodes n.c) ) 0 h
+	| 0 -> a + 1
+	| _ -> a + 1 + (num_nodes n.c) ) 0 h
 
 (*
   (* Finds number of nodes inside a Fibonacci heap *)
@@ -629,9 +629,9 @@ struct
     let (oneheap, onelst) = insert_list empty [(k,v)] in
     assert(not (is_empty oneheap)) ;
     assert(not ((List.hd onelst) = None)) ;
-    Printf.printf "starting oneheap test \n";
+    (* Printf.printf "starting oneheap test \n"; *)
     let (oneheap, _) = insert k v empty in
-    Printf.printf "oneheap and onelst created \n";
+    (* Printf.printf "oneheap and onelst created \n"; *)
     let (k1,v1),emptyheap = match delete_min oneheap with
       | None,_ -> failwith "heap is not empty"
       | (Some kv),h -> kv,h in
